@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
-    private void ManageSingleton()
+    private void SetupSingleton()
     {
         if (Instance == null)
         {
@@ -26,30 +27,38 @@ public class GameManager : MonoBehaviour
     #region Input
 
     public GameControlls gameInput;
+    public event Action OnInputSetup;
 
-    private void ManageInput(bool activate)
+    private void SetupInput()
     {
-        if (activate) { gameInput.Enable(); }
-        else { gameInput.Disable(); }
+        gameInput = new GameControlls();
+        gameInput.Enable();
+        OnInputSetup?.Invoke();
     }
 
     #endregion
 
     private void Awake()
     {
-        // Singleton Setup
-        ManageSingleton();
-
-        // Input Setup
-        gameInput = new GameControlls();
-        ManageInput(true);
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+        //SetupSingleton();
+        SetupInput();
     }
 
     private void OnDestroy()
     {
         if (Instance == this && gameInput != null)
         {
-            ManageInput(false);
+            gameInput.Disable();
         }
     }
 

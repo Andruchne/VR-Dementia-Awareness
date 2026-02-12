@@ -9,16 +9,20 @@ public class LocalizationManager : MonoBehaviour
 
     private void Start()
     {
-        if (GameManager.Instance != null && GameManager.Instance.gameInput != null)
-        {
-            GameManager.Instance.gameInput.Debug.SwitchLanguage.performed += OnSwitchLanguage;
-        }
+        if (GameManager.Instance != null) { GameManager.Instance.OnInputSetup += SubscribeInput; Debug.Log("huhu"); }
+        Debug.Log("Through");
+    }
+
+    private void SubscribeInput()
+    {
+        GameManager.Instance.gameInput.Debug.SwitchLanguage.performed += OnSwitchLanguage;
     }
 
     private void OnDestroy()
     {
-        if (GameManager.Instance != null && GameManager.Instance.gameInput != null)
+        if (GameManager.Instance != null)
         {
+            GameManager.Instance.OnInputSetup -= SubscribeInput;
             GameManager.Instance.gameInput.Debug.SwitchLanguage.performed -= OnSwitchLanguage;
         }
     }
