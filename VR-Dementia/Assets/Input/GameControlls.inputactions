@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "GameControlls",
+    "maps": [
+        {
+            "name": "Debug",
+            "id": "276c690a-7bc6-46b6-907a-844ac15cb685",
+            "actions": [
+                {
+                    "name": "SwitchLanguage",
+                    "type": "Button",
+                    "id": "321d114c-db76-4a99-9b89-529c8f0e27eb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3d4475b6-1966-4ac9-bad2-729906afc34d",
+                    "path": "<Keyboard>/#(L)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchLanguage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
