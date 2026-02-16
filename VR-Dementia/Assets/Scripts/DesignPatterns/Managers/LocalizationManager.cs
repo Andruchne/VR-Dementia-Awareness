@@ -5,12 +5,11 @@ using UnityEngine.Localization.Settings;
 
 public class LocalizationManager : MonoBehaviour
 {
-    private bool active;
+    private bool isUpdating;
 
-    private void Start()
+    private void Awake()
     {
-        if (GameManager.Instance != null) { GameManager.Instance.OnInputSetup += SubscribeInput; Debug.Log("huhu"); }
-        Debug.Log("Through");
+        if (GameManager.Instance != null) { GameManager.Instance.OnInputSetup += SubscribeInput;}
     }
 
     private void SubscribeInput()
@@ -29,7 +28,7 @@ public class LocalizationManager : MonoBehaviour
 
     public void ChangeLanguage(int localeID)
     {
-        if (active) return;
+        if (isUpdating) return;
         StartCoroutine(SetLocale(localeID));
     }
 
@@ -41,11 +40,11 @@ public class LocalizationManager : MonoBehaviour
 
     IEnumerator SetLocale(int localeID)
     {
-        active = true;
+        isUpdating = true;
 
         yield return LocalizationSettings.InitializationOperation;
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[localeID];
 
-        active = false;
+        isUpdating = false;
     }
 }
