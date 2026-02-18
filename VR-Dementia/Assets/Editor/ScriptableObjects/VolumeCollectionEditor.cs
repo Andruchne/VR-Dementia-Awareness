@@ -18,40 +18,59 @@ public class VolumeCollectionEditor : Editor
     private void OnEnable()
     {
         targetScript = (VolumeCollection)target;
+        ValidateList();
     }
 
     public override void OnInspectorGUI()
     {
+        ValidateList();
+
         serializedObject.Update();
 
-        // Title
+        // Textstyle
+        GUIStyle titleStyle = new GUIStyle(EditorStyles.boldLabel)
+        {
+            alignment = TextAnchor.MiddleCenter,
+            fontSize = 12
+        };
+
         GUILayout.Space(10);
-        GUIStyle headerStyle = new GUIStyle(EditorStyles.boldLabel) { alignment = TextAnchor.MiddleCenter };
-        EditorGUILayout.LabelField("Mood Volume Configuration", headerStyle);
+        EditorGUILayout.LabelField("Mood Volume References", new GUIStyle(EditorStyles.largeLabel) { alignment = TextAnchor.MiddleCenter });
         GUILayout.Space(10);
 
-        // Get all moods of enum
-        List<Mood> allMoods = Enum.GetValues(typeof(Mood)).Cast<Mood>().ToList();
-        // Get all moods currently used in entries
-        List<Mood> usedMoods = targetScript.entries.Select(x => x.mood).ToList();
-
-        // Draw Entries
         for (int i = 0; i < targetScript.entries.Count; i++)
         {
-            DrawRow(i, allMoods, usedMoods);
-        }
+            VolumeEntry entry = targetScript.entries[i];
 
-        GUILayout.Space(10);
+            // Draw a container box
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUILayout.Space(5);
 
-        // Warning for empty references
-        DrawWarnings();
+            // Mood Title
+            EditorGUILayout.LabelField(entry.mood.ToString(), titleStyle);
 
-        GUILayout.Space(5);
+            GUILayout.Space(2);
 
-        // Add Button
-        if (targetScript.entries.Count < allMoods.Count)
-        {
-            DrawAddButton(allMoods, usedMoods);
+            // GameObject field, taking up full width
+            Rect objRect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+
+            GameObject newVol = (GameObject)EditorGUI.ObjectField(objRect, entry.volume, typeof(GameObject), false);
+
+            if (newVol != entry.volume)
+            {
+                Undo.RecordObject(targetScript, "Assign Volume Prefab");
+                entry.volume = newVol;
+            }
+
+            // Draw error if missing
+            if (entry.volume == null)
+            {
+                EditorGUILayout.HelpBox("Missing Volume GameObject.", MessageType.Warning);
+            }
+
+            GUILayout.Space(5);
+            EditorGUILayout.EndVertical();
+            GUILayout.Space(5);
         }
 
         if (GUI.changed)
@@ -61,99 +80,51 @@ public class VolumeCollectionEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 
-    private void DrawRow(int index, List<Mood> allMoods, List<Mood> usedMoods)
+    private void ValidateList()
     {
-        VolumeEntry entry = targetScript.entries[index];
+        List<Mood> currentEnumValues = Enum.GetValues(typeof(Mood)).Cast<Mood>().ToList();
 
-        Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+        if (targetScript.entries == null)
+            targetScript.entries = new List<VolumeEntry>();
 
-        float moodWidth = rect.width * 0.4f;
-        float objWidth = rect.width * 0.4f;
-        float btnWidth = rect.width * 0.2f;
+        bool changed = false;
+        List<VolumeEntry> newSortedList = new List<VolumeEntry>();
 
-        Rect moodRect = new Rect(rect.x, rect.y, moodWidth - 5, rect.height);
-        Rect objRect = new Rect(rect.x + moodWidth, rect.y, objWidth - 5, rect.height);
-        Rect btnRect = new Rect(rect.x + moodWidth + objWidth, rect.y, btnWidth, rect.height);
-
-        // Adaptive enum selection
-        // If the mood is not used in any entry or it's being used for the one selected, add them to the available mood list
-        List<Mood> availableForThisRow = allMoods.Where(m => !usedMoods.Contains(m) || m == entry.mood).ToList();
-        // UI only takes arrays, so convert the list previously made 
-        string[] options = availableForThisRow.Select(x => x.ToString()).ToArray();
-        // Get the index of the current selected mood (keep it sorted)
-        int currentIndex = availableForThisRow.IndexOf(entry.mood);
-
-        // New mood selected
-        int newIndex = EditorGUI.Popup(moodRect, currentIndex, options);
-
-        // Apply changes
-        if (newIndex >= 0 && newIndex < availableForThisRow.Count)
+        foreach (Mood mood in currentEnumValues)
         {
-            Mood selectedMood = availableForThisRow[newIndex];
-            if (selectedMood != entry.mood)
+            // Check whether data exists for this mood
+            VolumeEntry existingEntry = targetScript.entries.Find(x => x.mood == mood);
+
+            // Apply old value if available
+            if (existingEntry != null) { newSortedList.Add(existingEntry); }
+            // Apply new value if not
+            else
             {
-                Undo.RecordObject(targetScript, "Change Mood");
-                entry.mood = selectedMood;
+                newSortedList.Add(new VolumeEntry { mood = mood, volume = null });
+                changed = true;
             }
         }
 
-        // Volume Field
-        GameObject newVol = (GameObject)EditorGUI.ObjectField(objRect, entry.volume, typeof(GameObject), false);
-        if (newVol != entry.volume)
+        // Check whether new moods were added to the enum
+        if (targetScript.entries.Count != newSortedList.Count)
         {
-            Undo.RecordObject(targetScript, "Change Volume");
-            entry.volume = newVol;
+            changed = true;
         }
 
-        // Remove Button
-        if (GUI.Button(btnRect, "Remove"))
+        // Replace list with newly sorted one if new enums were added
+        if (changed || IsListOrderDifferent(targetScript.entries, newSortedList))
         {
-            Undo.RecordObject(targetScript, "Remove Entry");
-            targetScript.entries.RemoveAt(index);
-            GUIUtility.ExitGUI();
+            targetScript.entries = newSortedList;
+            EditorUtility.SetDirty(targetScript);
         }
     }
 
-    private void DrawWarnings()
+    private bool IsListOrderDifferent(List<VolumeEntry> oldList, List<VolumeEntry> newList)
     {
-        bool hasMissingAssignments = false;
-
-        for (int i = 0; i < targetScript.entries.Count; i++)
+        for (int i = 0; i < oldList.Count; i++)
         {
-            if (targetScript.entries[i].volume == null)
-            {
-                string moodName = targetScript.entries[i].mood.ToString();
-                EditorGUILayout.HelpBox($"Missing Volume for mood: {moodName}", MessageType.Error);
-                hasMissingAssignments = true;
-            }
+            if (oldList[i].mood != newList[i].mood) return true;
         }
-
-        if (hasMissingAssignments)
-        {
-            GUILayout.Space(5);
-        }
-    }
-
-    private void DrawAddButton(List<Mood> allMoods, List<Mood> usedMoods)
-    {
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-
-        if (GUILayout.Button("Add New Volume", GUILayout.Width(Screen.width * 0.5f)))
-        {
-            Mood nextAvailable = allMoods.FirstOrDefault(m => !usedMoods.Contains(m));
-
-            Undo.RecordObject(targetScript, "Add Entry");
-
-            // Create new instance of the class
-            VolumeEntry newEntry = new VolumeEntry();
-            newEntry.mood = nextAvailable;
-            newEntry.volume = null;
-
-            targetScript.entries.Add(newEntry);
-        }
-
-        GUILayout.FlexibleSpace();
-        EditorGUILayout.EndHorizontal();
+        return false;
     }
 }
