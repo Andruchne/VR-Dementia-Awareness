@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1406ef43192091d4a9cc6cad23c3e4c9, type: 3}
-  m_Name: ConfigurationTest
+  m_Name: TestConfiguration
   m_EditorClassIdentifier: Assembly-CSharp::VolumeConfiguration
   configs:
   - mood: 0
@@ -20,7 +20,7 @@ MonoBehaviour:
   - mood: 2
     volumePercentage: 0
   - mood: 3
-    volumePercentage: 0
+    volumePercentage: 100
   - mood: 4
     volumePercentage: 0
   - mood: 5

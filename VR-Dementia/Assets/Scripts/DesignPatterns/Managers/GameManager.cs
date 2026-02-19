@@ -4,6 +4,21 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public VolumeConfiguration volumeconfig;
+
+    #region Variables and Instances
+
+    PostProcessingManager ppManager;
+
+    private void GetInstances()
+    {
+        ppManager = GetComponent<PostProcessingManager>();
+        if (ppManager == null) { Debug.LogWarning("GameManager: Missing PostProcessingManager - Please attach to Transform of GameManager."); }
+    }
+
+
+    #endregion
+
     #region Singleton Pattern
 
     public static GameManager Instance { get; private set; }
@@ -46,6 +61,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SetupInput();
+        GetInstances();
     }
 
     private void OnDestroy()
@@ -78,5 +94,14 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+
+    #region Actions
+
+    public void TransitionMood(VolumeConfiguration volumeConfiguration, float transitionTime)
+    {
+        if (ppManager != null) { ppManager.SwitchMood(volumeConfiguration, transitionTime); }
+    }
+
+    #endregion
 
 }
