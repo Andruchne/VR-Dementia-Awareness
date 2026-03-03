@@ -3,18 +3,18 @@ using UnityEngine;
 public class VRPhysicsHand : MonoBehaviour
 {
     [Header("Target Setup")]
+    [Tooltip("Ziehe hier die Geisterhand rein (z.B. l_handMeshNode oder b_l_wrist aus dem Camera Rig), NICHT den Anchor!")]
     public Transform targetTransform;
 
     [Header("Physics Settings")]
     [Range(0.1f, 1f)]
-    [Tooltip("1 = Hand schnappt sofort ans Ziel. 0.5 = Hand folgt weich.")]
     public float positionFollowSpeed = 0.5f;
     [Range(0.1f, 1f)]
     public float rotationFollowSpeed = 0.5f;
     public float maxDistanceBeforeTeleport = 1.0f;
 
     [Header("Ghost Hand Settings")]
-    public Renderer ghostHandRenderer;
+    public GameObject ghostHand;
     public float distanceToShowGhost = 0.1f;
 
     private Rigidbody _rb;
@@ -23,11 +23,11 @@ public class VRPhysicsHand : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
 
-        // GANZ WICHTIG: Schwerkraft aus, sonst fällt die Hand jeden Frame nach unten
+        // Schwerkraft aus
         _rb.useGravity = false;
         _rb.maxAngularVelocity = 150f;
 
-        if (ghostHandRenderer != null) ghostHandRenderer.enabled = false;
+        if (ghostHand != null) ghostHand.SetActive(false);
     }
 
     void FixedUpdate()
@@ -48,12 +48,10 @@ public class VRPhysicsHand : MonoBehaviour
         {
             transform.position = targetTransform.position;
             transform.rotation = targetTransform.rotation;
-            // Velocity resetten, damit sie nach dem Teleport nicht wild weiterfliegt
             _rb.linearVelocity = Vector3.zero;
             return;
         }
 
-        // Berechne exakte Velocity, um das Ziel zu erreichen, gedämpft durch FollowSpeed
         Vector3 targetVelocity = (positionDifference / Time.fixedDeltaTime);
         _rb.linearVelocity = targetVelocity * positionFollowSpeed;
     }
@@ -74,9 +72,8 @@ public class VRPhysicsHand : MonoBehaviour
 
     private void CheckGhostHandVisibility()
     {
-        if (ghostHandRenderer == null) return;
+        if (ghostHand == null) return;
         float distance = Vector3.Distance(transform.position, targetTransform.position);
-        print(distance);
-        ghostHandRenderer.enabled = distance > distanceToShowGhost;
+        ghostHand.SetActive(distance > distanceToShowGhost);
     }
 }
