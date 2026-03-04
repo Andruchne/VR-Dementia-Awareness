@@ -52,6 +52,7 @@ public class PhysicsHandColliderCreator : MonoBehaviour
     {
         // 1. Neues GameObject für den Collider erstellen
         GameObject capsuleObj = new GameObject($"{boneName}_PhysicsCapsule");
+        capsuleObj.layer = LayerMask.NameToLayer("Physics Hands");
 
         // 2. WICHTIG: Wir ordnen es dem animierten Knochen unter!
         capsuleObj.transform.SetParent(parentTransform, false);
