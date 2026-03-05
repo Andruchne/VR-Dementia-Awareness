@@ -5,20 +5,20 @@ using Oculus.Interaction.Input;
 public class PhysicsHandColliderCreator : MonoBehaviour
 {
     [Header("References")]
-    [Tooltip("Das HandVisual-Skript des sichtbaren Hand-Modells (Child der LHand/RHand).")]
+    [Tooltip("The HandVisual gameObject, attached as child to the PhysicsHand")]
     public HandVisual handVisual;
 
     [Header("Collider Settings")]
-    [Tooltip("Dicke der Finger")]
+    [Tooltip("Radius of Fingertip")]
     public float fingerRadius = 0.012f;
-    [Tooltip("Optionales Physik-Material (z.B. Zero-Friction, damit die Hand nicht an Wänden kleben bleibt)")]
-    public PhysicsMaterial physicMaterial;
+    [Tooltip("(Optional) PhysicsMaterial for Hands")]
+    public PhysicsMaterial physicsMaterial;
 
     private bool _collidersGenerated = false;
 
     void Update()
     {
-        // Wir warten in der Update-Schleife, bis Meta das HandVisual und die Knochen geladen hat
+        // Wait until the HandVisual bones have been loaded
         if (!_collidersGenerated && handVisual != null && handVisual.Joints.Count > 0 && handVisual.Joints[0] != null)
         {
             GenerateFingerColliders();
@@ -28,51 +28,49 @@ public class PhysicsHandColliderCreator : MonoBehaviour
 
     private void GenerateFingerColliders()
     {
-        // Wir gehen alle Meta-Handgelenke durch
+        // Iterate through all hand bones
         for (int i = (int)HandJointId.HandThumb1; i < (int)HandJointId.HandEnd; ++i)
         {
             HandJointId currentJoint = (HandJointId)i;
             HandJointId parentJoint = HandJointUtils.JointParentList[i];
 
-            // Wenn es kein gültiges Elterngelenk gibt, überspringen
-            if (parentJoint == HandJointId.Invalid) continue;
+            // Skip to next iteration if joint invalid
+            if (parentJoint == HandJointId.Invalid) { continue; }
 
+            // To order the colliders appropriately
             Transform currentTransform = handVisual.GetTransformByHandJointId(currentJoint);
             Transform parentTransform = handVisual.GetTransformByHandJointId(parentJoint);
 
-            if (currentTransform == null || parentTransform == null) continue;
+            if (currentTransform == null || parentTransform == null) { continue; }
 
+            // Instantiate all bone colliders as children
             CreateCapsuleForBone(parentJoint.ToString(), parentTransform, currentTransform.position);
         }
-
-        Debug.Log($"[VRHandColliderBuilder] Finger-Collider für {gameObject.name} erfolgreich generiert!");
     }
 
     private void CreateCapsuleForBone(string boneName, Transform parentTransform, Vector3 targetPosition)
     {
-        // 1. Neues GameObject für den Collider erstellen
+        // Create GameObject and set collision layer appropriately
         GameObject capsuleObj = new GameObject($"{boneName}_PhysicsCapsule");
         capsuleObj.layer = LayerMask.NameToLayer("Physics Hands");
 
-        // 2. WICHTIG: Wir ordnen es dem animierten Knochen unter!
+        // Set parent to be the animated bone
         capsuleObj.transform.SetParent(parentTransform, false);
 
         CapsuleCollider capsule = capsuleObj.AddComponent<CapsuleCollider>();
-        if (physicMaterial != null) capsule.sharedMaterial = physicMaterial;
+        if (physicsMaterial != null) capsule.sharedMaterial = physicsMaterial;
 
-        // 3. Vektor-Mathematik für Länge und Ausrichtung
         Vector3 direction = targetPosition - parentTransform.position;
         float distance = direction.magnitude;
 
-        // Kapsel exakt zwischen Parent-Knochen und aktuellem Knochen platzieren
+        // Position collider between the parent and the new bone
         capsuleObj.transform.position = parentTransform.position + (direction * 0.5f);
         capsuleObj.transform.rotation = Quaternion.LookRotation(direction);
 
-        // 4. Maße anpassen
-        capsule.direction = 2; // 2 entspricht der Z-Achse (Vorwärts-Richtung nach LookRotation)
+        // Adjust dimensions (direction = 2 -> Make the capsule be horizontally aligned, instead of vertically)
+        capsule.direction = 2;
         capsule.radius = fingerRadius;
-
-        // Die Kapselhöhe ist die Distanz plus die Rundungen (Radius * 2) an den Enden
-        capsule.height = distance + (capsule.radius * 2f);
+        // Set capsule height to fit the bone distance
+        capsule.height = distance + (capsule.radius * 2);
     }
 }

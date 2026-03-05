@@ -1,21 +1,18 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class VRPhysicsHand : MonoBehaviour
 {
-    [Header("Target Setup")]
-    [Tooltip("Ziehe hier die Geisterhand rein (z.B. l_handMeshNode oder b_l_wrist aus dem Camera Rig), NICHT den Anchor!")]
+    [Header("Real Hand")]
+    [Tooltip("The actual hand that is moved from within the VR Camera Rig")]
     public Transform targetTransform;
-
-    [Header("Physics Settings")]
-    [Range(0.1f, 1f)]
-    public float positionFollowSpeed = 0.5f;
-    [Range(0.1f, 1f)]
-    public float rotationFollowSpeed = 0.5f;
-    public float maxDistanceBeforeTeleport = 1.0f;
 
     [Header("Ghost Hand Settings")]
     public GameObject ghostHand;
     public float distanceToShowGhost = 0.1f;
+
+    [Header("Physics Settings")]
+    public float maxDistanceBeforeTeleport = 1;
 
     private Rigidbody _rb;
 
@@ -23,16 +20,20 @@ public class VRPhysicsHand : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
 
-        // Schwerkraft aus
         _rb.useGravity = false;
-        _rb.maxAngularVelocity = 150f;
+        _rb.maxAngularVelocity = 150;
+        _rb.maxDepenetrationVelocity = 3;
+        _rb.solverIterations = 25;
+        _rb.solverVelocityIterations = 15;
 
-        if (ghostHand != null) ghostHand.SetActive(false);
+        if (ghostHand != null) { ghostHand.SetActive(false); }
+
+        TeleportHand();
     }
 
     void FixedUpdate()
     {
-        if (targetTransform == null) return;
+        if (targetTransform == null) { return; }
 
         PhysicsMoveToTarget();
         PhysicsRotateToTarget();
@@ -43,17 +44,14 @@ public class VRPhysicsHand : MonoBehaviour
     {
         Vector3 positionDifference = targetTransform.position - transform.position;
 
-        // Teleport, falls die Hand komplett feststeckt
         if (positionDifference.magnitude > maxDistanceBeforeTeleport)
         {
-            transform.position = targetTransform.position;
-            transform.rotation = targetTransform.rotation;
-            _rb.linearVelocity = Vector3.zero;
+            TeleportHand();
             return;
         }
 
-        Vector3 targetVelocity = (positionDifference / Time.fixedDeltaTime);
-        _rb.linearVelocity = targetVelocity * positionFollowSpeed;
+        Vector3 targetVelocity = positionDifference / Time.fixedDeltaTime;
+        _rb.linearVelocity = Vector3.ClampMagnitude(targetVelocity, 15);
     }
 
     private void PhysicsRotateToTarget()
@@ -61,19 +59,27 @@ public class VRPhysicsHand : MonoBehaviour
         Quaternion rotationDifference = targetTransform.rotation * Quaternion.Inverse(transform.rotation);
         rotationDifference.ToAngleAxis(out float angleInDegrees, out Vector3 rotationAxis);
 
-        if (angleInDegrees > 180f) angleInDegrees -= 360f;
+        if (angleInDegrees > 180) { angleInDegrees -= 360; }
 
         if (Mathf.Abs(angleInDegrees) > 0.1f && !float.IsInfinity(rotationAxis.x))
         {
-            Vector3 targetAngularVelocity = (angleInDegrees * rotationAxis * Mathf.Deg2Rad) / Time.fixedDeltaTime;
-            _rb.angularVelocity = targetAngularVelocity * rotationFollowSpeed;
+            Vector3 targetAngularVelocity = angleInDegrees * rotationAxis * Mathf.Deg2Rad / Time.fixedDeltaTime;
+            // NEU: Auch die Rotation muss begrenzt werden
+            _rb.angularVelocity = Vector3.ClampMagnitude(targetAngularVelocity, 30f);
         }
     }
 
     private void CheckGhostHandVisibility()
     {
-        if (ghostHand == null) return;
+        if (ghostHand == null) { return; }
         float distance = Vector3.Distance(transform.position, targetTransform.position);
         ghostHand.SetActive(distance > distanceToShowGhost);
+    }
+
+    private void TeleportHand()
+    {
+        transform.position = targetTransform.position;
+        transform.rotation = targetTransform.rotation;
+        _rb.linearVelocity = Vector3.zero;
     }
 }

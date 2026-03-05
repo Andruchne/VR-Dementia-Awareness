@@ -1,67 +1,43 @@
 using UnityEngine;
 
-public class GrabLayerController : MonoBehaviour
+public class GrabCollisionHandler : MonoBehaviour
 {
     [Header("Setup")]
-    [Tooltip("Das sichtbare Objekt mit den Collidern, dessen Layer geändert werden soll.")]
     public GameObject targetPhysicsObject;
+    public string ignoreHandLayerName = "Ignore Physics Hands";
 
-    [Tooltip("Der Name des Layers, den die Hand ignoriert.")]
-    public string noHandLayerName = "NoHandInteraction";
+    public bool IsGrabbed { get; private set; } = false;
 
-    private int _noHandLayer;
+    private int _ignoreHandLayer;
     private int _originalLayer;
-    private int _grabCount = 0;
+
 
     void Awake()
     {
-        // Sucht die interne Layer-ID anhand deines Namens
-        _noHandLayer = LayerMask.NameToLayer(noHandLayerName);
-
+        _ignoreHandLayer = LayerMask.NameToLayer(ignoreHandLayerName);
         if (targetPhysicsObject != null)
         {
-            // Speichert den ursprünglichen Layer (meistens "Default" oder "Interactable")
             _originalLayer = targetPhysicsObject.layer;
-        }
-        else
-        {
-            Debug.LogWarning("[GrabLayerController] Bitte weise das targetPhysicsObject zu!");
         }
     }
 
-    // Wird vom Interactable-Event aufgerufen, wenn EINE Hand greift
+    // Called with "When Select" Event on the grab object
     public void HandleGrab()
     {
         if (targetPhysicsObject == null) return;
-
-        _grabCount++;
-
-        // Nur wenn die ERSTE Hand greift, wechseln wir den Layer
-        if (_grabCount == 1)
-        {
-            SetLayerRecursively(targetPhysicsObject, _noHandLayer);
-            Debug.Log($"[GrabLayerController] Layer zu {noHandLayerName} gewechselt.");
-        }
+        IsGrabbed = true;
+        SetLayerRecursively(targetPhysicsObject, _ignoreHandLayer);
     }
 
-    // Wird vom Interactable-Event aufgerufen, wenn EINE Hand loslässt
+    // Called with "When Unselect" Event on the grab object
     public void HandleRelease()
     {
         if (targetPhysicsObject == null) return;
-
-        _grabCount--;
-
-        // Sicherheits-Check, falls Events doppelt feuern
-        if (_grabCount <= 0)
-        {
-            _grabCount = 0;
-            // Nur wenn KEINE Hand mehr greift, stellen wir den Layer wieder her
-            SetLayerRecursively(targetPhysicsObject, _originalLayer);
-            Debug.Log($"[GrabLayerController] Layer zu Ursprung wiederhergestellt.");
-        }
+        IsGrabbed = false;
+        SetLayerRecursively(targetPhysicsObject, _originalLayer);
     }
 
-    // Hilfsfunktion: Ändert den Layer des Objekts und ALLER Child-Objekte
+    // Make all children of gameObject have the same layer
     private void SetLayerRecursively(GameObject obj, int newLayer)
     {
         obj.layer = newLayer;
