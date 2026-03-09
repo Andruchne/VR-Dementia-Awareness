@@ -9,11 +9,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Physics Hands
   - Ignore Physics Hands
+  - Grabbable
   - 
   - 
   - 
@@ -35,8 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - XR Simulation
   - 
   m_SortingLayers:
   - name: Default

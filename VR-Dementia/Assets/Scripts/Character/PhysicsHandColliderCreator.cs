@@ -2,17 +2,20 @@ using UnityEngine;
 using Oculus.Interaction;
 using Oculus.Interaction.Input;
 
+/// <summary>
+/// Creates the hand colliders (capsules) for the physics hands.
+/// This code is basically the same, as in the provided Meta Physics Hands script.
+/// Different to the script that it's based of, it doesn't create rigidbodies for each capsule, only instantiating the colliders.
+/// </summary>
 public class PhysicsHandColliderCreator : MonoBehaviour
 {
-    [Header("References")]
+    [Header("Setup")]
     [Tooltip("The HandVisual gameObject, attached as child to the PhysicsHand")]
-    public HandVisual handVisual;
+    [SerializeField] private HandVisual handVisual;
 
     [Header("Collider Settings")]
-    [Tooltip("Radius of Fingertip")]
-    public float fingerRadius = 0.012f;
-    [Tooltip("(Optional) PhysicsMaterial for Hands")]
-    public PhysicsMaterial physicsMaterial;
+    [SerializeField] private float fingerRadius = 0.012f;
+    [SerializeField] private PhysicsMaterial physicsMaterial;
 
     private bool _collidersGenerated = false;
 

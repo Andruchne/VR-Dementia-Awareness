@@ -1,16 +1,20 @@
 using UnityEngine;
 
+/// <summary>
+/// Responsible for handling layers of physics grabbable VR objects, and updating IsGrabbed state.
+/// It utilizes to the inbuilt Meta events, to switch between the different states.
+/// </summary>
 public class GrabCollisionHandler : MonoBehaviour
 {
     [Header("Setup")]
     public GameObject targetPhysicsObject;
     public string ignoreHandLayerName = "Ignore Physics Hands";
 
+    // Checked by PhysicsProxyFollower script to know when it's being grabbed
     public bool IsGrabbed { get; private set; } = false;
 
     private int _ignoreHandLayer;
     private int _originalLayer;
-
 
     void Awake()
     {
