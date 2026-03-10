@@ -1,21 +1,30 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using UnityEditor.Localization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+
     public VolumeConfiguration volumeconfig;
 
     #region Variables and Instances
 
-    PostProcessingManager ppManager;
+    private PostProcessingManager _ppManager;
+    DialogueManager _dialogueManager;
 
     private void GetInstances()
     {
-        ppManager = GetComponent<PostProcessingManager>();
-        if (ppManager == null) { Debug.LogWarning("GameManager: Missing PostProcessingManager - Please attach to Transform of GameManager."); }
-    }
+        _ppManager = GetComponent<PostProcessingManager>();
+        if (_ppManager == null) { Debug.LogWarning("GameManager: Missing PostProcessingManager - Please attach the script to Transform of GameManager."); }
+        _dialogueManager = GetComponent<DialogueManager>();
+        if (_dialogueManager == null) { Debug.LogWarning("GameManager: Missing StoryManager - Please attach the script to Transform of GameManager."); }
 
+        _queuePlayTimer = Instantiate(new Timer());
+        _queuePlayTimer.Initialize(queueTimer);
+    }
 
     #endregion
 
@@ -95,11 +104,67 @@ public class GameManager : MonoBehaviour
     #endregion
 
 
+    #region Mood & Dialogue Queue
+
+    private int _currentQueueIndex = 0;
+    private Timer _queuePlayTimer;
+    private List<StoryAction> _queuedAction = new List<StoryAction>();
+
+    [SerializeField]
+    [Description("Timer for queued up moods and dialogue. The given amount will be waited, before playing both.")]
+    private float queueTimer = 2;
+
+    private void SetupQueueSystem()
+    {
+        _dialogueManager.OnDialogueFinished += ProgressQueue;
+    }
+
+    private void QueueAction(StoryAction action)
+    {
+        if (_dialogueManager.IsPlaying)
+        {
+            _queuedAction.Add(action);
+        }
+        else
+        {
+            ExecAction(action);
+        }
+    }
+
+    private void ProgressQueue()
+    {
+        if (_queuedAction.Count <= 0) { return; }
+
+        // Start Timer here...
+
+        _currentQueueIndex++;
+
+        if (_currentQueueIndex >= _queuedAction.Count)
+        {
+            _currentQueueIndex = 0;
+            _queuedAction.Clear();
+        }
+    }
+
+    private void ExecAction(StoryAction action)
+    {
+        TransitionMood(action.moodConfig, action.moodTransitionTime);
+        StartDialogue(action.dialogue);
+    }
+
+    #endregion
+
+
     #region Actions
 
     public void TransitionMood(VolumeConfiguration volumeConfiguration, float transitionTime)
     {
-        if (ppManager != null) { ppManager.SwitchMood(volumeConfiguration, transitionTime); }
+        if (_ppManager != null) { _ppManager.SwitchMood(volumeConfiguration, transitionTime); }
+    }
+
+    public void StartDialogue(LocalizationTableCollection dialogue)
+    {
+        if (_dialogueManager != null) { }
     }
 
     #endregion
