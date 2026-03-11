@@ -69,8 +69,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SetupInput();
         GetInstances();
+
+        SetupQueueSystem();
+        SetupInput();
     }
 
     private void OnDestroy()
@@ -109,6 +111,7 @@ public class GameManager : MonoBehaviour
     private int _currentQueueIndex = 0;
     private Timer _queuePlayTimer;
     private List<StoryAction> _queuedAction = new List<StoryAction>();
+    private StoryAction _currentAction;
 
     [SerializeField]
     [Description("Timer for queued up moods and dialogue. The given amount will be waited, before playing both.")]
@@ -117,6 +120,7 @@ public class GameManager : MonoBehaviour
     private void SetupQueueSystem()
     {
         _dialogueManager.OnDialogueFinished += ProgressQueue;
+        _queuePlayTimer.OnTimerFinished += ExecAction;
     }
 
     private void QueueAction(StoryAction action)
@@ -127,7 +131,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            ExecAction(action);
+            _currentAction = action;
+            ExecAction();
         }
     }
 
@@ -135,7 +140,8 @@ public class GameManager : MonoBehaviour
     {
         if (_queuedAction.Count <= 0) { return; }
 
-        // Start Timer here...
+        _queuePlayTimer.StartTimer();
+        _currentAction = _queuedAction[_currentQueueIndex];
 
         _currentQueueIndex++;
 
@@ -146,10 +152,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ExecAction(StoryAction action)
+    private void ExecAction()
     {
-        TransitionMood(action.moodConfig, action.moodTransitionTime);
-        StartDialogue(action.dialogue);
+        TransitionMood(_currentAction.moodConfig, _currentAction.moodTransitionTime);
+        StartDialogue(_currentAction.dialogue);
     }
 
     #endregion
