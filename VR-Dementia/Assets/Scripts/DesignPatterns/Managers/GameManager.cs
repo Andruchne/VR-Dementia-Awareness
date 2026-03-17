@@ -21,9 +21,6 @@ public class GameManager : MonoBehaviour
         if (_ppManager == null) { Debug.LogWarning("GameManager: Missing PostProcessingManager - Please attach the script to Transform of GameManager."); }
         _dialogueManager = GetComponent<DialogueManager>();
         if (_dialogueManager == null) { Debug.LogWarning("GameManager: Missing StoryManager - Please attach the script to Transform of GameManager."); }
-
-        _queuePlayTimer = Instantiate(new Timer());
-        _queuePlayTimer.Initialize(queueTimer);
     }
 
     #endregion
@@ -119,6 +116,9 @@ public class GameManager : MonoBehaviour
 
     private void SetupQueueSystem()
     {
+        _queuePlayTimer = gameObject.AddComponent<Timer>();
+        _queuePlayTimer.Setup(queueTimer);
+
         _dialogueManager.OnDialogueFinished += ProgressQueue;
         _queuePlayTimer.OnTimerFinished += ExecAction;
     }

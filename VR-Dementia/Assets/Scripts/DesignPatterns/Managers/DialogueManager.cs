@@ -21,7 +21,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Start()
     {
-        _dialogueEntryCount = _currentDialogue.SharedData.Entries.Count;
+        //_dialogueEntryCount = _currentDialogue.SharedData.Entries.Count;
     }
 
     public void TriggerDialogue(LocalizationTableCollection dialogue)

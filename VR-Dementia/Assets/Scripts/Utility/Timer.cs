@@ -16,9 +16,11 @@ public class Timer : MonoBehaviour
     private bool _active;
     private bool _loop;
 
+    private GameObject _instance;
+
     // As MonoBehaviour is in use, using the class constructor is not an option
     // To use this timer, instantiate a timer object and call Initialize() for setup
-    public void Initialize(float waitTime, bool loop = false, bool startTimer = false)
+    public void Setup(float waitTime, bool loop = false, bool startTimer = false)
     {
         _waitTime = waitTime;
         _loop = loop;

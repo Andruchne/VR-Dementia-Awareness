@@ -151,6 +151,7 @@
   <Project Path="Unity.ShaderGraph.Utilities.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.Hands.csproj" />
   <Project Path="Meta.XR.BuildingBlocks.DepthAPI.csproj" />
+  <Project Path="OpenAI.Runtime.csproj" />
   <Project Path="Meta.WitAi.TTS.Editor.csproj" />
   <Project Path="Unity.Profiling.Core.csproj" />
   <Project Path="Oculus.Platform.Editor.csproj" />
@@ -201,6 +202,7 @@
   <Project Path="AssistantVoiceCommandCommon.Editor.csproj" />
   <Project Path="Unity.Rendering.LightTransport.Editor.csproj" />
   <Project Path="Unity.Collections.Editor.csproj" />
+  <Project Path="OpenAI.Editor.csproj" />
   <Project Path="VoiceSDK.Runtime.Composer.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Config.Runtime.csproj" />
   <Project Path="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.csproj" />

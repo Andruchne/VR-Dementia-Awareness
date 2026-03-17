@@ -1,5 +1,6 @@
 using UnityEngine;
 using Oculus.Interaction.Locomotion;
+using System.Collections;
 
 
 /// <summary>
@@ -51,7 +52,7 @@ public class VRPhysicsHand : MonoBehaviour
 
         if (ghostHand != null) { ghostHand.SetActive(false); }
 
-        TeleportHand();
+        DelayedTeleport();
     }
 
     void FixedUpdate()
@@ -183,5 +184,11 @@ public class VRPhysicsHand : MonoBehaviour
         transform.rotation = targetTransform.rotation;
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
+    }
+
+    private IEnumerator DelayedTeleport()
+    {
+        yield return 1.0f;
+        TeleportHand();
     }
 }

@@ -87,6 +87,15 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.srcnalt.openai-unity": {
+      "version": "https://github.com/srcnalt/OpenAI-Unity.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+      },
+      "hash": "054467e2a2daccf7f23ff8f7165f1d832815dc70"
+    },
     "com.unity.addressables": {
       "version": "2.8.0",
       "depth": 1,
