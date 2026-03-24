@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{200a7e94-755d-4bc8-9dcf-e8f365292a72}">
+		<property name="name">
+			<value>M_Nostalgic</value>
+		</property>
+		<relationship name="folder">
+			<destination>{3dd6e867-1a93-443e-842d-a15b94a3997f}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{a403ca75-6d1f-49f7-ad98-18ef5f64f1e0}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{a403ca75-6d1f-49f7-ad98-18ef5f64f1e0}">
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+	</object>
+</objects>
