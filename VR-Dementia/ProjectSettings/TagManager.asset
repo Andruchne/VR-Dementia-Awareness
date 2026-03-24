@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 3
   tags:
   - Anchor
+  - Blend_Zone
+  - M_Happy
+  - M_Sad
+  - M_Nostalgic
+  - M_Furious
+  - M_Anxiety
   layers:
   - Default
   - TransparentFX
@@ -36,7 +42,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - XR Simulation
   - 
   m_SortingLayers:
   - name: Default
