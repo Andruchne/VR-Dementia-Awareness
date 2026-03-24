@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Oculus.Interaction;
 
 [RequireComponent(typeof(Rigidbody))]
-public class FPSCharacter : MonoBehaviour
+public class FPSCharacter : MonoBehaviour, IActiveState
 {
+    public bool Active => Keyboard.current != null && Keyboard.current.eKey.isPressed;
+
     [Header("Movement")]
     public float moveSpeed = 5f;
     public float runMultiplier = 1.5f;
@@ -19,6 +22,10 @@ public class FPSCharacter : MonoBehaviour
     public LayerMask grabbableLayer;
     public Transform holdPosition;
     public float grabForce = 15f;
+
+    [Header("Meta UI Integration")]
+    [Tooltip("Ray Interactor) here")]
+    public RayInteractor desktopUIRay;
 
     private Rigidbody grabbedRb;
     private float originalLinearDamping;
@@ -41,7 +48,7 @@ public class FPSCharacter : MonoBehaviour
     void Update()
     {
         HandleLook();
-        HandleGrabInput();
+        HandleInteractionInput();
     }
 
     void FixedUpdate()
@@ -56,14 +63,14 @@ public class FPSCharacter : MonoBehaviour
 
         Vector2 mouseDelta = Mouse.current.delta.ReadValue();
 
+        // Rotate camera for up/down
         xRot -= mouseDelta.y * mouseSensitivity;
         xRot = Mathf.Clamp(xRot, -85f, 85f);
 
+        // Rotate character for left/right
         yRot += mouseDelta.x * mouseSensitivity;
 
-        // Rotate camera for up/down
         playerCamera.transform.localRotation = Quaternion.Euler(xRot, 0, 0);
-        // Rotate character for left/right
         transform.rotation = Quaternion.Euler(0, yRot, 0);
     }
 
@@ -85,12 +92,22 @@ public class FPSCharacter : MonoBehaviour
         rb.linearVelocity = targetVelocity;
     }
 
-    private void HandleGrabInput()
+    private void HandleInteractionInput()
     {
         if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
-            if (grabbedRb == null) { TryGrab(); }
-            else { Drop(); }
+            if (grabbedRb != null)
+            {
+                Drop();
+            }
+            else
+            {
+                bool isHoveringUI = desktopUIRay != null && desktopUIRay.State == InteractorState.Hover;
+                if (!isHoveringUI)
+                {
+                    TryGrab();
+                }
+            }
         }
     }
 
@@ -103,8 +120,6 @@ public class FPSCharacter : MonoBehaviour
             if (hit.rigidbody != null)
             {
                 grabbedRb = hit.rigidbody;
-
-                // Change grabbed object physics
                 grabbedRb.useGravity = false;
 
                 originalLinearDamping = grabbedRb.linearDamping;
@@ -118,9 +133,9 @@ public class FPSCharacter : MonoBehaviour
 
     private void Drop()
     {
+        // Reset object physics
         if (grabbedRb != null)
         {
-            // Reset object physics
             grabbedRb.useGravity = true;
             grabbedRb.linearDamping = originalLinearDamping;
             grabbedRb.angularDamping = originalAngularDamping;
@@ -130,9 +145,9 @@ public class FPSCharacter : MonoBehaviour
 
     private void HandleGrabbedObject()
     {
+        // Move object to aimed for direction
         if (grabbedRb != null)
         {
-            // Move object to aimed for direction
             Vector3 directionToPoint = holdPosition.position - grabbedRb.position;
             grabbedRb.linearVelocity = directionToPoint * grabForce;
         }

@@ -5,6 +5,25 @@ TagManager:
   serializedVersion: 3
   tags:
   - Anchor
+  - QDSUISharedThemeColor
+  - QDSUIBorderlessButton
+  - QDSUIIcon
+  - QDSUITooltip
+  - QDSUIToggleButton
+  - QDSUIToggleBorderlessButton
+  - QDSUIBackplateGradient
+  - QDSUISection
+  - QDSUITextSecondaryColor
+  - QDSUISecondaryButton
+  - QDSUIAccentColor
+  - QDSUIPrimaryButton
+  - QDSUITextInvertedColor
+  - QDSUITextSecondaryInvertedColor
+  - QDSUIToggleSwitch
+  - SamplesInfoPanel
+  - QDSUIToggleCheckboxRadio
+  - QDSUIDestructiveButton
+  - QDSUITextInputField
   layers:
   - Default
   - TransparentFX
@@ -37,7 +56,7 @@ TagManager:
   - 
   - 
   - XR Simulation
-  - 
+  - OVROverlayCanvas Rendering
   m_SortingLayers:
   - name: Default
     uniqueID: 0
