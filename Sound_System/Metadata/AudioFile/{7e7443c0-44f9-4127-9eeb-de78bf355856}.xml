@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{7e7443c0-44f9-4127-9eeb-de78bf355856}">
+		<property name="assetPath">
+			<value>Ambience_Inside/AI_Combined/A_Combined_Transition_O to I.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>18.653854166666665</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{56971e04-1d04-45c3-9bf0-b389fc3ae0d9}</destination>
+		</relationship>
+	</object>
+</objects>

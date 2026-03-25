@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{ede47f73-652f-4ae3-978f-86134fdef2b2}">
+		<property name="name">
+			<value>M_Anxious</value>
+		</property>
+		<relationship name="folder">
+			<destination>{3dd6e867-1a93-443e-842d-a15b94a3997f}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{c6baf209-ae53-426e-86bc-04847bc51e67}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{c6baf209-ae53-426e-86bc-04847bc51e67}">
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+	</object>
+</objects>

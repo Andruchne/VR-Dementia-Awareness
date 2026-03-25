@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{7587bdf2-433f-408d-8009-cbaeb8e6b3c1}">
+		<property name="assetPath">
+			<value>Music/M_Happy/Stems/M_Happy_Piano_125bpm_B Minor or G Major.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>51.625</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{56971e04-1d04-45c3-9bf0-b389fc3ae0d9}</destination>
+		</relationship>
+	</object>
+</objects>

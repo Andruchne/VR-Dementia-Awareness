@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{4d2c072e-fefa-4faf-a0a5-e5373b2b5b7a}">
+		<property name="assetPath">
+			<value>Music/M_Furious/M_Furious_Stems/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{56971e04-1d04-45c3-9bf0-b389fc3ae0d9}</destination>
+		</relationship>
+	</object>
+</objects>

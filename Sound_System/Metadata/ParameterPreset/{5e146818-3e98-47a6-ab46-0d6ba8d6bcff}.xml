@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{5e146818-3e98-47a6-ab46-0d6ba8d6bcff}">
+		<property name="name">
+			<value>BlendZone_B</value>
+		</property>
+		<relationship name="folder">
+			<destination>{3dd6e867-1a93-443e-842d-a15b94a3997f}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{81428f43-3c25-4aee-bfe7-cf7b1242b3b9}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{81428f43-3c25-4aee-bfe7-cf7b1242b3b9}">
+		<property name="maximum">
+			<value>6</value>
+		</property>
+		<property name="initialValue">
+			<value>6</value>
+		</property>
+	</object>
+</objects>

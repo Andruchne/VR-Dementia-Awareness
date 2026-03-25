@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{0ec54da0-d3d8-41d2-b061-e40e2cd6a70a}">
+		<property name="name">
+			<value>Mood_States</value>
+		</property>
+		<relationship name="folder">
+			<destination>{3dd6e867-1a93-443e-842d-a15b94a3997f}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{c803873f-fac4-4158-9d1a-a47dc56fb606}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{c803873f-fac4-4158-9d1a-a47dc56fb606}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>5</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>M_Happy</value>
+			<value>M_Sad</value>
+			<value>M_Nostalgic</value>
+			<value>M_Furious</value>
+			<value>M_Anxious</value>
+		</property>
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+	</object>
+</objects>
