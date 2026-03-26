@@ -1,4 +1,16 @@
-# Unity .gitignore
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# =========================
+# Unity
+# =========================
 
 VR-Dementia/[Ll]ibrary/
 VR-Dementia/[Tt]emp/
@@ -23,6 +35,7 @@ VR-Dementia/[Aa]ssets/Plugins/Editor/JetBrains*
 *.DotSettings.user
 .vs/
 .gradle/
+.idea/
 
 # Project files (Recursive)
 ExportedObj/
@@ -75,3 +88,13 @@ VR-Dementia/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitO
 VR-Dementia/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db.meta
 VR-Dementia/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers
 VR-Dementia/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
+
+# =========================
+# FMOD Studio
+# =========================
+
+Sound_System/.cache/
+Sound_System/.fsbcache/
+Sound_System/.user/
+Sound_System/.backup/
+*.fsprouser
