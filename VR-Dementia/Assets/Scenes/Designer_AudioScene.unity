@@ -170,7 +170,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -181,10 +181,12 @@ MonoBehaviour:
   Params:
   - Name: BlendZone_A
     Value: 0
+  - Name: Transition_State
+    Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!1 &133178804
+--- !u!1 &81185801
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -192,39 +194,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 133178805}
-  - component: {fileID: 133178808}
-  - component: {fileID: 133178807}
-  - component: {fileID: 133178806}
+  - component: {fileID: 81185806}
+  - component: {fileID: 81185805}
+  - component: {fileID: 81185804}
+  - component: {fileID: 81185803}
+  - component: {fileID: 81185802}
+  - component: {fileID: 81185807}
   m_Layer: 0
-  m_Name: Visualizer
-  m_TagString: Untagged
+  m_Name: Blend_Zone_3
+  m_TagString: Blend_Zone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &133178805
-Transform:
+--- !u!114 &81185802
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133178804}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0025421, y: 0.01, z: 0.01}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1532564941}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &133178806
-SphereCollider:
+  m_GameObject: {fileID: 81185801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e04e2572f9a940a47465f6f3c2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioGlobalParameterTrigger
+  CollisionTag: Player
+  Parameter: Transition_State
+  TriggerEvent: 3
+  Value: 1
+--- !u!65 &81185803
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133178804}
+  m_GameObject: {fileID: 81185801}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -233,19 +238,19 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &133178807
+--- !u!23 &81185804
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133178804}
+  m_GameObject: {fileID: 81185801}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -264,7 +269,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: afb73edc4ea30284b877c8cfe0b6d8eb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -288,14 +293,45 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &133178808
+--- !u!33 &81185805
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133178804}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_GameObject: {fileID: 81185801}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &81185806
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81185801}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.433, y: 1.825, z: 1.59}
+  m_LocalScale: {x: 7.7594995, y: 3, z: 1.31763}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &81185807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81185801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e04e2572f9a940a47465f6f3c2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioGlobalParameterTrigger
+  CollisionTag: Player
+  Parameter: Transition_State
+  TriggerEvent: 4
+  Value: 1
 --- !u!1 &176521838
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +368,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -342,6 +378,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -412,7 +450,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -422,6 +460,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -477,7 +517,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -487,6 +527,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -654,7 +696,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -664,6 +706,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -719,7 +763,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -729,6 +773,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -799,7 +845,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -809,6 +855,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -849,7 +897,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -859,6 +907,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -929,7 +979,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -940,41 +990,11 @@ MonoBehaviour:
   Params:
   - Name: BlendZone_A
     Value: 0
+  - Name: Transition_State
+    Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!1 &518244759
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 518244760}
-  m_Layer: 0
-  m_Name: Point_B
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &518244760
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 518244759}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.243, y: 0, z: -0.4995}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1032332721}
-  m_Father: {fileID: 1902647952}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519595513
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,7 +1046,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -1036,6 +1056,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -1237,7 +1259,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -1247,6 +1269,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -1302,7 +1326,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -1312,6 +1336,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -1528,7 +1554,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -1538,6 +1564,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -1608,7 +1636,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -1618,6 +1646,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -1878,7 +1908,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -1888,6 +1918,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -1956,118 +1988,6 @@ Transform:
   - {fileID: 1718391980}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1032332720
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1032332721}
-  - component: {fileID: 1032332724}
-  - component: {fileID: 1032332723}
-  - component: {fileID: 1032332722}
-  m_Layer: 0
-  m_Name: Visualizer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1032332721
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1032332720}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0025421, y: 0.01, z: 0.01}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 518244760}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1032332722
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1032332720}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1032332723
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1032332720}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1032332724
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1032332720}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1089814975
 GameObject:
   m_ObjectHideFlags: 0
@@ -2119,7 +2039,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -2129,6 +2049,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -2184,7 +2106,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -2194,6 +2116,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -2249,7 +2173,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -2259,6 +2183,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -2441,14 +2367,160 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1172496529}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.83, y: 1, z: 0}
+  m_LocalRotation: {x: -0, y: -0.99977314, z: -0, w: 0.021301026}
+  m_LocalPosition: {x: -11.28, y: 1, z: 11.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1843232478}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -177.559, z: 0}
+--- !u!1 &1202532600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1202532605}
+  - component: {fileID: 1202532604}
+  - component: {fileID: 1202532603}
+  - component: {fileID: 1202532602}
+  - component: {fileID: 1202532601}
+  - component: {fileID: 1202532606}
+  m_Layer: 0
+  m_Name: Blend_Zone_2
+  m_TagString: Blend_Zone
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1202532601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202532600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e04e2572f9a940a47465f6f3c2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioGlobalParameterTrigger
+  CollisionTag: Player
+  Parameter: Transition_State
+  TriggerEvent: 3
+  Value: 0.25
+--- !u!65 &1202532602
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202532600}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1202532603
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202532600}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: afb73edc4ea30284b877c8cfe0b6d8eb, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1202532604
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202532600}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1202532605
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202532600}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.433, y: 1.825, z: 5.33}
+  m_LocalScale: {x: 5.7933, y: 3, z: 1.31763}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1202532606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202532600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e04e2572f9a940a47465f6f3c2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioGlobalParameterTrigger
+  CollisionTag: Player
+  Parameter: Transition_State
+  TriggerEvent: 4
+  Value: 0.25
 --- !u!1 &1234813424
 GameObject:
   m_ObjectHideFlags: 0
@@ -2500,7 +2572,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -2510,6 +2582,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -2923,7 +2997,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -2933,6 +3007,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -2973,7 +3049,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -2983,6 +3059,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -3001,38 +3079,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1718391980}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1532564940
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1532564941}
-  m_Layer: 0
-  m_Name: Point_A
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1532564941
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1532564940}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.243, y: 0, z: 0.409}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 133178805}
-  m_Father: {fileID: 1902647952}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1550469856
 GameObject:
@@ -3085,7 +3131,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -3095,6 +3141,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -3181,7 +3229,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -3191,6 +3239,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -3290,7 +3340,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -3300,6 +3350,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -3355,7 +3407,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -3365,6 +3417,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -3435,7 +3489,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -3445,6 +3499,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -3461,8 +3517,6 @@ GameObject:
   - component: {fileID: 1843232481}
   - component: {fileID: 1843232479}
   - component: {fileID: 1843232482}
-  - component: {fileID: 1843232483}
-  - component: {fileID: 1843232484}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -3594,72 +3648,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioListener
   nonRigidbodyVelocity: 0
   attenuationObject: {fileID: 0}
---- !u!114 &1843232483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843232477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 21935229
-      Data2: 1187936257
-      Data3: -1959909495
-      Data4: 1236489381
-    Path: event:/Ambience_Outside/Wind/AO_Static_Wind
-  Event: 
-  EventPlayTrigger: 1
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params:
-  - Name: BlendZone_A
-    Value: 0
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
---- !u!114 &1843232484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843232477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 169157368
-      Data2: 1100703381
-      Data3: 652665231
-      Data4: 280495506
-    Path: event:/Ambience_Inside/AO_Static_Inside
-  Event: 
-  EventPlayTrigger: 1
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params:
-  - Name: BlendZone_B
-    Value: 6
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &1865788602
 GameObject:
   m_ObjectHideFlags: 0
@@ -3711,7 +3699,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -3722,169 +3710,11 @@ MonoBehaviour:
   Params:
   - Name: BlendZone_A
     Value: 0
+  - Name: Transition_State
+    Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!1 &1902647948
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1902647952}
-  - component: {fileID: 1902647951}
-  - component: {fileID: 1902647950}
-  - component: {fileID: 1902647949}
-  - component: {fileID: 1902647953}
-  m_Layer: 0
-  m_Name: Blend_Zone
-  m_TagString: Blend_Zone
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!65 &1902647949
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902647948}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1902647950
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902647948}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: afb73edc4ea30284b877c8cfe0b6d8eb, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1902647951
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902647948}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1902647952
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902647948}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.58, y: 1.825, z: 6}
-  m_LocalScale: {x: 17.32294, y: 3.6115, z: 5.5398283}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1532564941}
-  - {fileID: 518244760}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1902647953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902647948}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a74c4a084188a0f478583566a1ef8df9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  emitterObjects:
-  - {fileID: 338205414}
-  - {fileID: 396787141}
-  - {fileID: 1731358847}
-  - {fileID: 176521838}
-  - {fileID: 609603774}
-  - {fileID: 320154669}
-  - {fileID: 575663738}
-  - {fileID: 1731803378}
-  - {fileID: 1430014328}
-  - {fileID: 549594403}
-  - {fileID: 389209246}
-  - {fileID: 1550469856}
-  - {fileID: 519595513}
-  - {fileID: 1124488502}
-  - {fileID: 1747220205}
-  - {fileID: 1865788602}
-  - {fileID: 746466212}
-  - {fileID: 414611432}
-  - {fileID: 1234813424}
-  - {fileID: 26759707}
-  - {fileID: 262634345}
-  - {fileID: 2037715306}
-  - {fileID: 639490706}
-  - {fileID: 1706914191}
-  - {fileID: 254746988}
-  - {fileID: 1345446083}
-  - {fileID: 1111499902}
-  - {fileID: 1089814975}
-  - {fileID: 1843232477}
-  - {fileID: 1843232477}
-  point_A: {fileID: 1532564940}
-  point_B: {fileID: 518244759}
 --- !u!1 &1984035231
 GameObject:
   m_ObjectHideFlags: 0
@@ -4097,7 +3927,7 @@ MonoBehaviour:
       Data2: 1095022784
       Data3: -459819338
       Data4: 975991819
-    Path: event:/Ambience_Outside/AO_Combined_Audio/AO_Combined_1
+    Path: event:/AO_Combined_Audio/AO_Combined_1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -4107,6 +3937,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params:
   - Name: BlendZone_A
+    Value: 0
+  - Name: Transition_State
     Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -4282,7 +4114,8 @@ SceneRoots:
   - {fileID: 2077994512}
   - {fileID: 894121175}
   - {fileID: 817486655}
-  - {fileID: 1902647952}
+  - {fileID: 1202532605}
+  - {fileID: 81185806}
   - {fileID: 720794290}
   - {fileID: 535873046}
   - {fileID: 1280818865}

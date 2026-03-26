@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="ParameterPreset" id="{2205d342-161c-4c09-b619-15cf0f19e746}">
 		<property name="name">
-			<value>BlendZone_A</value>
+			<value>Transition_State</value>
 		</property>
 		<relationship name="folder">
 			<destination>{3dd6e867-1a93-443e-842d-a15b94a3997f}</destination>
@@ -12,11 +12,14 @@
 		</relationship>
 	</object>
 	<object class="GameParameter" id="{567b8ec8-e693-4a0a-8fd4-03414cfe0054}">
-		<property name="maximum">
-			<value>6</value>
+		<property name="isGlobal">
+			<value>true</value>
 		</property>
 		<property name="initialValue">
 			<value>0</value>
+		</property>
+		<property name="seekSpeed">
+			<value>0.37000000476837158</value>
 		</property>
 		<property name="isExposedRecursively">
 			<value>false</value>

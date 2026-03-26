@@ -5,7 +5,7 @@
 			<value>AO_Combined_Audio</value>
 		</property>
 		<relationship name="folder">
-			<destination>{15428614-6f03-472c-9612-4fe44ef52649}</destination>
+			<destination>{de91686e-bc36-43f8-8ce3-b2d857c46329}</destination>
 		</relationship>
 	</object>
 </objects>
