@@ -12,9 +12,6 @@
 		</relationship>
 	</object>
 	<object class="GameParameter" id="{5aecb6e3-003a-4a5f-a355-c9bdef797580}">
-		<property name="isGlobal">
-			<value>true</value>
-		</property>
 		<property name="initialValue">
 			<value>0</value>
 		</property>
