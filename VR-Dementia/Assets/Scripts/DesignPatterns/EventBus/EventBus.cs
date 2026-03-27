@@ -20,6 +20,20 @@ public class EventBus<T> where T : Event
     }
 }
 
+#region Localization
+
+public class OnLocalizationChanged : Event
+{
+    // When localization is changed
+    public OnLocalizationChanged(int localId)
+    {
+        this.localId = localId;
+    }
+    public float localId;
+}
+
+#endregion
+
 #region Trigger Actions
 
 // Events for triggering certain Actions from object/characters
