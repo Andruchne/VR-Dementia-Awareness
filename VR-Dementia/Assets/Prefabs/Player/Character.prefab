@@ -1945,6 +1945,7 @@ GameObject:
   - component: {fileID: 4509026194593847419}
   - component: {fileID: 1493082052608442531}
   - component: {fileID: 8264207797457412697}
+  - component: {fileID: 171463617254816862}
   m_Layer: 3
   m_Name: Camera
   m_TagString: Untagged
@@ -2065,6 +2066,20 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &171463617254816862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 290050503018128105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioListener
+  nonRigidbodyVelocity: 0
+  attenuationObject: {fileID: 0}
 --- !u!1 &292671558235754392
 GameObject:
   m_ObjectHideFlags: 0
@@ -7078,9 +7093,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5184407265376129369}
-  - component: {fileID: 4909026679485288137}
   - component: {fileID: 3257706699600201245}
   - component: {fileID: 8222459162007787271}
+  - component: {fileID: 5037237119135322915}
   m_Layer: 3
   m_Name: CenterEyeAnchor
   m_TagString: MainCamera
@@ -7103,14 +7118,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1926090747106996834}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &4909026679485288137
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 826432706423833150}
-  m_Enabled: 1
 --- !u!20 &3257706699600201245
 Camera:
   m_ObjectHideFlags: 0
@@ -7206,6 +7213,20 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &5037237119135322915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826432706423833150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioListener
+  nonRigidbodyVelocity: 0
+  attenuationObject: {fileID: 0}
 --- !u!1 &834575712870506636
 GameObject:
   m_ObjectHideFlags: 0
@@ -9705,7 +9726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Meta.XR.BuildingBlocks::Meta.XR.BuildingBlocks.BuildingBlock
   blockId: 81f55626-5fad-45e9-a1df-184f330da7ba
-  instanceId: 4c67b6d1-efaa-4d9c-8499-b50a69fe456f
+  instanceId: 90779dbe-d7e4-489d-a494-b85fe1d40fe1
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 2063f481-1b63-4eda-9ee8-a00df98536bc
@@ -28806,7 +28827,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Meta.XR.BuildingBlocks::Meta.XR.BuildingBlocks.BuildingBlock
   blockId: e47682b9-c270-40b1-b16d-90b627a5ce1b
-  instanceId: 7bc7b1c6-5349-4a74-aaf3-7acf6b6211e8
+  instanceId: eadb7571-154f-455c-ab8e-22607b0843f5
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
