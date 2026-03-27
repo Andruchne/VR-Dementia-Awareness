@@ -15,10 +15,10 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639102046422918384
+  lastModified: 639102181789801771
   FileSizes:
   - Name: Desktop
-    Value: 1318
+    Value: 1452
   Exists: 1
 --- !u!114 &-8663448103879957142
 MonoBehaviour:
@@ -131,7 +131,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639102046422918384
+  lastModified: 639102181789766613
   FileSizes:
   - Name: Desktop
     Value: 1640
@@ -231,9 +231,12 @@ MonoBehaviour:
   - {fileID: 9144736545622079651}
   - {fileID: -6301496419575727263}
   - {fileID: 1672466277785387677}
+  - {fileID: 3955906471414611834}
+  - {fileID: 8350179291143269948}
   EditorEvents:
   - {fileID: 4566398464282665295}
   - {fileID: -5804514334135676053}
+  - {fileID: 5767688956607964298}
   EditorParameters:
   - {fileID: 7856198239711691406}
   - {fileID: -1330277757104103027}
@@ -242,7 +245,7 @@ MonoBehaviour:
   - {fileID: -6301496419575727263}
   StringsBanks:
   - {fileID: -8750722972122330615}
-  cacheTime: 639102046423468969
+  cacheTime: 639102181812625814
   cacheVersion: 131635
 --- !u!114 &1282885528394992424
 MonoBehaviour:
@@ -283,10 +286,30 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639102046423468969
+  lastModified: 639102181812430248
   FileSizes:
   - Name: Desktop
-    Value: 8135680
+    Value: 8136160
+  Exists: 1
+--- !u!114 &3955906471414611834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Character.bank
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorBankRef
+  Path: ../Sound_System/Build/Desktop/Character.bank
+  Name: Character
+  StudioPath: bank:/Character
+  lastModified: 639102181812625814
+  FileSizes:
+  - Name: Desktop
+    Value: 1502
   Exists: 1
 --- !u!114 &3972873303241379941
 MonoBehaviour:
@@ -344,6 +367,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 46080
+--- !u!114 &5767688956607964298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Character/Juliette
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Character/Juliette
+  Guid:
+    Data1: -496561280
+    Data2: 1334215585
+    Data3: 1017059006
+    Data4: -749360898
+  Banks:
+  - {fileID: 8350179291143269948}
+  - {fileID: 3955906471414611834}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &7856198239711691406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,6 +424,26 @@ MonoBehaviour:
   - M_Furious
   - M_Anxious
   Exists: 1
+--- !u!114 &8350179291143269948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Bank A.bank
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorBankRef
+  Path: ../Sound_System/Build/Desktop/Bank A.bank
+  Name: Bank A
+  StudioPath: bank:/Bank A
+  lastModified: 639102181812539076
+  FileSizes:
+  - Name: Desktop
+    Value: 1502
+  Exists: 1
 --- !u!114 &9144736545622079651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,7 +459,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Channel_Ambience.bank
   Name: Channel_Ambience
   StudioPath: bank:/Channel_Ambience
-  lastModified: 639102046422908374
+  lastModified: 639102181789620870
   FileSizes:
   - Name: Desktop
     Value: 3290016

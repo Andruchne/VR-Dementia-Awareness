@@ -39,7 +39,7 @@ public class InworldTTSClient : MonoBehaviour
         }
     }
 
-    public async Task<AudioClip> GenerateSpeech(string textToSpeak)
+    public async Task<string> GenerateSpeech(string textToSpeak)
     {
         if (string.IsNullOrEmpty(base64AuthToken))
         {
@@ -84,31 +84,11 @@ public class InworldTTSClient : MonoBehaviour
             TTSResponse response = JsonUtility.FromJson<TTSResponse>(www.downloadHandler.text);
             byte[] audioBytes = Convert.FromBase64String(response.audioContent);
 
-            // Save bytes to a temp file so Unity can load it properly as an AudioClip
-            string tempPath = Path.Combine(Application.temporaryCachePath, "inworld_temp.wav");
+            // Save bytes to a temp file and return the file path directly for FMOD
+            string tempPath = Path.Combine(Application.temporaryCachePath, "character_voice_temp.wav");
             File.WriteAllBytes(tempPath, audioBytes);
 
-            return await LoadAudioClipFromPath(tempPath);
-        }
-    }
-
-    private async Task<AudioClip> LoadAudioClipFromPath(string path)
-    {
-        string uri = "file://" + path;
-        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.WAV))
-        {
-            UnityWebRequestAsyncOperation operation = www.SendWebRequest();
-            while (!operation.isDone) await Task.Yield();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                return DownloadHandlerAudioClip.GetContent(www);
-            }
-            else
-            {
-                Debug.LogError($"Failed to load AudioClip: {www.error}");
-                return null;
-            }
+            return tempPath;
         }
     }
 }
