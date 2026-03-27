@@ -21,6 +21,30 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en-GB
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a4b8d6fe1e06ea42803b7c4dd138ac5
+    m_Address: Tutorial-Panels_en-GB
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-GB
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48c657003c2f36344b64dfa538d89c7f
+    m_Address: UI_en-GB
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-GB
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c65c00e2f5e15e340a432c4aa8e53c2c
+    m_Address: Questions-Tutorial_en-GB
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-GB
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd7c8005719b99d45a5a6d8e7031015d
+    m_Address: Moods_en-GB
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-GB
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 8ff0dd2feaf2d5046a59af66fe8fe5eb, type: 2}
   m_SchemaSet:

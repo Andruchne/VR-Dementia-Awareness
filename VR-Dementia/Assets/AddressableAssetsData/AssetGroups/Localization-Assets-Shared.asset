@@ -15,8 +15,30 @@ MonoBehaviour:
   m_GroupName: Localization-Assets-Shared
   m_GUID: e1501188d04b4ff47bbf3e28376c09c5
   m_SerializeEntries:
+  - m_GUID: 3b8f230b989279644914075bf811554a
+    m_Address: Assets/LocalizationAssets/Translations/Moods/Moods Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 41b11210da584984ebe84de586ab7d85
     m_Address: Assets/LocalizationAssets/Placeholder Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57b2098feb6f574448254b7b7f646ec4
+    m_Address: Assets/LocalizationAssets/Translations/UI/UI Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 854629128a034764280fcdb6d87e1b23
+    m_Address: Assets/LocalizationAssets/Translations/Questions-Tutorial/Questions-Tutorial
+      Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd0e3d26934d5544c9a9209890b03512
+    m_Address: Assets/LocalizationAssets/Translations/Tutorial/Tutorial-Panels Shared
+      Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -15,8 +15,32 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Dutch (Netherlands) (nl-NL)
   m_GUID: 3e0e1177b133c2b4a85db4b2fa60e772
   m_SerializeEntries:
+  - m_GUID: 6d5a6715a446537489397c11e98f004a
+    m_Address: Tutorial-Panels_nl-NL
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-nl-NL
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 780ede142c116e44bbfa478313ff4d0e
     m_Address: Placeholder_nl-NL
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-nl-NL
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7dbfa8878cc92904cbf2cb5a2bcb44f2
+    m_Address: Moods_nl-NL
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-nl-NL
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dbb5ed143c24cc34fa5f3a9cd894b166
+    m_Address: UI_nl-NL
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-nl-NL
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e409b13288ce30147b5677acef12a26b
+    m_Address: Questions-Tutorial_nl-NL
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-nl-NL
