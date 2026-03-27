@@ -32,13 +32,13 @@ public class LocalizationManager : MonoBehaviour
         StartCoroutine(SetLocale(localeID));
     }
 
-    void OnSwitchLanguage(InputAction.CallbackContext context)
+    private void OnSwitchLanguage(InputAction.CallbackContext context)
     {
         int nextLocaleID = (LocalizationSettings.SelectedLocale.Identifier.Code == "en-GB") ? 0 : 1;
         ChangeLanguage(nextLocaleID);
     }
 
-    IEnumerator SetLocale(int localeID)
+    private IEnumerator SetLocale(int localeID)
     {
         isUpdating = true;
 

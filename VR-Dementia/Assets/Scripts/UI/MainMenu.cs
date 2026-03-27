@@ -3,12 +3,19 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private GameObject exitConfirm;
-    [SerializeField] private CanvasGroup mainMenuCanvas;
+    [SerializeField] private GameObject settingsWindow;
 
-    private void OnExitClicked()
+    public void OnExitClicked()
     {
-
+        exitConfirm.SetActive(true);
     }
 
+    public void OnSettingsClicked()
+    {
+        settingsWindow.SetActive(true);
+    }
 
-}
+    public void OnStartClicked()
+    {
+        GameManager.Instance.LoadSceneNext();
+    }}

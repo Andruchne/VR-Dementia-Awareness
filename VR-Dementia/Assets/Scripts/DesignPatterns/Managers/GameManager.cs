@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
     #region Variables and Instances
 
     private PostProcessingManager _ppManager;
-    DialogueManager _dialogueManager;
+    private DialogueManager _dialogueManager;
+    private LocalizationManager _localManager;
 
     private void GetInstances()
     {
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviour
         if (_ppManager == null) { Debug.LogWarning("GameManager: Missing PostProcessingManager - Please attach the script to Transform of GameManager."); }
         _dialogueManager = GetComponent<DialogueManager>();
         if (_dialogueManager == null) { Debug.LogWarning("GameManager: Missing StoryManager - Please attach the script to Transform of GameManager."); }
+        _localManager = GetComponent<LocalizationManager>();
+        if (_localManager == null) { Debug.LogWarning("GameManager: Missing LocalizationManager - Please attach the script to Transform of GameManager."); }
     }
 
     #endregion
@@ -70,6 +73,8 @@ public class GameManager : MonoBehaviour
 
         SetupQueueSystem();
         SetupInput();
+
+        ChangeLocalization(1);
     }
 
     private void OnDestroy()
@@ -79,6 +84,18 @@ public class GameManager : MonoBehaviour
             gameInput.Disable();
         }
     }
+
+    #region Localization Settings
+
+    public void ChangeLocalization(int localIndex)
+    {
+        if (_localManager == null) { return; }
+
+        _localManager.ChangeLanguage(localIndex);
+    }
+
+    #endregion
+
 
     #region Load Scene Logic
     public void LoadScene(int sceneIndex)
