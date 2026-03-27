@@ -1,11 +1,14 @@
-using UnityEngine;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using OpenAI;
-using UnityEngine.InputSystem;
 using FMODUnity;
-using System.Runtime.InteropServices;
+using OpenAI;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 public class VoiceInteractionManager : MonoBehaviour
 {
@@ -15,6 +18,9 @@ public class VoiceInteractionManager : MonoBehaviour
 
     [TextArea(5, 10)]
     [SerializeField] private string systemPrompt = "You are roleplaying Juliette, a 68-year-old Dutch woman living in Zutphen.\r\nJuliette used to be a geography teacher and loved hiking and traveling across Europe. She was known as a kind and enthusiastic teacher who cared deeply about her students.\r\nJuliette has early to mid stage dementia. She is aware that she has dementia and is still mostly independent.\r\nHer symptoms include:\r\n- short term memory loss\r\n- occasional repetition\r\n- mild confusion\r\n- occasional word-finding difficulty\r\n- emotional sensitivity when small mistakes happen\r\nJuliette recognizes the player. The player is her grandchild.\r\nShe does NOT forget who the player is. However she may:\r\n- occasionally mix up names\r\n- pause while searching for words\r\n- repeat questions occasionally\r\n- slightly forget recent parts of the conversation\r\nJuliette is generally present and aware of her surroundings and the current moment. She understands she is at home and that the player is visiting her.\r\nShe does NOT focus only on distant past memories. She talks naturally about both present and past, with a preference for what is currently happening.\r\nJuliette is warm, calm, and affectionate.\r\nShe enjoys talking about:\r\n- what is happening around her\r\n- simple daily activities (tea, house, weather)\r\n- her students and teaching (occasionally)\r\n- small memories from her life (not overly dominant)\r\nHer speech style should feel natural:\r\n- occasional pauses\r\n- short sentences\r\n- sometimes unfinished thoughts\r\n- mild topic switching\r\nShe may sometimes repeat a question or slightly forget what was just discussed.\r\nJuliette occasionally pauses mid sentence when she cannot remember a word.\r\nShe sometimes asks the player questions to keep the conversation going.\r\nShe never becomes aggressive.\r\nAll responses must be in English.\r\nKeep responses short (2-5 sentences) so the dialogue feels natural in a VR experience.";
+
+    // Stores the current language code for Whisper STT
+    private string sttLanguage = "en";
 
     [Header("Inworld Setup")]
     [SerializeField] private InworldTTSClient inworldTTS;
@@ -32,7 +38,7 @@ public class VoiceInteractionManager : MonoBehaviour
     private FMOD.Studio.EventInstance dialogueInstance;
     private GCHandle stringHandle;
 
-    private void Start()
+    private IEnumerator Start()
     {
         openAI = new OpenAIApi();
 
@@ -43,6 +49,36 @@ public class VoiceInteractionManager : MonoBehaviour
             UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.Microphone);
         }
         #endif
+
+        // Wait for the Unity Localization system to finish initializing
+        yield return LocalizationSettings.InitializationOperation;
+
+        // Subscribe to the built-in Unity Localization change event
+        LocalizationSettings.SelectedLocaleChanged += HandleLocalizationChanged;
+
+        // Force an initial sync with the currently active language at startup
+        if (LocalizationSettings.SelectedLocale != null)
+        {
+            HandleLocalizationChanged(LocalizationSettings.SelectedLocale);
+        }
+    }
+
+    private void HandleLocalizationChanged(Locale newLocale)
+    {
+        // We use StartsWith to catch all variations of a language
+        if (newLocale.Identifier.Code.StartsWith("en"))
+        {
+            sttLanguage = "en";
+            // Specifically replace the response rule to keep her a "Dutch woman" in the prompt
+            systemPrompt = systemPrompt.Replace("All responses must be in Dutch.", "All responses must be in English.");
+            Debug.Log($"Language switched to English (Code: {newLocale.Identifier.Code}).");
+        }
+        else if (newLocale.Identifier.Code.StartsWith("nl"))
+        {
+            sttLanguage = "nl";
+            systemPrompt = systemPrompt.Replace("All responses must be in English.", "All responses must be in Dutch.");
+            Debug.Log($"Language switched to Dutch (Code: {newLocale.Identifier.Code}).");
+        }
     }
 
     private void InitFMODMicrophone()
@@ -177,7 +213,7 @@ public class VoiceInteractionManager : MonoBehaviour
         {
             FileData = new FileData() { Data = wavData, Name = "audio.wav" },
             Model = "whisper-1",
-            Language = "nl"
+            Language = sttLanguage
         };
 
         CreateAudioResponse res = await openAI.CreateAudioTranscription(req);
@@ -196,6 +232,16 @@ public class VoiceInteractionManager : MonoBehaviour
         if (messages.Count == 0)
         {
             messages.Add(new ChatMessage() { Role = "system", Content = systemPrompt });
+        }
+        else
+        {
+            // Update the system prompt in the history dynamically if language changed mid-conversation
+            if (messages[0].Role == "system")
+            {
+                var updatedSystemMessage = messages[0];
+                updatedSystemMessage.Content = systemPrompt;
+                messages[0] = updatedSystemMessage;
+            }
         }
 
         messages.Add(newMessage);
@@ -310,6 +356,9 @@ public class VoiceInteractionManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Unsubscribe from event to prevent memory leaks when the object is destroyed
+        LocalizationSettings.SelectedLocaleChanged -= HandleLocalizationChanged;
+
         // Ensure the FMOD recording sound buffer is released when the object is destroyed
         if (micSound.hasHandle())
         {

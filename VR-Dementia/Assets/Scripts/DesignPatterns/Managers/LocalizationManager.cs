@@ -26,24 +26,24 @@ public class LocalizationManager : MonoBehaviour
         }
     }
 
-    public void ChangeLanguage(int localeID)
+    public void ChangeLanguage(int localeId)
     {
         if (isUpdating) return;
-        StartCoroutine(SetLocale(localeID));
+        StartCoroutine(SetLocale(localeId));
     }
 
     private void OnSwitchLanguage(InputAction.CallbackContext context)
     {
-        int nextLocaleID = (LocalizationSettings.SelectedLocale.Identifier.Code == "en-GB") ? 0 : 1;
-        ChangeLanguage(nextLocaleID);
+        int nextLocaleId = (LocalizationSettings.SelectedLocale.Identifier.Code == "en-GB") ? 0 : 1;
+        ChangeLanguage(nextLocaleId);
     }
 
-    private IEnumerator SetLocale(int localeID)
+    private IEnumerator SetLocale(int localeId)
     {
         isUpdating = true;
 
         yield return LocalizationSettings.InitializationOperation;
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[localeID];
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[localeId];
 
         isUpdating = false;
     }
