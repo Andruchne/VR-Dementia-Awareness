@@ -19,7 +19,9 @@ public class DialogueChecker : MonoBehaviour
     public GameObject questionGroup;
     public GameObject statusGroup;
     public GameObject promptGroup;
-    public GameObject secondCanvas;
+    public GameObject moodInteraction;
+    public GameObject moodArea;
+    public GameObject moodDescription;
 
     [Header("UI Text References")]
     public TextMeshProUGUI promptText;
@@ -54,7 +56,9 @@ public class DialogueChecker : MonoBehaviour
 
         // Hide everything at start
         SetZoneUIActive(false);
-        if (secondCanvas != null) secondCanvas.SetActive(false);
+        if (moodInteraction != null) moodInteraction.SetActive(false);
+        if (moodArea != null) moodArea.SetActive(false);
+        if (moodDescription != null) moodDescription.SetActive(false);
 
         // Preload texts at startup
         StartCoroutine(PreloadTextsAsync());
@@ -183,9 +187,11 @@ public class DialogueChecker : MonoBehaviour
         GameManager.Instance.StopRecordingVoice();
         questionsAsked++;
 
-        if (questionsAsked == 1 && secondCanvas != null)
+        if (questionsAsked == 1)
         {
-            secondCanvas.SetActive(true);
+            if (moodInteraction != null) { moodInteraction.SetActive(true); }
+            if (moodArea != null) { moodArea.SetActive(true); }
+            if (moodDescription != null) { moodDescription.SetActive(true); }
         }
     }
 

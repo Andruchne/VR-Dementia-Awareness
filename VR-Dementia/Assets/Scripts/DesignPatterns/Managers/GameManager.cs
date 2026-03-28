@@ -205,6 +205,11 @@ public class GameManager : MonoBehaviour
         StartDialogue(_currentAction.dialogue);
     }
 
+    public void SetMoodPercentage(Mood mood, int percentage)
+    {
+        if (_ppManager != null) { _ppManager.SetMoodPercentage(mood, percentage); }
+    }
+
     #endregion
 
 

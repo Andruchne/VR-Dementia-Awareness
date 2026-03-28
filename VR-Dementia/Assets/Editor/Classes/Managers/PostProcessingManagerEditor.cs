@@ -32,6 +32,12 @@ public class PostProcessingManagerEditor : Editor
 
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("References", EditorStyles.boldLabel);
+
+        // FMOD Music Event
+        SerializedProperty musicEventProp = serializedObject.FindProperty("musicEvent");
+        EditorGUILayout.PropertyField(musicEventProp);
+
+        // Volume Collection rendern
         SerializedProperty collectionProp = serializedObject.FindProperty("volumeCollection");
         EditorGUILayout.PropertyField(collectionProp);
 

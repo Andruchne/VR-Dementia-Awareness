@@ -14,14 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VolumeCollection
   entries:
   - mood: 0
+    paramFMOD: 
     volume: {fileID: 4384867687913797770, guid: 073e237be262f2f49b5341e83727aa09, type: 3}
   - mood: 1
+    paramFMOD: M_Happy
     volume: {fileID: 4384867687913797770, guid: e0c228efe6bd64340a817968e584bee1, type: 3}
   - mood: 2
+    paramFMOD: M_Sad
     volume: {fileID: 4384867687913797770, guid: aa7760f415e53ba4a9254346481c47ce, type: 3}
   - mood: 3
+    paramFMOD: M_Nostalgic
     volume: {fileID: 1221757303892271022, guid: d7dc1603f707ef34583a1ac7be88dd09, type: 3}
   - mood: 4
+    paramFMOD: M_Furious
     volume: {fileID: 2287949987280877543, guid: 0e32c4c3fb430044880f2ad5a344fc07, type: 3}
   - mood: 5
+    paramFMOD: M_Anxious
     volume: {fileID: 4384867687913797770, guid: 9c271bd8c064f884b81ea3d390fba819, type: 3}

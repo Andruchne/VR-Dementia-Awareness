@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
+using FMODUnity;
+using FMOD.Studio;
 
 public class PostProcessingManager : MonoBehaviour
 {
+    [Header("FMOD Music Setup")]
+    [Tooltip("The background music event that responds to the mood parameters.")]
+    public EventReference musicEvent;
+    private EventInstance musicInstance;
+
+    [Header("Volumes")]
     public VolumeCollection volumeCollection;
 
     [HideInInspector]
@@ -18,10 +26,16 @@ public class PostProcessingManager : MonoBehaviour
 
     private void Start()
     {
-        if (volumeCollection == null) 
+        if (!musicEvent.IsNull)
+        {
+            musicInstance = RuntimeManager.CreateInstance(musicEvent);
+            musicInstance.start();
+        }
+
+        if (volumeCollection == null)
         {
             Debug.LogWarning("PostProcessingManager: Missing VolumeCollection Asset.");
-            return; 
+            return;
         }
 
         for (int i = 0; i < volumeCollection.entries.Count; i++)
@@ -41,6 +55,15 @@ public class PostProcessingManager : MonoBehaviour
         }
 
         InitializeActiveConfigs();
+    }
+
+    private void OnDestroy()
+    {
+        if (musicInstance.isValid())
+        {
+            musicInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            musicInstance.release();
+        }
     }
 
     // Gets called when inspector values change inside the editor
@@ -82,6 +105,22 @@ public class PostProcessingManager : MonoBehaviour
         SetDirty();
     }
 
+    public void SetMoodPercentage(Mood mood, int percentage)
+    {
+        if (_currentTransition != null)
+        {
+            StopCoroutine(_currentTransition);
+            _currentTransition = null;
+        }
+
+        VolumeConfig config = activeConfigs.Find(x => x.mood == mood);
+        if (config != null)
+        {
+            config.volumePercentage = Mathf.Clamp(percentage, 0, 100);
+            SetDirty();
+        }
+    }
+
     private void EvaluateWeights()
     {
         // Calculate the total sum of all weight percentages
@@ -92,9 +131,6 @@ public class PostProcessingManager : MonoBehaviour
         }
 
         // Determine the scale factor
-        // This is important, since the weights need to be distrubited accordingly:
-        // > 100 = Weights need to be recalculated to fit the available space with their individual proportions
-        // <= 100 = Weights stay the same, and the rest of the available percent stays empty
         float normalizationFactor = 1;
         if (totalUserPercent > 100)
         {
@@ -107,7 +143,8 @@ public class PostProcessingManager : MonoBehaviour
         // Start with the entry with the highest priority setting, up to the one with the lowest
         for (int i = volumeCollection.entries.Count - 1; i >= 0; i--)
         {
-            Mood mood = volumeCollection.entries[i].mood;
+            VolumeEntry entry = volumeCollection.entries[i];
+            Mood mood = entry.mood;
 
             // Check whether the mood holds a volume instance - skip if not available
             if (!_volumeInstances.TryGetValue(mood, out Volume vol)) { continue; }
@@ -115,6 +152,12 @@ public class PostProcessingManager : MonoBehaviour
             // Get related config reference and obtain percentage (set to 0 if not available)
             VolumeConfig config = activeConfigs.Find(x => x.mood == mood);
             float userPercent = config != null ? config.volumePercentage : 0;
+
+            // Set FMOD sound parameter
+            if (musicInstance.isValid() && !string.IsNullOrEmpty(entry.paramFMOD))
+            {
+                musicInstance.setParameterByName(entry.paramFMOD, userPercent / 100.0f);
+            }
 
             // Safety Check: If Volume not high enough to notice in the first place - turn it off
             if (userPercent <= 0.01f)

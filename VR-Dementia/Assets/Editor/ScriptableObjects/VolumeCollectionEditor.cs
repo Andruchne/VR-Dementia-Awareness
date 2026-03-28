@@ -48,21 +48,35 @@ public class VolumeCollectionEditor : Editor
 
             // Mood Title
             EditorGUILayout.LabelField(entry.mood.ToString(), titleStyle);
+            GUILayout.Space(5);
+
+            // Draws a text field for the FMOD parameter and saves it if changed
+            string newParam = EditorGUILayout.TextField("FMOD Parameter", entry.paramFMOD);
+            if (newParam != entry.paramFMOD)
+            {
+                Undo.RecordObject(targetScript, "Change FMOD Parameter");
+                entry.paramFMOD = newParam;
+            }
 
             GUILayout.Space(2);
 
-            // GameObject field, taking up full width
-            Rect objRect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
-
-            GameObject newVol = (GameObject)EditorGUI.ObjectField(objRect, entry.volume, typeof(GameObject), false);
-
+            // Changed to EditorGUILayout to perfectly align with the TextField above
+            GameObject newVol = (GameObject)EditorGUILayout.ObjectField("Volume Prefab", entry.volume, typeof(GameObject), false);
             if (newVol != entry.volume)
             {
                 Undo.RecordObject(targetScript, "Assign Volume Prefab");
                 entry.volume = newVol;
             }
 
-            // Draw error if missing
+            GUILayout.Space(5);
+
+            // Draw warning if FMOD parameter is missing
+            if (string.IsNullOrEmpty(entry.paramFMOD))
+            {
+                EditorGUILayout.HelpBox("FMOD Parameter string is empty.", MessageType.Info);
+            }
+
+            // Draw error if Volume GameObject is missing
             if (entry.volume == null)
             {
                 EditorGUILayout.HelpBox("Missing Volume GameObject.", MessageType.Warning);
@@ -100,7 +114,7 @@ public class VolumeCollectionEditor : Editor
             // Apply new value if not
             else
             {
-                newSortedList.Add(new VolumeEntry { mood = mood, volume = null });
+                newSortedList.Add(new VolumeEntry { mood = mood, paramFMOD = "", volume = null });
                 changed = true;
             }
         }
