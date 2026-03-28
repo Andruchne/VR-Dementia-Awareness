@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
     public VolumeConfiguration volumeconfig;
 
     #region Variables and Instances
@@ -15,6 +14,10 @@ public class GameManager : MonoBehaviour
     private PostProcessingManager _ppManager;
     private DialogueManager _dialogueManager;
     private LocalizationManager _localManager;
+    private VoiceInteractionManager _voiceInterManager;
+
+    // To subscribe to processing events
+    public VoiceInteractionManager VoiceInterManager => _voiceInterManager;
 
     private void GetInstances()
     {
@@ -24,6 +27,8 @@ public class GameManager : MonoBehaviour
         if (_dialogueManager == null) { Debug.LogWarning("GameManager: Missing StoryManager - Please attach the script to Transform of GameManager."); }
         _localManager = GetComponent<LocalizationManager>();
         if (_localManager == null) { Debug.LogWarning("GameManager: Missing LocalizationManager - Please attach the script to Transform of GameManager."); }
+        _voiceInterManager = GetComponentInChildren<VoiceInteractionManager>();
+        if (_voiceInterManager == null) { Debug.LogWarning("GameManager: Missing VoiceInteractionManager - Please attach AI Prefab as child of GameManager."); }
     }
 
     #endregion
@@ -84,6 +89,31 @@ public class GameManager : MonoBehaviour
             gameInput.Disable();
         }
     }
+
+    #region Dialogue
+
+    public void StartRecordingVoice()
+    {
+        if (_voiceInterManager == null) { return; }
+
+        _voiceInterManager.StartRecording();
+    }
+
+    public void StopRecordingVoice()
+    {
+        if (_voiceInterManager == null) { return; }
+
+        _voiceInterManager.StopRecordingAndProcess();
+    }
+
+    public void DiscardRecordingVoice()
+    {
+        if (_voiceInterManager == null) { return; }
+        _voiceInterManager.DiscardRecording();
+    }
+
+    #endregion
+
 
     #region Localization Settings
 

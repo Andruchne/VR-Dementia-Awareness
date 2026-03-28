@@ -38,6 +38,22 @@ public class VoiceInteractionManager : MonoBehaviour
     private FMOD.Studio.EventInstance dialogueInstance;
     private GCHandle stringHandle;
 
+    // For showing off progress during processing
+    public event Action OnProcessingStarted;
+    public event Action OnProcessingFinished;
+
+    public bool IsRecording => isRecording;
+
+    public bool IsSpeaking
+    {
+        get
+        {
+            if (!dialogueInstance.isValid()) return false;
+            dialogueInstance.getPlaybackState(out FMOD.Studio.PLAYBACK_STATE state);
+            return state == FMOD.Studio.PLAYBACK_STATE.PLAYING || state == FMOD.Studio.PLAYBACK_STATE.STARTING;
+        }
+    }
+
     private IEnumerator Start()
     {
         openAI = new OpenAIApi();
@@ -61,6 +77,89 @@ public class VoiceInteractionManager : MonoBehaviour
         {
             HandleLocalizationChanged(LocalizationSettings.SelectedLocale);
         }
+    }
+
+    private void Update()
+    {
+        // Guard clause to ensure a keyboard is connected
+        if (Keyboard.current == null) return;
+
+        // Toggle recording state when the spacebar is pressed
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            if (!isRecording)
+            {
+                StartRecording();
+            }
+            else
+            {
+                StopRecordingAndProcess();
+            }
+        }
+    }
+
+    public void DiscardRecording()
+    {
+        if (!isRecording) return;
+        isRecording = false;
+
+        // Stop FMOD without processing the data
+        RuntimeManager.CoreSystem.recordStop(recordDeviceId);
+        Debug.Log("Recording discarded.");
+    }
+
+    public void StartRecording()
+    {
+        // Delaying initialization ensures the user had time to accept Android Mic permissions
+        if (!micSound.hasHandle())
+        {
+            InitFMODMicrophone();
+            if (!micSound.hasHandle()) { return; } // Abort if initialization failed
+        }
+
+        isRecording = true;
+
+        // Start recording into our custom micSound object (false = no looping)
+        RuntimeManager.CoreSystem.recordStart(recordDeviceId, micSound, false);
+        Debug.Log("FMOD Recording started...");
+    }
+
+    public async void StopRecordingAndProcess()
+    {
+        if (!isRecording) return;
+        isRecording = false;
+
+        OnProcessingStarted?.Invoke();
+
+        // Retrieve the current recording position before stopping
+        RuntimeManager.CoreSystem.getRecordPosition(recordDeviceId, out uint recordPosition);
+
+        // Stop the FMOD recording process
+        RuntimeManager.CoreSystem.recordStop(recordDeviceId);
+        Debug.Log($"FMOD Recording stopped. Recorded {recordPosition} samples. Processing STT...");
+
+        // Extract the raw PCM bytes
+        byte[] pcmData = GetRecordedPCMData(recordPosition);
+
+        if (pcmData == null || pcmData.Length == 0)
+        {
+            Debug.LogError("Failed to extract audio data from FMOD. Position was likely 0.");
+            OnProcessingFinished?.Invoke(); // Fehler, also beenden wir das "Processing"
+            return;
+        }
+
+        // Process Speech-To-Text (OpenAI Whisper)
+        string userText = await TranscribeAudio(pcmData);
+        Debug.Log($"User said: {userText}");
+
+        // Generate AI Text Response (OpenAI GPT)
+        string aiResponseText = await GetAIResponse(userText);
+        Debug.Log($"AI Response: {aiResponseText}");
+
+        // Process Text-To-Speech (Inworld)
+        await PlayInworldTTS(aiResponseText);
+
+        OnProcessingFinished?.Invoke();
     }
 
     private void HandleLocalizationChanged(Locale newLocale)
@@ -105,74 +204,6 @@ public class VoiceInteractionManager : MonoBehaviour
 
         // Create the custom sound object in memory
         RuntimeManager.CoreSystem.createSound("", FMOD.MODE.DEFAULT | FMOD.MODE.OPENUSER, ref exinfo, out micSound);
-    }
-
-    private void Update()
-    {
-        // Guard clause to ensure a keyboard is connected
-        if (Keyboard.current == null) return;
-
-        // Toggle recording state when the spacebar is pressed
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
-        {
-            if (!isRecording)
-            {
-                StartRecording();
-            }
-            else
-            {
-                StopRecordingAndProcess();
-            }
-        }
-    }
-
-    public void StartRecording()
-    {
-        // Delaying initialization ensures the user had time to accept Android Mic permissions
-        if (!micSound.hasHandle())
-        {
-            InitFMODMicrophone();
-            if (!micSound.hasHandle()) { return; } // Abort if initialization failed
-        }
-
-        isRecording = true;
-
-        // Start recording into our custom micSound object (false = no looping)
-        RuntimeManager.CoreSystem.recordStart(recordDeviceId, micSound, false);
-        Debug.Log("FMOD Recording started...");
-    }
-
-    public async void StopRecordingAndProcess()
-    {
-        if (!isRecording) return;
-        isRecording = false;
-
-        // Retrieve the current recording position before stopping
-        RuntimeManager.CoreSystem.getRecordPosition(recordDeviceId, out uint recordPosition);
-
-        // Stop the FMOD recording process
-        RuntimeManager.CoreSystem.recordStop(recordDeviceId);
-        Debug.Log($"FMOD Recording stopped. Recorded {recordPosition} samples. Processing STT...");
-
-        // Extract the raw PCM bytes
-        byte[] pcmData = GetRecordedPCMData(recordPosition);
-
-        if (pcmData == null || pcmData.Length == 0)
-        {
-            Debug.LogError("Failed to extract audio data from FMOD. Position was likely 0.");
-            return;
-        }
-
-        // Process Speech-To-Text (OpenAI Whisper)
-        string userText = await TranscribeAudio(pcmData);
-        Debug.Log($"User said: {userText}");
-
-        // Generate AI Text Response (OpenAI GPT)
-        string aiResponseText = await GetAIResponse(userText);
-        Debug.Log($"AI Response: {aiResponseText}");
-
-        // Process Text-To-Speech (Inworld)
-        await PlayInworldTTS(aiResponseText);
     }
 
     private byte[] GetRecordedPCMData(uint recordPosition)

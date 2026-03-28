@@ -29,6 +29,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "VRController",
+            "id": "a96d9f7b-327a-46a3-a51e-5194e0095f94",
+            "actions": [
+                {
+                    "name": "RightControllerA",
+                    "type": "Button",
+                    "id": "9ba41a15-28cf-4d0a-a170-afa50ef9106e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "66853752-9148-42e8-9f88-d03fda49a827",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightControllerA",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

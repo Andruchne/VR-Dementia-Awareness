@@ -35,6 +35,34 @@ MonoBehaviour:
     m_Key: Language - NL
     m_Metadata:
       m_Items: []
+  - m_Id: 111696590135296
+    m_Key: 04 Buttons
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112299693301760
+    m_Key: Language - Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112817253638144
+    m_Key: Confirmation - Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113123593019392
+    m_Key: Confirmation - Stay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 156567237550080
+    m_Key: Question Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 156570228088832
+    m_Key: Start Recording
+    m_Metadata:
+      m_Items: []
+  - m_Id: 156571784175616
+    m_Key: Stop Recording
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
