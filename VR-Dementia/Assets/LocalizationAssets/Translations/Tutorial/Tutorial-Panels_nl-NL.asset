@@ -19,15 +19,15 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 24431349760
-    m_Localized: Welkom bij de simulatie. Beweeg door met je controller te richten
-      en op [knop] te drukken om te teleporteren. Neem even de tijd om rond te kijken.
-      Wanneer je klaar bent, ga richting de ingang.
+    m_Localized: Welkom bij de simulatie. Je kunt bewegen met de controllers. Standaard
+      beweeg je door te glijden, maar je kunt overschakelen naar teleporteren via
+      het bovenste dropdownmenu voor je. Neem even de tijd om rond te kijken. Wanneer
+      je klaar bent, ga richting de ingang.
     m_Metadata:
       m_Items: []
   - m_Id: 256351195136
-    m_Localized: Ga het huis binnen, pak de [naam van het item] van de tafel bij
-      de ingang, draai vervolgens naar rechts de woonkamer in en leg het daar op
-      de tafel.
+    m_Localized: Ga het huis binnen, pak de telefoon van de tafel bij de ingang,
+      draai vervolgens naar rechts de woonkamer in en leg het daar op de tafel.
     m_Metadata:
       m_Items: []
   - m_Id: 367277953024
@@ -48,9 +48,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 564854837248
-    m_Localized: Wanneer je klaar bent, ga richting de [naam van de gele plek] om
-      het moodsysteem te ervaren. Je kunt dit doen nadat het gesprek is afgelopen,
-      of op elk moment als je het gesprek wilt verlaten.
+    m_Localized: Wanneer je klaar bent, ga richting de gele plek om het moodsysteem
+      te ervaren. Je kunt dit doen nadat het gesprek is afgelopen, of op elk moment
+      als je het gesprek wilt verlaten.
     m_Metadata:
       m_Items: []
   - m_Id: 666226970624

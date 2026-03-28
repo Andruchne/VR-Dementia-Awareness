@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 66514215}
   - component: {fileID: 66514214}
   m_Layer: 4
-  m_Name: 01 Intro-Background
+  m_Name: 01 Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,7 +164,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0, y: 0}
+  m_AnchoredPosition: {x: -0, y: 33}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &66514214
@@ -8050,7 +8050,7 @@ GameObject:
   - component: {fileID: 1642457806}
   - component: {fileID: 1642457805}
   m_Layer: 4
-  m_Name: 01 Background
+  m_Name: 01 Intro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
