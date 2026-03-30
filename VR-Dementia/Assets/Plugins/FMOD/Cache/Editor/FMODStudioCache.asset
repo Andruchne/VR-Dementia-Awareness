@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639102236233752358
+  lastModified: 639102892719725825
   FileSizes:
   - Name: Desktop
     Value: 1452
@@ -245,7 +245,7 @@ MonoBehaviour:
   - {fileID: -6301496419575727263}
   StringsBanks:
   - {fileID: -8750722972122330615}
-  cacheTime: 639102236234316106
+  cacheTime: 639102892720359456
   cacheVersion: 131635
 --- !u!114 &1282885528394992424
 MonoBehaviour:
@@ -286,7 +286,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639102236234316106
+  lastModified: 639102892720359456
   FileSizes:
   - Name: Desktop
     Value: 8136160
@@ -306,7 +306,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Character.bank
   Name: Character
   StudioPath: bank:/Character
-  lastModified: 639102236233752358
+  lastModified: 639102892719710148
   FileSizes:
   - Name: Desktop
     Value: 1502
@@ -439,7 +439,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Bank A.bank
   Name: Bank A
   StudioPath: bank:/Bank A
-  lastModified: 639102236233737300
+  lastModified: 639102892719710148
   FileSizes:
   - Name: Desktop
     Value: 1502
