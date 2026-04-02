@@ -1,10 +1,10 @@
 using System.IO;
 
+/// <summary>
+/// Creates a WAV file byte array from raw 16-bit PCM audio data provided by FMOD.
+/// </summary>
 public static class SaveWav
 {
-    /// <summary>
-    /// Creates a WAV file byte array from raw 16-bit PCM audio data provided by FMOD.
-    /// </summary>
     public static byte[] SaveFromPCM16(byte[] pcmData, int sampleRate, int channels)
     {
         if (pcmData == null || pcmData.Length == 0) return null;

@@ -2,6 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Used in the alpha scene, to transition between moods within a specific area.
+/// It uses coroutines and simple timing logic, to transition between the available moods.
+/// </summary>
 [RequireComponent(typeof(Collider))]
 public class MoodSequenceTrigger : MonoBehaviour
 {
@@ -47,8 +51,8 @@ public class MoodSequenceTrigger : MonoBehaviour
         zoneCollider = GetComponent<Collider>();
 
         // Ensure the completion objects are hidden at the start
-        if (objectToShowOnComplete1 != null) objectToShowOnComplete1.SetActive(false);
-        if (objectToShowOnComplete2 != null) objectToShowOnComplete2.SetActive(false);
+        if (objectToShowOnComplete1 != null) { objectToShowOnComplete1.SetActive(false); }
+        if (objectToShowOnComplete2 != null) { objectToShowOnComplete2.SetActive(false); }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -56,12 +60,10 @@ public class MoodSequenceTrigger : MonoBehaviour
         // Only trigger if it's the player and we haven't finished the sequence yet
         if (other.CompareTag(playerTag) && !sequenceCompleted)
         {
-            if (objectToHideOnEnter != null)
-                objectToHideOnEnter.SetActive(false);
+            if (objectToHideOnEnter != null) { objectToHideOnEnter.SetActive(false); }
 
             // Stop any potentially running sequence to avoid overlaps
-            if (sequenceCoroutine != null)
-                StopCoroutine(sequenceCoroutine);
+            if (sequenceCoroutine != null) { StopCoroutine(sequenceCoroutine); }
 
             // Start or resume the sequence
             sequenceCoroutine = StartCoroutine(PlayMoodSequence());
@@ -91,13 +93,8 @@ public class MoodSequenceTrigger : MonoBehaviour
         // Continue going through the array as long as there are moods left
         while (currentMoodIndex < moodSequence.Length)
         {
-            // Tell the GameManager to transition to the current mood.
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.TransitionMood(moodSequence[currentMoodIndex], transitionTime);
-            }
+            if (GameManager.Instance != null) { GameManager.Instance.TransitionMood(moodSequence[currentMoodIndex], transitionTime); }
 
-            // The total time this specific mood should claim
             float totalTimeForThisMood = transitionTime + moodDuration;
 
             // Wait until our tracked time reaches the required total time
@@ -107,31 +104,30 @@ public class MoodSequenceTrigger : MonoBehaviour
                 yield return null; // Wait for the next frame
             }
 
-            // Mood has finished playing completely. Move to the next!
             currentMoodIndex++;
-            timeInCurrentMood = 0f; // Reset timer for the next mood
+            timeInCurrentMood = 0f; 
         }
 
         sequenceCompleted = true;
 
-        if (objectToHideOnComplete != null) objectToHideOnComplete.SetActive(false);
-        if (objectToShowOnComplete1 != null) objectToShowOnComplete1.SetActive(true);
-        if (objectToShowOnComplete2 != null) objectToShowOnComplete2.SetActive(true);
+        if (objectToHideOnComplete != null) { objectToHideOnComplete.SetActive(false); }
+        if (objectToShowOnComplete1 != null) { objectToShowOnComplete1.SetActive(true); }
+        if (objectToShowOnComplete2 != null) { objectToShowOnComplete2.SetActive(true); }
 
         FadeOutMoods(transitionTime);
 
         // Deactivate itself
-        if (zoneRenderer != null) zoneRenderer.enabled = false;
-        if (zoneCollider != null) zoneCollider.enabled = false;
+        if (zoneRenderer != null) { zoneRenderer.enabled = false; }
+        if (zoneCollider != null) { zoneCollider.enabled = false; }
         this.enabled = false;
     }
 
     private void FadeOutMoods(float duration)
     {
-        if (GameManager.Instance == null) return;
+        if (GameManager.Instance == null) { return; }
 
         VolumeConfiguration emptyConfig = ScriptableObject.CreateInstance<VolumeConfiguration>();
-        emptyConfig.configs = new List<VolumeConfig>(); // Empty list = all values to 0
+        emptyConfig.configs = new List<VolumeConfig>();
 
         GameManager.Instance.TransitionMood(emptyConfig, duration);
     }

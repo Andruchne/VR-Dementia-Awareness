@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Main Menu options buttons.
+/// Can be extended, the more buttons or menus are added to the main menu.
+/// </summary>
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private GameObject exitConfirm;

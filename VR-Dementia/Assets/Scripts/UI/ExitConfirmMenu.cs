@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Used in the menu canvas (Handheld & Main Menu).
+/// Either closes App or load next scene.
+/// </summary>
 public class ExitConfirmMenu : MonoBehaviour
 {
     [SerializeField] private GameObject exitConfirm;
@@ -15,7 +19,7 @@ public class ExitConfirmMenu : MonoBehaviour
         exitConfirm.SetActive(false);
     }
 
-    public void OnLoadMainMenu()
+    public void OnLoadNextLevel()
     {
         GameManager.Instance.LoadSceneNext();
     }

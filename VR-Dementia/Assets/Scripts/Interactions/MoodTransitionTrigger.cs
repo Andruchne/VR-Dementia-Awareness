@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Used to transition into a mood quickly, by simply entering an area.
+/// Mainly used for quick iterations
+/// </summary>
 public class MoodTransitionTrigger : MonoBehaviour
 {
 

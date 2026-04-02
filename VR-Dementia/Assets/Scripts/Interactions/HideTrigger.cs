@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Used to hide a list of gameObjects, when entering a trigger collider.
+/// Mainly used for quick iterations
+/// </summary>
 public class HideTrigger : MonoBehaviour
 {
     [SerializeField] private GameObject[] hideGameObjects;
@@ -8,9 +12,9 @@ public class HideTrigger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            foreach (GameObject gO in hideGameObjects)
+            foreach (GameObject gameObject in hideGameObjects)
             {
-                gO.SetActive(false);
+                gameObject.SetActive(false);
             }
         }
     }

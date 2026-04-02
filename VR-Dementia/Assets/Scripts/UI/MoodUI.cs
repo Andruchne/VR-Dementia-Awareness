@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Used for the VR Menu with the mood sliders.
+/// Utilized GameManager functions, to control both the visual mood, and the sound plaÃ½ed.
+/// </summary>
 public class MoodUI : MonoBehaviour
 {
     [Header("UI Sliders (Set Min: 0, Max: 100, Whole Numbers: True)")]
@@ -12,35 +16,28 @@ public class MoodUI : MonoBehaviour
 
     private void Start()
     {
-        // Listener hinzufügen: Wird aufgerufen, wenn der Spieler den Slider bewegt
-        if (M_Anxious_Slider != null)
-            M_Anxious_Slider.onValueChanged.AddListener((val) => SetMood(Mood.Triggered, val));
+        if (M_Anxious_Slider != null) { M_Anxious_Slider.onValueChanged.AddListener((val) => SetMood(Mood.Anxious, val)); }
 
-        if (M_Furious_Slider != null)
-            M_Furious_Slider.onValueChanged.AddListener((val) => SetMood(Mood.Furious, val));
+        if (M_Furious_Slider != null) { M_Furious_Slider.onValueChanged.AddListener((val) => SetMood(Mood.Furious, val)); }
 
-        if (M_Happy_Slider != null)
-            M_Happy_Slider.onValueChanged.AddListener((val) => SetMood(Mood.Happy, val));
+        if (M_Happy_Slider != null) { M_Happy_Slider.onValueChanged.AddListener((val) => SetMood(Mood.Happy, val)); }
 
-        if (M_Nostalgic_Slider != null)
-            M_Nostalgic_Slider.onValueChanged.AddListener((val) => SetMood(Mood.Nostalgic, val));
+        if (M_Nostalgic_Slider != null) { M_Nostalgic_Slider.onValueChanged.AddListener((val) => SetMood(Mood.Nostalgic, val)); }
 
-        if (M_Sad_Slider != null)
-            M_Sad_Slider.onValueChanged.AddListener((val) => SetMood(Mood.Sad, val));
+        if (M_Sad_Slider != null) { M_Sad_Slider.onValueChanged.AddListener((val) => SetMood(Mood.Sad, val)); }
     }
 
     private void SetMood(Mood mood, float val)
     {
         if (GameManager.Instance != null)
         {
-            // Konvertiere den Float-Wert des Sliders in einen Integer und setze die Mood
+            // Convert float to integer and set percentage
             GameManager.Instance.SetMoodPercentage(mood, (int)val);
         }
     }
 
     private void OnDestroy()
     {
-        // Sauberes Aufräumen der Listener, wenn das UI zerstört wird
         if (M_Anxious_Slider != null) M_Anxious_Slider.onValueChanged.RemoveAllListeners();
         if (M_Furious_Slider != null) M_Furious_Slider.onValueChanged.RemoveAllListeners();
         if (M_Happy_Slider != null) M_Happy_Slider.onValueChanged.RemoveAllListeners();

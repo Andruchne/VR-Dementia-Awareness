@@ -1,4 +1,8 @@
 
+/// <summary>
+/// Holds all the structs used within the AI classes
+/// </summary>
+
 [System.Serializable]
 public class InworldCredentials
 {

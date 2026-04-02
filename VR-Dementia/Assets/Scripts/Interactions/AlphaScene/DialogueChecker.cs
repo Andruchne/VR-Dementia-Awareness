@@ -6,6 +6,9 @@ using UnityEngine.Localization.Settings;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Used in the alpha scene to trigger the dialogues, and make the necessary description textfields visible
+/// </summary>
 [RequireComponent(typeof(Collider))]
 public class DialogueChecker : MonoBehaviour
 {
@@ -56,9 +59,9 @@ public class DialogueChecker : MonoBehaviour
 
         // Hide everything at start
         SetZoneUIActive(false);
-        if (moodInteraction != null) moodInteraction.SetActive(false);
-        if (moodArea != null) moodArea.SetActive(false);
-        if (moodDescription != null) moodDescription.SetActive(false);
+        if (moodInteraction != null) { moodInteraction.SetActive(false); }
+        if (moodArea != null) { moodArea.SetActive(false); }
+        if (moodDescription != null) { moodDescription.SetActive(false); }
 
         // Preload texts at startup
         StartCoroutine(PreloadTextsAsync());
@@ -114,7 +117,7 @@ public class DialogueChecker : MonoBehaviour
         {
             isPlayerInZone = true;
 
-            if (zoneRenderer != null) zoneRenderer.enabled = false;
+            if (zoneRenderer != null) { zoneRenderer.enabled = false; }
 
             // Texts are already preloaded! Just show the UI instantly.
             if (!isProcessingOrSpeaking)
@@ -122,8 +125,7 @@ public class DialogueChecker : MonoBehaviour
                 SetZoneUIActive(true);
 
                 // Hide counter group if no questions left (just to be safe)
-                if (questionsAsked >= maxQuestions && statusGroup != null)
-                    statusGroup.SetActive(false);
+                if (questionsAsked >= maxQuestions && statusGroup != null) { statusGroup.SetActive(false); }
             }
         }
     }
@@ -136,10 +138,7 @@ public class DialogueChecker : MonoBehaviour
 
             SetZoneUIActive(false);
 
-            if (questionsAsked < maxQuestions && zoneRenderer != null)
-            {
-                zoneRenderer.enabled = true;
-            }
+            if (questionsAsked < maxQuestions && zoneRenderer != null) { zoneRenderer.enabled = true; }
 
             if (GameManager.Instance != null && GameManager.Instance.VoiceInterManager.IsRecording)
             {
@@ -152,7 +151,7 @@ public class DialogueChecker : MonoBehaviour
 
     private void OnButtonPressed(InputAction.CallbackContext context)
     {
-        if (!isPlayerInZone || isProcessingOrSpeaking || questionsAsked >= maxQuestions || GameManager.Instance == null) return;
+        if (!isPlayerInZone || isProcessingOrSpeaking || questionsAsked >= maxQuestions || GameManager.Instance == null) { return; }
 
         bool isRecording = GameManager.Instance.VoiceInterManager.IsRecording;
 
@@ -160,11 +159,11 @@ public class DialogueChecker : MonoBehaviour
         {
             GameManager.Instance.StartRecordingVoice();
 
-            if (promptText != null) promptText.text = "";
+            if (promptText != null) { promptText.text = ""; }
 
             LocalizationSettings.StringDatabase.GetLocalizedStringAsync(promptStopRecording.TableReference, promptStopRecording.TableEntryReference).Completed += (op) =>
             {
-                if (promptText != null) promptText.text = op.Result;
+                if (promptText != null) { promptText.text = op.Result; }
             };
 
             recordingTimerCoroutine = StartCoroutine(AutoStopRecordingTimer(10f));
@@ -197,9 +196,9 @@ public class DialogueChecker : MonoBehaviour
 
     private void SetZoneUIActive(bool isActive)
     {
-        if (questionGroup != null) questionGroup.SetActive(isActive);
-        if (statusGroup != null) statusGroup.SetActive(isActive);
-        if (promptGroup != null) promptGroup.SetActive(isActive);
+        if (questionGroup != null) { questionGroup.SetActive(isActive); }
+        if (statusGroup != null) { statusGroup.SetActive(isActive); }
+        if (promptGroup != null) { promptGroup.SetActive(isActive); }
     }
 
     // Loads all required texts in the background without affecting the visual state of the UI GameObjects.
@@ -227,7 +226,7 @@ public class DialogueChecker : MonoBehaviour
         // Fetch Question
         if (localizedQuestions != null && questionsAsked < localizedQuestions.Count)
         {
-            var targetQuestion = localizedQuestions[questionsAsked];
+            LocalizedString targetQuestion = localizedQuestions[questionsAsked];
             LocalizationSettings.StringDatabase.GetLocalizedStringAsync(targetQuestion.TableReference, targetQuestion.TableEntryReference).Completed += (op) =>
             {
                 questionStr = op.Result;
@@ -250,9 +249,8 @@ public class DialogueChecker : MonoBehaviour
 
         yield return new WaitUntil(() => promptDone && questionDone && counterDone);
 
-        // Assign texts to components (they might be invisible right now, which is perfect)
-        if (promptText != null) promptText.text = promptStr;
-        if (questionText != null) questionText.text = questionStr;
+        if (promptText != null) { promptText.text = promptStr; }
+        if (questionText != null) { questionText.text = questionStr; }
 
         if (statusText != null && !isProcessingOrSpeaking)
         {
@@ -265,16 +263,16 @@ public class DialogueChecker : MonoBehaviour
     {
         LocalizationSettings.StringDatabase.GetLocalizedStringAsync(promptStartRecording.TableReference, promptStartRecording.TableEntryReference).Completed += (op) =>
         {
-            if (promptText != null) promptText.text = op.Result;
+            if (promptText != null) { promptText.text = op.Result; }
         };
     }
 
     private void SetProcessingVisualsActive(bool isActive)
     {
-        if (questionGroup != null) questionGroup.SetActive(!isActive);
-        if (promptGroup != null) promptGroup.SetActive(!isActive);
+        if (questionGroup != null) { questionGroup.SetActive(!isActive); }
+        if (promptGroup != null) { promptGroup.SetActive(!isActive); }
 
-        if (statusGroup != null) statusGroup.SetActive(true);
+        if (statusGroup != null) { statusGroup.SetActive(true); }
     }
 
     private void HandleProcessingStarted()
@@ -294,14 +292,11 @@ public class DialogueChecker : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
-        while (GameManager.Instance.VoiceInterManager.IsSpeaking)
-        {
-            yield return null;
-        }
+        while (GameManager.Instance.VoiceInterManager.IsSpeaking) { yield return null; }
 
         isProcessingOrSpeaking = false;
 
-        if (processingAnimationCoroutine != null) StopCoroutine(processingAnimationCoroutine);
+        if (processingAnimationCoroutine != null) { StopCoroutine(processingAnimationCoroutine); }
         SetProcessingVisualsActive(false);
 
         if (questionsAsked < maxQuestions)
@@ -310,10 +305,7 @@ public class DialogueChecker : MonoBehaviour
             yield return StartCoroutine(PreloadTextsAsync());
 
             // Show UI only if player is still waiting in the zone
-            if (isPlayerInZone)
-            {
-                SetZoneUIActive(true);
-            }
+            if (isPlayerInZone) { SetZoneUIActive(true); }
         }
         else
         {
@@ -336,10 +328,9 @@ public class DialogueChecker : MonoBehaviour
         while (true)
         {
             dotCount = (dotCount + 1) % 4;
-            if (statusText != null)
-            {
-                statusText.text = baseText + new string('.', dotCount);
-            }
+
+            if (statusText != null) { statusText.text = baseText + new string('.', dotCount); }
+
             yield return new WaitForSeconds(0.4f);
         }
     }

@@ -2,6 +2,11 @@ using UnityEngine;
 using Oculus.Interaction;
 using Oculus.Interaction.HandGrab;
 
+/// <summary>
+/// Handles fading the handheld menu in the left hand in/out.
+/// By checking the angles between the palm and the head, the alpha of the menu is mapped to make it transition
+/// Additionally checks, whether the hands are holding something, turning off/blocking the visibility in that case
+/// </summary>
 public class PalmMenuFader : MonoBehaviour
 {
     [Header("Tracking References")]
@@ -20,7 +25,7 @@ public class PalmMenuFader : MonoBehaviour
     public HandGrabInteractor leftHandGrabInteractor;
 
     [Tooltip("Drag the Left Controller Grab Interactor here (e.g., ControllerGrabInteractor)")]
-    public GrabInteractor leftControllerGrabInteractor;
+    public HandGrabInteractor leftControllerGrabInteractor;
 
     [Header("Fade Settings")]
     [Tooltip("The angle at which the menu is 100% visible")]
@@ -58,7 +63,7 @@ public class PalmMenuFader : MonoBehaviour
         menuCanvasGroup.alpha = Mathf.Lerp(menuCanvasGroup.alpha, targetAlpha, Time.deltaTime * fadeSpeed);
 
         // Turn off UI interactions when invisible (disables interactions)
-        bool isVisible = menuCanvasGroup.alpha > 0.05f; // Lowered slightly to ensure smooth fade out before disabling
+        bool isVisible = menuCanvasGroup.alpha > 0.05f;
 
         // Only toggle Active state if it actually changes to save performance
         if (menuCanvasGroup.gameObject.activeSelf != isVisible)

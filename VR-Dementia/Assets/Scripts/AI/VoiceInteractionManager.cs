@@ -10,8 +10,11 @@ using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using System.IO;
-using System.Text.RegularExpressions; // WICHTIG: Erlaubt das Filtern der Tags!
+using System.Text.RegularExpressions;
 
+/// <summary>
+/// 
+/// </summary>
 public class VoiceInteractionManager : MonoBehaviour
 {
     [Header("OpenAI Setup")]
@@ -19,8 +22,7 @@ public class VoiceInteractionManager : MonoBehaviour
     private List<ChatMessage> messages = new List<ChatMessage>();
 
     [TextArea(5, 20)]
-    [SerializeField] private string systemPrompt = "You are roleplaying Juliette, a 68-year-old Dutch woman living in Zutphen.\r\nJuliette used to be a geography teacher and loved hiking and traveling across Europe. She was known as a kind and enthusiastic teacher who cared deeply about her students.\r\n\r\nJuliette has early to mid-stage dementia. She is aware that she has dementia and is still mostly independent.\r\nHer symptoms include:\r\n- short term memory loss\r\n- occasional repetition\r\n- mild confusion\r\n- occasional word-finding difficulty\r\n- emotional sensitivity when small mistakes happen\r\n\r\nJuliette recognizes the player. The player is her grandchild.\r\nShe does NOT forget who the player is. However she may:\r\n- occasionally mix up names\r\n- pause while searching for words\r\n- repeat questions occasionally\r\n- slightly forget recent parts of the conversation\r\n\r\nJuliette is generally present and aware of her surroundings and the current moment. She understands she is at home and that the player is visiting her.\r\nShe does NOT focus only on distant past memories. She talks naturally about both present and past, with a preference for what is currently happening.\r\nJuliette is warm, calm, and affectionate.\r\n\r\nEMOTION & TTS INSTRUCTIONS:\r\nYour output is being fed directly into an Inworld Text-to-Speech engine. You MUST use bracketed emotion and action tags inline to drive the voice engine.\r\n- Use ONLY these exact emotion tags: [neutral], [happy], [sad], [angry], [fearful], [surprised], [disgusted].\r\n- Use the [neutral] tag whenever you want to speak in a normal, calm, default voice.\r\n- You can also use these exact action tags for non-verbal sounds: [laugh], [sigh], [cough], [breathe].\r\n- CRITICAL: DO NOT invent your own tags! DO NOT write descriptive tags like [pausing], [searching for a word], or [smiles]. ONLY use the exact tags listed above.\r\n- NEVER translate the emotion or action tags. They must remain in English and in brackets.\r\n- Place an emotion tag at the very beginning of your response. Insert new tags mid-sentence whenever her mood shifts or she does an action.\r\n- Example: \"[happy] Hello sweetheart, so good to see you! [laugh] You've grown so much. [neutral] But um... didn't your mother come with you? [sigh] I think I lost my train of thought.\"\r\n- Use ellipses (...) to indicate moments where Juliette is searching for a word or pausing. DO NOT use brackets for pauses!\r\n\r\nHer speech style should feel natural:\r\n- occasional pauses (...)\r\n- short sentences\r\n- mild topic switching\r\nShe may sometimes repeat a question or slightly forget what was just discussed.\r\nShe never becomes aggressive.\r\n\r\nAll responses must be in English.\r\nKeep responses short (2-5 sentences) so the dialogue feels natural in a VR experience.";
-
+    [SerializeField] private string systemPrompt = "";
     // Stores the current language code for Whisper STT
     private string sttLanguage = "en";
 
@@ -50,7 +52,7 @@ public class VoiceInteractionManager : MonoBehaviour
     {
         get
         {
-            if (!dialogueInstance.isValid()) return false;
+            if (!dialogueInstance.isValid()) { return false; }
             dialogueInstance.getPlaybackState(out FMOD.Studio.PLAYBACK_STATE state);
             return state == FMOD.Studio.PLAYBACK_STATE.PLAYING || state == FMOD.Studio.PLAYBACK_STATE.STARTING;
         }
@@ -61,13 +63,13 @@ public class VoiceInteractionManager : MonoBehaviour
         openAI = new OpenAIApi();
         openAI.BasePath = "https://api.groq.com/openai/v1";
 
-#if UNITY_ANDROID
+        #if UNITY_ANDROID
         // Request microphone permission on Android (Meta Quest) devices
         if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.Microphone))
         {
             UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.Microphone);
         }
-#endif
+        #endif
 
         // Wait for the Unity Localization system to finish initializing
         yield return LocalizationSettings.InitializationOperation;
@@ -75,7 +77,7 @@ public class VoiceInteractionManager : MonoBehaviour
         // Subscribe to the built-in Unity Localization change event
         LocalizationSettings.SelectedLocaleChanged += HandleLocalizationChanged;
 
-        // Force an initial sync with the currently active language at startup
+        // Sync with the currently active language at startup
         if (LocalizationSettings.SelectedLocale != null)
         {
             HandleLocalizationChanged(LocalizationSettings.SelectedLocale);
@@ -84,26 +86,20 @@ public class VoiceInteractionManager : MonoBehaviour
 
     private void Update()
     {
-        // Guard clause to ensure a keyboard is connected
-        if (Keyboard.current == null) return;
+        // Make sure keyboard is connected
+        if (Keyboard.current == null) { return; }
 
-        // Toggle recording state when the spacebar is pressed
+        // Record voice when spacebar is pressed / stop when pressed once more
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            if (!isRecording)
-            {
-                StartRecording();
-            }
-            else
-            {
-                StopRecordingAndProcess();
-            }
+            if (!isRecording) { StartRecording(); }
+            else { StopRecordingAndProcess(); }
         }
     }
 
     public void DiscardRecording()
     {
-        if (!isRecording) return;
+        if (!isRecording) { return; }
         isRecording = false;
 
         // Stop FMOD without processing the data
@@ -117,7 +113,8 @@ public class VoiceInteractionManager : MonoBehaviour
         if (!micSound.hasHandle())
         {
             InitFMODMicrophone();
-            if (!micSound.hasHandle()) { return; } // Abort if initialization failed
+            // Abort if initialization failed
+            if (!micSound.hasHandle()) { return; }
         }
 
         isRecording = true;
@@ -129,7 +126,7 @@ public class VoiceInteractionManager : MonoBehaviour
 
     public async void StopRecordingAndProcess()
     {
-        if (!isRecording) return;
+        if (!isRecording) { return; }
         isRecording = false;
 
         OnProcessingStarted?.Invoke();
@@ -146,20 +143,20 @@ public class VoiceInteractionManager : MonoBehaviour
 
         if (pcmData == null || pcmData.Length == 0)
         {
-            Debug.LogError("Failed to extract audio data from FMOD. Position was likely 0.");
-            OnProcessingFinished?.Invoke(); // End processing if error occurs
+            Debug.LogError("Failed to extract audio data from FMOD.");
+            OnProcessingFinished?.Invoke();
             return;
         }
 
-        // Process Speech-To-Text (OpenAI Whisper)
+        // Process Speech-To-Text (Groq Whisper)
         string userText = await TranscribeAudio(pcmData);
         Debug.Log($"User said: {userText}");
 
-        // Generate AI Text Response (OpenAI GPT)
+        // Generate AI Text Response (Groq Llama)
         string aiResponseText = await GetAIResponse(userText);
         Debug.Log($"AI Response: {aiResponseText}");
 
-        // Process Text-To-Speech with Emotion Tag chunking (Inworld)
+        // Process Text-To-Speech (Inworld)
         await PlayInworldTTS(aiResponseText);
 
         OnProcessingFinished?.Invoke();
@@ -167,7 +164,7 @@ public class VoiceInteractionManager : MonoBehaviour
 
     private void HandleLocalizationChanged(Locale newLocale)
     {
-        // We use StartsWith to catch all variations of a language
+        // We use StartsWith to catch all variations of english language
         if (newLocale.Identifier.Code.StartsWith("en"))
         {
             sttLanguage = "en";
@@ -217,7 +214,7 @@ public class VoiceInteractionManager : MonoBehaviour
     private byte[] GetRecordedPCMData(uint recordPosition)
     {
         // Abort if no data was recorded
-        if (recordPosition == 0) return null;
+        if (recordPosition == 0) { return null; }
 
         // Calculate the file size in bytes (Samples * 2 bytes per short * number of channels)
         uint lengthInBytes = recordPosition * sizeof(short) * (uint)nativeChannels;
@@ -261,7 +258,7 @@ public class VoiceInteractionManager : MonoBehaviour
 
     private async Task<string> GetAIResponse(string prompt)
     {
-        var newMessage = new ChatMessage()
+        ChatMessage newMessage = new ChatMessage()
         {
             Role = "user",
             Content = prompt
@@ -277,7 +274,7 @@ public class VoiceInteractionManager : MonoBehaviour
             // Update the system prompt in the history dynamically if language changed mid-conversation
             if (messages[0].Role == "system")
             {
-                var updatedSystemMessage = messages[0];
+                ChatMessage updatedSystemMessage = messages[0];
                 updatedSystemMessage.Content = systemPrompt;
                 messages[0] = updatedSystemMessage;
             }
@@ -320,6 +317,7 @@ public class VoiceInteractionManager : MonoBehaviour
 
         List<string> chunkedRequests = new List<string>();
 
+        // Get the word in the bracket, to check if it's neutral or not
         // Regex extracts the word inside the brackets (Group 1) and the text following it (Group 2)
         // e.g., "[happy] Hello!" -> Group 1: "happy", Group 2: " Hello!"
         MatchCollection matches = Regex.Matches(aiResponseText, @"\[(.*?)\]([^\[]*)");
@@ -384,7 +382,7 @@ public class VoiceInteractionManager : MonoBehaviour
             }
         }
 
-        // Wrap a fresh, clean WAV header around the combined raw PCM bytes
+        // Wrap a new WAV header around the combined raw PCM bytes
         // Inworld defaults to 44100Hz, 1 Channel (Mono)
         byte[] finalWavBytes = SaveWav.SaveFromPCM16(stitchedPCM.ToArray(), 44100, 1);
 
@@ -392,7 +390,7 @@ public class VoiceInteractionManager : MonoBehaviour
         string tempPath = Path.Combine(Application.temporaryCachePath, "stitched_voice.wav");
         File.WriteAllBytes(tempPath, finalWavBytes);
 
-        // Play in FMOD!
+        // Play in FMOD
         PlayFMODProgrammerSound(tempPath);
     }
 
@@ -417,7 +415,7 @@ public class VoiceInteractionManager : MonoBehaviour
             FMOD.Studio.EVENT_CALLBACK_TYPE.DESTROY_PROGRAMMER_SOUND);
 
         dialogueInstance.start();
-        dialogueInstance.release(); // Safe to release here, FMOD manages its lifetime
+        dialogueInstance.release();
     }
 
     [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
@@ -467,13 +465,9 @@ public class VoiceInteractionManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Unsubscribe from event to prevent memory leaks when the object is destroyed
         LocalizationSettings.SelectedLocaleChanged -= HandleLocalizationChanged;
 
         // Ensure the FMOD recording sound buffer is released when the object is destroyed
-        if (micSound.hasHandle())
-        {
-            micSound.release();
-        }
+        if (micSound.hasHandle()) { micSound.release(); }
     }
 }
