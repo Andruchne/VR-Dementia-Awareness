@@ -39,7 +39,11 @@ public class InworldTTSClient : MonoBehaviour
         }
     }
 
-    public async Task<string> GenerateSpeech(string textToSpeak)
+    /// <summary>
+    /// Generates speech and returns the raw PCM bytes directly, bypassing file saving.
+    /// Crucial for parallel processing and stitching.
+    /// </summary>
+    public async Task<byte[]> GenerateSpeechBytes(string textToSpeak)
     {
         if (string.IsNullOrEmpty(base64AuthToken))
         {
@@ -80,15 +84,9 @@ public class InworldTTSClient : MonoBehaviour
                 return null;
             }
 
-            // Parse the response and extract the Base64 audio string
+            // Parse the response and extract the Base64 audio string to byte array
             TTSResponse response = JsonUtility.FromJson<TTSResponse>(www.downloadHandler.text);
-            byte[] audioBytes = Convert.FromBase64String(response.audioContent);
-
-            // Save bytes to a temp file and return the file path directly for FMOD
-            string tempPath = Path.Combine(Application.temporaryCachePath, "character_voice_temp.wav");
-            File.WriteAllBytes(tempPath, audioBytes);
-
-            return tempPath;
+            return Convert.FromBase64String(response.audioContent);
         }
     }
 }

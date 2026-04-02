@@ -9,6 +9,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using System.IO;
+using System.Text.RegularExpressions; // WICHTIG: Erlaubt das Filtern der Tags!
 
 public class VoiceInteractionManager : MonoBehaviour
 {
@@ -16,8 +18,8 @@ public class VoiceInteractionManager : MonoBehaviour
     private OpenAIApi openAI;
     private List<ChatMessage> messages = new List<ChatMessage>();
 
-    [TextArea(5, 10)]
-    [SerializeField] private string systemPrompt = "You are roleplaying Juliette, a 68-year-old Dutch woman living in Zutphen.\r\nJuliette used to be a geography teacher and loved hiking and traveling across Europe. She was known as a kind and enthusiastic teacher who cared deeply about her students.\r\nJuliette has early to mid stage dementia. She is aware that she has dementia and is still mostly independent.\r\nHer symptoms include:\r\n- short term memory loss\r\n- occasional repetition\r\n- mild confusion\r\n- occasional word-finding difficulty\r\n- emotional sensitivity when small mistakes happen\r\nJuliette recognizes the player. The player is her grandchild.\r\nShe does NOT forget who the player is. However she may:\r\n- occasionally mix up names\r\n- pause while searching for words\r\n- repeat questions occasionally\r\n- slightly forget recent parts of the conversation\r\nJuliette is generally present and aware of her surroundings and the current moment. She understands she is at home and that the player is visiting her.\r\nShe does NOT focus only on distant past memories. She talks naturally about both present and past, with a preference for what is currently happening.\r\nJuliette is warm, calm, and affectionate.\r\nShe enjoys talking about:\r\n- what is happening around her\r\n- simple daily activities (tea, house, weather)\r\n- her students and teaching (occasionally)\r\n- small memories from her life (not overly dominant)\r\nHer speech style should feel natural:\r\n- occasional pauses\r\n- short sentences\r\n- sometimes unfinished thoughts\r\n- mild topic switching\r\nShe may sometimes repeat a question or slightly forget what was just discussed.\r\nJuliette occasionally pauses mid sentence when she cannot remember a word.\r\nShe sometimes asks the player questions to keep the conversation going.\r\nShe never becomes aggressive.\r\nAll responses must be in English.\r\nKeep responses short (2-5 sentences) so the dialogue feels natural in a VR experience.";
+    [TextArea(5, 20)]
+    [SerializeField] private string systemPrompt = "You are roleplaying Juliette, a 68-year-old Dutch woman living in Zutphen.\r\nJuliette used to be a geography teacher and loved hiking and traveling across Europe. She was known as a kind and enthusiastic teacher who cared deeply about her students.\r\n\r\nJuliette has early to mid-stage dementia. She is aware that she has dementia and is still mostly independent.\r\nHer symptoms include:\r\n- short term memory loss\r\n- occasional repetition\r\n- mild confusion\r\n- occasional word-finding difficulty\r\n- emotional sensitivity when small mistakes happen\r\n\r\nJuliette recognizes the player. The player is her grandchild.\r\nShe does NOT forget who the player is. However she may:\r\n- occasionally mix up names\r\n- pause while searching for words\r\n- repeat questions occasionally\r\n- slightly forget recent parts of the conversation\r\n\r\nJuliette is generally present and aware of her surroundings and the current moment. She understands she is at home and that the player is visiting her.\r\nShe does NOT focus only on distant past memories. She talks naturally about both present and past, with a preference for what is currently happening.\r\nJuliette is warm, calm, and affectionate.\r\n\r\nEMOTION & TTS INSTRUCTIONS:\r\nYour output is being fed directly into an Inworld Text-to-Speech engine. You MUST use bracketed emotion and action tags inline to drive the voice engine.\r\n- Use ONLY these exact emotion tags: [neutral], [happy], [sad], [angry], [fearful], [surprised], [disgusted].\r\n- Use the [neutral] tag whenever you want to speak in a normal, calm, default voice.\r\n- You can also use these exact action tags for non-verbal sounds: [laugh], [sigh], [cough], [breathe].\r\n- CRITICAL: DO NOT invent your own tags! DO NOT write descriptive tags like [pausing], [searching for a word], or [smiles]. ONLY use the exact tags listed above.\r\n- NEVER translate the emotion or action tags. They must remain in English and in brackets.\r\n- Place an emotion tag at the very beginning of your response. Insert new tags mid-sentence whenever her mood shifts or she does an action.\r\n- Example: \"[happy] Hello sweetheart, so good to see you! [laugh] You've grown so much. [neutral] But um... didn't your mother come with you? [sigh] I think I lost my train of thought.\"\r\n- Use ellipses (...) to indicate moments where Juliette is searching for a word or pausing. DO NOT use brackets for pauses!\r\n\r\nHer speech style should feel natural:\r\n- occasional pauses (...)\r\n- short sentences\r\n- mild topic switching\r\nShe may sometimes repeat a question or slightly forget what was just discussed.\r\nShe never becomes aggressive.\r\n\r\nAll responses must be in English.\r\nKeep responses short (2-5 sentences) so the dialogue feels natural in a VR experience.";
 
     // Stores the current language code for Whisper STT
     private string sttLanguage = "en";
@@ -30,7 +32,7 @@ public class VoiceInteractionManager : MonoBehaviour
     private int nativeRate;
     private int nativeChannels;
     private int recordDeviceId = 0; // Default microphone
-    private const int MAX_RECORDING_SECONDS = 10;
+    private const int MAX_RECORDING_SECONDS = 20;
     private bool isRecording = false;
 
     [Header("FMOD Playback Setup")]
@@ -57,14 +59,15 @@ public class VoiceInteractionManager : MonoBehaviour
     private IEnumerator Start()
     {
         openAI = new OpenAIApi();
+        openAI.BasePath = "https://api.groq.com/openai/v1";
 
-        #if UNITY_ANDROID
+#if UNITY_ANDROID
         // Request microphone permission on Android (Meta Quest) devices
         if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.Microphone))
         {
             UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.Microphone);
         }
-        #endif
+#endif
 
         // Wait for the Unity Localization system to finish initializing
         yield return LocalizationSettings.InitializationOperation;
@@ -144,7 +147,7 @@ public class VoiceInteractionManager : MonoBehaviour
         if (pcmData == null || pcmData.Length == 0)
         {
             Debug.LogError("Failed to extract audio data from FMOD. Position was likely 0.");
-            OnProcessingFinished?.Invoke(); // Fehler, also beenden wir das "Processing"
+            OnProcessingFinished?.Invoke(); // End processing if error occurs
             return;
         }
 
@@ -156,7 +159,7 @@ public class VoiceInteractionManager : MonoBehaviour
         string aiResponseText = await GetAIResponse(userText);
         Debug.Log($"AI Response: {aiResponseText}");
 
-        // Process Text-To-Speech (Inworld)
+        // Process Text-To-Speech with Emotion Tag chunking (Inworld)
         await PlayInworldTTS(aiResponseText);
 
         OnProcessingFinished?.Invoke();
@@ -191,8 +194,13 @@ public class VoiceInteractionManager : MonoBehaviour
         }
 
         // Get hardware details from the default microphone
-        RuntimeManager.CoreSystem.getRecordDriverInfo(recordDeviceId, out string name, 128, out _, out nativeRate, out _, out nativeChannels, out _);
-        Debug.Log($"Initialized FMOD Mic: {name} | Rate: {nativeRate} | Channels: {nativeChannels}");
+        RuntimeManager.CoreSystem.getRecordDriverInfo(recordDeviceId, out string name, 128, out _, out int originalRate, out _, out int originalChannels, out _);
+
+        // Whisper uses 16kHz Mono anyways, so keep it capped to save resources
+        nativeRate = 16000;
+        nativeChannels = 1;
+
+        Debug.Log($"Initialized FMOD Mic: {name} | Original: {originalRate}Hz | Forced for STT: {nativeRate}Hz Mono");
 
         // Prepare an FMOD struct to allocate memory for the recording
         FMOD.CREATESOUNDEXINFO exinfo = new FMOD.CREATESOUNDEXINFO();
@@ -243,7 +251,7 @@ public class VoiceInteractionManager : MonoBehaviour
         CreateAudioTranscriptionsRequest req = new CreateAudioTranscriptionsRequest
         {
             FileData = new FileData() { Data = wavData, Name = "audio.wav" },
-            Model = "whisper-1",
+            Model = "whisper-large-v3",
             Language = sttLanguage
         };
 
@@ -279,8 +287,9 @@ public class VoiceInteractionManager : MonoBehaviour
 
         CreateChatCompletionRequest req = new CreateChatCompletionRequest
         {
-            Model = "gpt-4o-mini",
-            Messages = messages
+            Model = "llama-3.3-70b-versatile",
+            Messages = messages,
+            Temperature = 0.7f
         };
 
         CreateChatCompletionResponse res = await openAI.CreateChatCompletion(req);
@@ -299,21 +308,92 @@ public class VoiceInteractionManager : MonoBehaviour
         return "Error: No response generated.";
     }
 
-    private async Task PlayInworldTTS(string textToSpeak)
+    private async Task PlayInworldTTS(string aiResponseText)
     {
-        Debug.Log("Sending text to Inworld TTS...");
+        Debug.Log("Parsing emotions and sending parallel TTS requests...");
 
-        // Retrieve the local file path of the generated audio
-        string audioFilePath = await inworldTTS.GenerateSpeech(textToSpeak);
+        // Ensure the string starts with a tag so our Regex catches the first sentence
+        if (!aiResponseText.TrimStart().StartsWith("["))
+        {
+            aiResponseText = "[neutral] " + aiResponseText;
+        }
 
-        if (!string.IsNullOrEmpty(audioFilePath))
+        List<string> chunkedRequests = new List<string>();
+
+        // Regex extracts the word inside the brackets (Group 1) and the text following it (Group 2)
+        // e.g., "[happy] Hello!" -> Group 1: "happy", Group 2: " Hello!"
+        MatchCollection matches = Regex.Matches(aiResponseText, @"\[(.*?)\]([^\[]*)");
+
+        foreach (Match match in matches)
         {
-            PlayFMODProgrammerSound(audioFilePath);
+            string emotionTag = match.Groups[1].Value.ToLower().Trim();
+            string textSegment = match.Groups[2].Value.Trim();
+
+            if (!string.IsNullOrEmpty(textSegment))
+            {
+                if (emotionTag == "neutral")
+                {
+                    // BOUNCER LOGIC: Strip the [neutral] tag entirely and send only the text.
+                    // This forces Inworld to use its default voice without reading the tag out loud.
+                    chunkedRequests.Add(textSegment);
+                }
+                else
+                {
+                    // Keep the valid tags for Inworld (e.g., [happy] Hello there!)
+                    chunkedRequests.Add($"[{emotionTag}] {textSegment}");
+                }
+            }
         }
-        else
+
+        // Fire all requests simultaneously
+        Task<byte[]>[] fetchTasks = new Task<byte[]>[chunkedRequests.Count];
+        for (int i = 0; i < chunkedRequests.Count; i++)
         {
-            Debug.LogError("Failed to generate TTS audio.");
+            fetchTasks[i] = inworldTTS.GenerateSpeechBytes(chunkedRequests[i]);
         }
+
+        // Wait until all parallel tasks have returned their audio bytes
+        byte[][] audioDataArray = await Task.WhenAll(fetchTasks);
+
+        // Stitch audio bytes together
+        List<byte> stitchedPCM = new List<byte>();
+
+        // Artificial Pause length
+        float pauseDurationSeconds = 0.2f;
+        byte[] silence = new byte[(int)(44100 * 2 * pauseDurationSeconds)];
+
+        for (int i = 0; i < audioDataArray.Length; i++)
+        {
+            byte[] audio = audioDataArray[i];
+            if (audio != null && audio.Length > 0)
+            {
+                // Inworld occasionally includes a 44-byte WAV header. 
+                // We strip it off here to prevent loud 'pops' between chunks.
+                int startIndex = (audio.Length > 44 && audio[0] == 'R' && audio[1] == 'I' && audio[2] == 'F' && audio[3] == 'F') ? 44 : 0;
+
+                for (int j = startIndex; j < audio.Length; j++)
+                {
+                    stitchedPCM.Add(audio[j]);
+                }
+
+                // Add a brief silence between chunks, but not after the very last one
+                if (i < audioDataArray.Length - 1)
+                {
+                    stitchedPCM.AddRange(silence);
+                }
+            }
+        }
+
+        // Wrap a fresh, clean WAV header around the combined raw PCM bytes
+        // Inworld defaults to 44100Hz, 1 Channel (Mono)
+        byte[] finalWavBytes = SaveWav.SaveFromPCM16(stitchedPCM.ToArray(), 44100, 1);
+
+        // Save to cache
+        string tempPath = Path.Combine(Application.temporaryCachePath, "stitched_voice.wav");
+        File.WriteAllBytes(tempPath, finalWavBytes);
+
+        // Play in FMOD!
+        PlayFMODProgrammerSound(tempPath);
     }
 
     private void PlayFMODProgrammerSound(string filePath)

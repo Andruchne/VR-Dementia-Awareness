@@ -7362,7 +7362,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 31.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8904,6 +8904,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6cc465b67c587245bd920541d545733, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PostProcessingManager
+  musicEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   volumeCollection: {fileID: 11400000, guid: 769b71b6e703fe540aefaeb98e410b74, type: 2}
   activeConfigs:
   - mood: 0
