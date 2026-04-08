@@ -11,18 +11,23 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using System.IO;
 using System.Text.RegularExpressions;
+using Groq;
 
 /// <summary>
-/// 
+/// Manages all the AI processes, going from STT, to text response, to TTS.
+/// It was made FMOD compatible, and also localization settings compatible
+/// Especially in terms of TTS, it separates the text into their emotions - sending multiple requests simultaneously.
+/// Currently, it uses Groq for STT and text responses, and Inworld for TTS.
 /// </summary>
 public class VoiceInteractionManager : MonoBehaviour
 {
     [Header("OpenAI Setup")]
-    private OpenAIApi openAI;
+    private GroqApi groq;
     private List<ChatMessage> messages = new List<ChatMessage>();
 
     [TextArea(5, 20)]
     [SerializeField] private string systemPrompt = "";
+
     // Stores the current language code for Whisper STT
     private string sttLanguage = "en";
 
@@ -60,8 +65,7 @@ public class VoiceInteractionManager : MonoBehaviour
 
     private IEnumerator Start()
     {
-        openAI = new OpenAIApi();
-        openAI.BasePath = "https://api.groq.com/openai/v1";
+        groq = new GroqApi();
 
         #if UNITY_ANDROID
         // Request microphone permission on Android (Meta Quest) devices
@@ -69,6 +73,9 @@ public class VoiceInteractionManager : MonoBehaviour
         {
             UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.Microphone);
         }
+        
+        // Give the OS a brief moment in case a permission popup appears
+        yield return new WaitForSeconds(0.5f);
         #endif
 
         // Wait for the Unity Localization system to finish initializing
@@ -81,6 +88,12 @@ public class VoiceInteractionManager : MonoBehaviour
         if (LocalizationSettings.SelectedLocale != null)
         {
             HandleLocalizationChanged(LocalizationSettings.SelectedLocale);
+        }
+
+        // Initialize the microphone in the background during startup to prevent frame drops later
+        if (!micSound.hasHandle())
+        {
+            InitFMODMicrophone();
         }
     }
 
@@ -109,7 +122,7 @@ public class VoiceInteractionManager : MonoBehaviour
 
     public void StartRecording()
     {
-        // Delaying initialization ensures the user had time to accept Android Mic permissions
+        // Fallback: Delaying initialization ensures the user had time to accept Android Mic permissions
         if (!micSound.hasHandle())
         {
             InitFMODMicrophone();
@@ -148,16 +161,25 @@ public class VoiceInteractionManager : MonoBehaviour
             return;
         }
 
+        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+
+        stopwatch.Start();
         // Process Speech-To-Text (Groq Whisper)
         string userText = await TranscribeAudio(pcmData);
-        Debug.Log($"User said: {userText}");
+        stopwatch.Stop();
+        Debug.Log($"[MEASURE] STT: {stopwatch.ElapsedMilliseconds} ms | User said: {userText}");
 
+        stopwatch.Restart();
         // Generate AI Text Response (Groq Llama)
         string aiResponseText = await GetAIResponse(userText);
-        Debug.Log($"AI Response: {aiResponseText}");
+        stopwatch.Stop();
+        Debug.Log($"[MEASURE] LLM: {stopwatch.ElapsedMilliseconds} ms | AI Response: {aiResponseText}");
 
+        stopwatch.Restart();
         // Process Text-To-Speech (Inworld)
         await PlayInworldTTS(aiResponseText);
+        stopwatch.Stop();
+        Debug.Log($"[MEASURE] TTS: {stopwatch.ElapsedMilliseconds} ms | TTS Finished.");
 
         OnProcessingFinished?.Invoke();
     }
@@ -242,8 +264,11 @@ public class VoiceInteractionManager : MonoBehaviour
 
     private async Task<string> TranscribeAudio(byte[] pcmData)
     {
-        // Convert the raw PCM data into a valid WAV format
-        byte[] wavData = SaveWav.SaveFromPCM16(pcmData, nativeRate, nativeChannels);
+        // Offload the heavy byte array conversion to a background thread to prevent the main thread from freezing
+        byte[] wavData = await Task.Run(() =>
+        {
+            return SaveWav.SaveFromPCM16(pcmData, nativeRate, nativeChannels);
+        });
 
         CreateAudioTranscriptionsRequest req = new CreateAudioTranscriptionsRequest
         {
@@ -252,7 +277,7 @@ public class VoiceInteractionManager : MonoBehaviour
             Language = sttLanguage
         };
 
-        CreateAudioResponse res = await openAI.CreateAudioTranscription(req);
+        CreateAudioResponse res = await groq.CreateAudioTranscription(req);
         return res.Text;
     }
 
@@ -284,12 +309,12 @@ public class VoiceInteractionManager : MonoBehaviour
 
         CreateChatCompletionRequest req = new CreateChatCompletionRequest
         {
-            Model = "llama-3.3-70b-versatile",
+            Model = "llama-3.1-8b-instant",
             Messages = messages,
             Temperature = 0.7f
         };
 
-        CreateChatCompletionResponse res = await openAI.CreateChatCompletion(req);
+        CreateChatCompletionResponse res = await groq.CreateChatCompletion(req);
 
         if (res.Choices != null && res.Choices.Count > 0)
         {
@@ -353,44 +378,49 @@ public class VoiceInteractionManager : MonoBehaviour
         // Wait until all parallel tasks have returned their audio bytes
         byte[][] audioDataArray = await Task.WhenAll(fetchTasks);
 
-        // Stitch audio bytes together
-        List<byte> stitchedPCM = new List<byte>();
+        string tempPath = Path.Combine(Application.temporaryCachePath, "stitched_voice.wav");
 
-        // Artificial Pause length
-        float pauseDurationSeconds = 0.2f;
-        byte[] silence = new byte[(int)(44100 * 2 * pauseDurationSeconds)];
-
-        for (int i = 0; i < audioDataArray.Length; i++)
+        // Offload the heavy array stitching and file writing to a background thread
+        await Task.Run(() =>
         {
-            byte[] audio = audioDataArray[i];
-            if (audio != null && audio.Length > 0)
+            // Stitch audio bytes together
+            List<byte> stitchedPCM = new List<byte>();
+
+            // Artificial Pause length
+            float pauseDurationSeconds = 0.2f;
+            byte[] silence = new byte[(int)(44100 * 2 * pauseDurationSeconds)];
+
+            for (int i = 0; i < audioDataArray.Length; i++)
             {
-                // Inworld occasionally includes a 44-byte WAV header. 
-                // We strip it off here to prevent loud 'pops' between chunks.
-                int startIndex = (audio.Length > 44 && audio[0] == 'R' && audio[1] == 'I' && audio[2] == 'F' && audio[3] == 'F') ? 44 : 0;
-
-                for (int j = startIndex; j < audio.Length; j++)
+                byte[] audio = audioDataArray[i];
+                if (audio != null && audio.Length > 0)
                 {
-                    stitchedPCM.Add(audio[j]);
-                }
+                    // Inworld occasionally includes a 44-byte WAV header. 
+                    // We strip it off here to prevent loud 'pops' between chunks.
+                    int startIndex = (audio.Length > 44 && audio[0] == 'R' && audio[1] == 'I' && audio[2] == 'F' && audio[3] == 'F') ? 44 : 0;
 
-                // Add a brief silence between chunks, but not after the very last one
-                if (i < audioDataArray.Length - 1)
-                {
-                    stitchedPCM.AddRange(silence);
+                    for (int j = startIndex; j < audio.Length; j++)
+                    {
+                        stitchedPCM.Add(audio[j]);
+                    }
+
+                    // Add a brief silence between chunks, but not after the very last one
+                    if (i < audioDataArray.Length - 1)
+                    {
+                        stitchedPCM.AddRange(silence);
+                    }
                 }
             }
-        }
 
-        // Wrap a new WAV header around the combined raw PCM bytes
-        // Inworld defaults to 44100Hz, 1 Channel (Mono)
-        byte[] finalWavBytes = SaveWav.SaveFromPCM16(stitchedPCM.ToArray(), 44100, 1);
+            // Wrap a new WAV header around the combined raw PCM bytes
+            // Inworld defaults to 44100Hz, 1 Channel (Mono)
+            byte[] finalWavBytes = SaveWav.SaveFromPCM16(stitchedPCM.ToArray(), 44100, 1);
 
-        // Save to cache
-        string tempPath = Path.Combine(Application.temporaryCachePath, "stitched_voice.wav");
-        File.WriteAllBytes(tempPath, finalWavBytes);
+            // Save to cache
+            File.WriteAllBytes(tempPath, finalWavBytes);
+        });
 
-        // Play in FMOD
+        // Play in FMOD (Must be called on the main thread after the background task finishes)
         PlayFMODProgrammerSound(tempPath);
     }
 
