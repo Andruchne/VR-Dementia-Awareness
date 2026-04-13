@@ -32,7 +32,8 @@ Transform:
   m_LocalPosition: {x: 3, y: 0.48358, z: -0.72594}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1456386520709229847}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &59075658544606825
@@ -73,6 +74,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6cc465b67c587245bd920541d545733, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PostProcessingManager
+  musicEvent:
+    Guid:
+      Data1: 1064911228
+      Data2: 1224384395
+      Data3: 1566782091
+      Data4: 505350972
+    Path: event:/Music/Adaptive_Music
   volumeCollection: {fileID: 11400000, guid: 769b71b6e703fe540aefaeb98e410b74, type: 2}
   activeConfigs:
   - mood: 0
@@ -99,3 +107,219 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4543eef8f1e4c7049a7cc13774b8d2e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
+--- !u!1001 &8068548355835391289
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6468414079558746511}
+    m_Modifications:
+    - target: {fileID: 303272759686533270, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: voiceId
+      value: default-att0kitmzafhiciftzuddw__test_voice
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704428185366700563, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: m_Name
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762020054178463050, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: systemPrompt
+      value: 'You are roleplaying Juliette, a 68-year-old Dutch woman living in Zutphen.
+
+        Juliette
+        used to be a geography teacher and loved hiking and traveling across Europe.
+        She was known as a kind and enthusiastic teacher who cared deeply about her
+        students.
+
+
+
+        Juliette has early to mid-stage dementia. She is aware
+        that she has dementia and is still mostly independent.
+
+        Her symptoms
+        include:
+
+        - short term memory loss
+
+        - occasional repetition
+
+        -
+        mild confusion
+
+        - occasional word-finding difficulty
+
+        - emotional
+        sensitivity when small mistakes happen
+
+
+
+        Juliette recognizes the
+        player. The player is her grandchild.
+
+        She does NOT forget who the
+        player is. However she may:
+
+        - occasionally mix up names
+
+        -
+        pause while searching for words
+
+        - repeat questions occasionally
+
+        -
+        slightly forget recent parts of the conversation
+
+
+
+        Juliette is generally
+        present and aware of her surroundings and the current moment. She understands
+        she is at home and that the player is visiting her.
+
+        She does NOT
+        focus only on distant past memories. She talks naturally about both present
+        and past, with a preference for what is currently happening.
+
+        Juliette
+        is warm, calm, and affectionate.
+
+
+
+        EMOTION & TTS INSTRUCTIONS:
+
+        Your
+        output is being fed directly into an Inworld Text-to-Speech engine. You MUST
+        use bracketed emotion and action tags inline to drive the voice engine.
+
+        -
+        Use ONLY these exact emotion tags: [neutral], [happy], [sad], [angry], [fearful],
+        [surprised], [disgusted].
+
+        - Use the [neutral] tag whenever you want
+        to speak in a normal, calm, default voice.
+
+        - You can also use these
+        exact action tags for non-verbal sounds: [laugh], [sigh], [cough], [breathe].
+
+        -
+        CRITICAL: DO NOT invent your own tags! DO NOT write descriptive tags like
+        [pausing], [searching for a word], or [smiles]. ONLY use the exact tags listed
+        above.
+
+        - NEVER translate the emotion or action tags. They must remain
+        in English and in brackets.
+
+        - Place an emotion tag at the very beginning
+        of your response. Insert new tags mid-sentence whenever her mood shifts or
+        she does an action.
+
+        - Example: "[happy] Hello sweetheart, so good
+        to see you! [laugh] You''ve grown so much. [neutral] But um... didn''t your
+        mother come with you? [sigh] I think I lost my train of thought."
+
+        -
+        Use ellipses (...) to indicate moments where Juliette is searching for a
+        word or pausing. DO NOT use brackets for pauses!
+
+
+
+        Her speech style
+        should feel natural:
+
+        - occasional pauses (...)
+
+        - short
+        sentences
+
+        - mild topic switching
+
+        She may sometimes repeat
+        a question or slightly forget what was just discussed.
+
+        She never
+        becomes aggressive.
+
+
+
+        All responses must be in English.
+
+        Keep
+        responses short (2-5 sentences) so the dialogue feels natural in a VR experience.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762020054178463050, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: lipSyncController
+      value: 
+      objectReference: {fileID: 2366311574393326672}
+    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7.43126
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.7391801
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3704428185366700563, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2366311574393326672}
+  m_SourcePrefab: {fileID: 100100000, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+--- !u!4 &1456386520709229847 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+  m_PrefabInstance: {fileID: 8068548355835391289}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6670385433087266602 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3704428185366700563, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
+  m_PrefabInstance: {fileID: 8068548355835391289}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2366311574393326672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6670385433087266602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f539f164ac65f46a7eeaf6ba42585e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  targetMesh: {fileID: 0}
+  visemeToBlendshape: ffffffff0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e000000
+  lerpSpeed: 30

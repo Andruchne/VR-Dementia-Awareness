@@ -21,7 +21,7 @@ using Groq;
 /// </summary>
 public class VoiceInteractionManager : MonoBehaviour
 {
-    [Header("OpenAI Setup")]
+    [Header("Groq Setup")]
     private GroqApi groq;
     private List<ChatMessage> messages = new List<ChatMessage>();
 
@@ -31,8 +31,9 @@ public class VoiceInteractionManager : MonoBehaviour
     // Stores the current language code for Whisper STT
     private string sttLanguage = "en";
 
-    [Header("Inworld Setup")]
+    [Header("Setup")]
     [SerializeField] private InworldTTSClient inworldTTS;
+    [SerializeField] private LipSyncController lipSyncController;
 
     [Header("FMOD Mic Recording Setup")]
     private FMOD.Sound micSound;
@@ -380,12 +381,12 @@ public class VoiceInteractionManager : MonoBehaviour
 
         string tempPath = Path.Combine(Application.temporaryCachePath, "stitched_voice.wav");
 
+        // Stitch audio bytes together
+        List<byte> stitchedPCM = new List<byte>();
+
         // Offload the heavy array stitching and file writing to a background thread
         await Task.Run(() =>
         {
-            // Stitch audio bytes together
-            List<byte> stitchedPCM = new List<byte>();
-
             // Artificial Pause length
             float pauseDurationSeconds = 0.2f;
             byte[] silence = new byte[(int)(44100 * 2 * pauseDurationSeconds)];
@@ -422,6 +423,13 @@ public class VoiceInteractionManager : MonoBehaviour
 
         // Play in FMOD (Must be called on the main thread after the background task finishes)
         PlayFMODProgrammerSound(tempPath);
+
+        // Pass raw bytes and FMOD instance to the Lipsync Controller
+        if (lipSyncController != null)
+        {
+            // Inworld defaults to 44100Hz
+            lipSyncController.PrepareAndPlayVisemes(stitchedPCM.ToArray(), 44100, dialogueInstance);
+        }
     }
 
     private void PlayFMODProgrammerSound(string filePath)

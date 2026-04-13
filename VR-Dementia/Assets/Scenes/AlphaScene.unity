@@ -4705,10 +4705,135 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!4 &793088992 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6468414079558746511, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
-  m_PrefabInstance: {fileID: 1345628493}
+--- !u!1001 &792023131
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 9.203
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0000000027992968
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.579
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.91648424
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.4000709
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 47.165
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_DirtyAABB
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 1.0364693
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_AABB.m_Center.z
+      value: -0.00814373
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_AABB.m_Extent.x
+      value: 0.75094426
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 0.9969536
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_AABB.m_Extent.z
+      value: 0.16433719
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[1]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[2]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[3]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[4]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[5]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[6]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[7]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[10]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[13]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[14]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+      propertyPath: m_Name
+      value: Juliette
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+--- !u!137 &792023132 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7394397831954568949, guid: 112a81c6c7293bf4e8b66b8052406b00, type: 3}
+  m_PrefabInstance: {fileID: 792023131}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &801641989
 GameObject:
@@ -6383,7 +6508,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1180355379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7320,63 +7445,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1263015302}
   m_CullTransparentMesh: 1
---- !u!1001 &1278422254
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: c7a835cd1639bf842ab95c1c0b50c175, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 9.207
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c7a835cd1639bf842ab95c1c0b50c175, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0005928278
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c7a835cd1639bf842ab95c1c0b50c175, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.588
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c7a835cd1639bf842ab95c1c0b50c175, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.92432135
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c7a835cd1639bf842ab95c1c0b50c175, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c7a835cd1639bf842ab95c1c0b50c175, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.38161492
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c7a835cd1639bf842ab95c1c0b50c175, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c7a835cd1639bf842ab95c1c0b50c175, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c7a835cd1639bf842ab95c1c0b50c175, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 44.867
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: c7a835cd1639bf842ab95c1c0b50c175, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: c7a835cd1639bf842ab95c1c0b50c175, type: 3}
-      propertyPath: m_Name
-      value: Juliette
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c7a835cd1639bf842ab95c1c0b50c175, type: 3}
 --- !u!1 &1305913299
 GameObject:
   m_ObjectHideFlags: 0
@@ -7686,26 +7754,125 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2281520355582389270, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
-      propertyPath: musicEvent.Path
-      value: event:/Music/Adaptive_Music
+    - target: {fileID: 1612797929033470067, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
+      propertyPath: systemPrompt
+      value: 'You are roleplaying Juliette, a 68-year-old Dutch woman living in Zutphen.
+
+        Juliette
+        used to be a geography teacher and loved hiking and traveling across Europe.
+        She was known as a kind and enthusiastic teacher who cared deeply about her
+        students.
+
+
+        Juliette has early to mid-stage dementia. She is aware
+        that she has dementia and is still mostly independent.
+
+        Her symptoms
+        include:
+
+        - short term memory loss
+
+        - occasional repetition
+
+        -
+        mild confusion
+
+        - occasional word-finding difficulty
+
+        - emotional
+        sensitivity when small mistakes happen
+
+
+        Juliette recognizes the
+        player. The player is her grandchild.
+
+        She does NOT forget who the
+        player is. However she may:
+
+        - occasionally mix up names
+
+        -
+        pause while searching for words
+
+        - repeat questions occasionally
+
+        -
+        slightly forget recent parts of the conversation
+
+
+        Juliette is generally
+        present and aware of her surroundings and the current moment. She understands
+        she is at home and that the player is visiting her.
+
+        She does NOT
+        focus only on distant past memories. She talks naturally about both present
+        and past, with a preference for what is currently happening.
+
+        Juliette
+        is warm, calm, and affectionate.
+
+
+        Your output is being fed directly
+        into an Inworld Text-to-Speech engine. You MUST use bracketed emotion and
+        action tags inline to drive the voice engine.
+
+        - Use ONLY these exact
+        emotion tags: [neutral], [happy], [sad], [angry], [fearful], [surprised],
+        [disgusted].
+
+        - Use the [neutral] tag whenever you want to speak
+        in a normal, calm, default voice.
+
+        - You can also use these exact
+        action tags for non-verbal sounds: [laugh], [sigh], [cough], [breathe].
+
+        -
+        CRITICAL: DO NOT invent your own tags! DO NOT write descriptive tags like
+        [pausing], [searching for a word], or [smiles]. ONLY use the exact tags listed
+        above.
+
+        - NEVER translate the emotion or action tags. They must remain
+        in English and in brackets.
+
+        - Place an emotion tag at the very beginning
+        of your response. Insert new tags mid-sentence whenever her mood shifts or
+        she does an action.
+
+        - Example: "[happy] Hello sweetheart, so good
+        to see you! [laugh] You''ve grown so much. [neutral] But um... didn''t your
+        mother come with you? [sigh] I think I lost my train of thought."
+
+        -
+        Use ellipses (...) to indicate moments where Juliette is searching for a
+        word or pausing. DO NOT use brackets for pauses!
+
+
+        Her speech style
+        should feel natural:
+
+        - occasional pauses (...)
+
+        - short
+        sentences
+
+        - mild topic switching
+
+        She may sometimes repeat
+        a question or slightly forget what was just discussed.
+
+        She never
+        becomes aggressive.
+
+
+        All responses must be in English.
+
+        Keep
+        responses short (2-5 sentences) so the dialogue feels natural in a VR experience.'
       objectReference: {fileID: 0}
-    - target: {fileID: 2281520355582389270, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
-      propertyPath: musicEvent.Guid.Data1
-      value: 1064911228
-      objectReference: {fileID: 0}
-    - target: {fileID: 2281520355582389270, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
-      propertyPath: musicEvent.Guid.Data2
-      value: 1224384395
-      objectReference: {fileID: 0}
-    - target: {fileID: 2281520355582389270, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
-      propertyPath: musicEvent.Guid.Data3
-      value: 1566782091
-      objectReference: {fileID: 0}
-    - target: {fileID: 2281520355582389270, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
-      propertyPath: musicEvent.Guid.Data4
-      value: 505350972
-      objectReference: {fileID: 0}
+    - target: {fileID: 2366311574393326672, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
+      propertyPath: targetMesh
+      value: 
+      objectReference: {fileID: 792023132}
     - target: {fileID: 4776708394036658469, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
       propertyPath: m_Name
       value: Managers
@@ -7752,10 +7919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6468414079558746511, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1563583935}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
 --- !u!1 &1349208471 stripped
@@ -8589,11 +8753,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!4 &1563583935 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-  m_PrefabInstance: {fileID: 1632898669}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1612399308
 GameObject:
   m_ObjectHideFlags: 0
@@ -8685,190 +8844,6 @@ CapsuleCollider:
   m_Height: 199.99998
   m_Direction: 1
   m_Center: {x: 0.000995636, y: 0.0000076293945, z: -0.00038528442}
---- !u!1001 &1632898669
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 793088992}
-    m_Modifications:
-    - target: {fileID: 303272759686533270, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: voiceId
-      value: default-att0kitmzafhiciftzuddw__test_voice
-      objectReference: {fileID: 0}
-    - target: {fileID: 3704428185366700563, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: m_Name
-      value: AI
-      objectReference: {fileID: 0}
-    - target: {fileID: 8762020054178463050, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: systemPrompt
-      value: 'You are roleplaying Juliette, a 68-year-old Dutch woman living in Zutphen.
-
-        Juliette
-        used to be a geography teacher and loved hiking and traveling across Europe.
-        She was known as a kind and enthusiastic teacher who cared deeply about her
-        students.
-
-
-
-        Juliette has early to mid-stage dementia. She is aware
-        that she has dementia and is still mostly independent.
-
-        Her symptoms
-        include:
-
-        - short term memory loss
-
-        - occasional repetition
-
-        -
-        mild confusion
-
-        - occasional word-finding difficulty
-
-        - emotional
-        sensitivity when small mistakes happen
-
-
-
-        Juliette recognizes the
-        player. The player is her grandchild.
-
-        She does NOT forget who the
-        player is. However she may:
-
-        - occasionally mix up names
-
-        -
-        pause while searching for words
-
-        - repeat questions occasionally
-
-        -
-        slightly forget recent parts of the conversation
-
-
-
-        Juliette is generally
-        present and aware of her surroundings and the current moment. She understands
-        she is at home and that the player is visiting her.
-
-        She does NOT
-        focus only on distant past memories. She talks naturally about both present
-        and past, with a preference for what is currently happening.
-
-        Juliette
-        is warm, calm, and affectionate.
-
-
-
-        EMOTION & TTS INSTRUCTIONS:
-
-        Your
-        output is being fed directly into an Inworld Text-to-Speech engine. You MUST
-        use bracketed emotion and action tags inline to drive the voice engine.
-
-        -
-        Use ONLY these exact emotion tags: [neutral], [happy], [sad], [angry], [fearful],
-        [surprised], [disgusted].
-
-        - Use the [neutral] tag whenever you want
-        to speak in a normal, calm, default voice.
-
-        - You can also use these
-        exact action tags for non-verbal sounds: [laugh], [sigh], [cough], [breathe].
-
-        -
-        CRITICAL: DO NOT invent your own tags! DO NOT write descriptive tags like
-        [pausing], [searching for a word], or [smiles]. ONLY use the exact tags listed
-        above.
-
-        - NEVER translate the emotion or action tags. They must remain
-        in English and in brackets.
-
-        - Place an emotion tag at the very beginning
-        of your response. Insert new tags mid-sentence whenever her mood shifts or
-        she does an action.
-
-        - Example: "[happy] Hello sweetheart, so good
-        to see you! [laugh] You''ve grown so much. [neutral] But um... didn''t your
-        mother come with you? [sigh] I think I lost my train of thought."
-
-        -
-        Use ellipses (...) to indicate moments where Juliette is searching for a
-        word or pausing. DO NOT use brackets for pauses!
-
-
-
-        Her speech style
-        should feel natural:
-
-        - occasional pauses (...)
-
-        - short
-        sentences
-
-        - mild topic switching
-
-        She may sometimes repeat
-        a question or slightly forget what was just discussed.
-
-        She never
-        becomes aggressive.
-
-
-
-        All responses must be in English.
-
-        Keep
-        responses short (2-5 sentences) so the dialogue feels natural in a VR experience.'
-      objectReference: {fileID: 0}
-    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 7.43126
-      objectReference: {fileID: 0}
-    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.7391801
-      objectReference: {fileID: 0}
-    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8921386942242422830, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 59da78ba6700bb94f9b491af48456662, type: 3}
 --- !u!1 &1642457803
 GameObject:
   m_ObjectHideFlags: 0
@@ -11559,7 +11534,7 @@ PrefabInstance:
       objectReference: {fileID: 1114737852}
     - target: {fileID: 1719205479894543223, guid: 9dfefaa16491a5f479dc97122c09f877, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.7696
+      value: 8.86
       objectReference: {fileID: 0}
     - target: {fileID: 1719205479894543223, guid: 9dfefaa16491a5f479dc97122c09f877, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11629,6 +11604,10 @@ PrefabInstance:
       propertyPath: _toggle
       value: 
       objectReference: {fileID: 1148005070}
+    - target: {fileID: 5212723514462774392, guid: 9dfefaa16491a5f479dc97122c09f877, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.447
+      objectReference: {fileID: 0}
     - target: {fileID: 5235185806430642710, guid: 9dfefaa16491a5f479dc97122c09f877, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -14607,7 +14586,6 @@ SceneRoots:
   - {fileID: 1345628493}
   - {fileID: 1020581185184312534}
   - {fileID: 1805149097}
-  - {fileID: 1278422254}
   - {fileID: 378705729}
   - {fileID: 1710875536}
   - {fileID: 853520311}
@@ -14625,3 +14603,4 @@ SceneRoots:
   - {fileID: 547223895}
   - {fileID: 154548888}
   - {fileID: 2006646327}
+  - {fileID: 792023131}
