@@ -128,6 +128,42 @@ public partial class @GameControlls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightGrab"",
+                    ""type"": ""Button"",
+                    ""id"": ""cb3e41e2-2c30-4a40-8536-66321bb645f1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftGrab"",
+                    ""type"": ""Button"",
+                    ""id"": ""2fbc8c10-b1cd-4732-b47e-932c64f8b6a1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Turn"",
+                    ""type"": ""Button"",
+                    ""id"": ""41bbc83d-2ed3-4c60-b3a1-84d07e4ac102"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Button"",
+                    ""id"": ""e72623c3-5024-4635-a5d1-40b5640ec085"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -139,6 +175,61 @@ public partial class @GameControlls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RightControllerA"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e1834d4-dbd0-4d43-82c6-3959fce370c0"",
+                    ""path"": ""<XRController>{RightHand}/{TriggerButton}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightGrab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca203a92-4054-4b7c-bec8-8a39f968a4a5"",
+                    ""path"": ""<XRController>{RightHand}/{GripButton}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightGrab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""280078f3-66b4-48f8-bb24-1b2824b8300a"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftGrab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""55309cbd-71f6-46ed-a908-6f3cb055f647"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c5cf7027-f5c2-464e-bc21-f48ec1b9c760"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -153,6 +244,10 @@ public partial class @GameControlls: IInputActionCollection2, IDisposable
         // VRController
         m_VRController = asset.FindActionMap("VRController", throwIfNotFound: true);
         m_VRController_RightControllerA = m_VRController.FindAction("RightControllerA", throwIfNotFound: true);
+        m_VRController_RightGrab = m_VRController.FindAction("RightGrab", throwIfNotFound: true);
+        m_VRController_LeftGrab = m_VRController.FindAction("LeftGrab", throwIfNotFound: true);
+        m_VRController_Turn = m_VRController.FindAction("Turn", throwIfNotFound: true);
+        m_VRController_Move = m_VRController.FindAction("Move", throwIfNotFound: true);
     }
 
     ~@GameControlls()
@@ -331,6 +426,10 @@ public partial class @GameControlls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_VRController;
     private List<IVRControllerActions> m_VRControllerActionsCallbackInterfaces = new List<IVRControllerActions>();
     private readonly InputAction m_VRController_RightControllerA;
+    private readonly InputAction m_VRController_RightGrab;
+    private readonly InputAction m_VRController_LeftGrab;
+    private readonly InputAction m_VRController_Turn;
+    private readonly InputAction m_VRController_Move;
     /// <summary>
     /// Provides access to input actions defined in input action map "VRController".
     /// </summary>
@@ -346,6 +445,22 @@ public partial class @GameControlls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "VRController/RightControllerA".
         /// </summary>
         public InputAction @RightControllerA => m_Wrapper.m_VRController_RightControllerA;
+        /// <summary>
+        /// Provides access to the underlying input action "VRController/RightGrab".
+        /// </summary>
+        public InputAction @RightGrab => m_Wrapper.m_VRController_RightGrab;
+        /// <summary>
+        /// Provides access to the underlying input action "VRController/LeftGrab".
+        /// </summary>
+        public InputAction @LeftGrab => m_Wrapper.m_VRController_LeftGrab;
+        /// <summary>
+        /// Provides access to the underlying input action "VRController/Turn".
+        /// </summary>
+        public InputAction @Turn => m_Wrapper.m_VRController_Turn;
+        /// <summary>
+        /// Provides access to the underlying input action "VRController/Move".
+        /// </summary>
+        public InputAction @Move => m_Wrapper.m_VRController_Move;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -375,6 +490,18 @@ public partial class @GameControlls: IInputActionCollection2, IDisposable
             @RightControllerA.started += instance.OnRightControllerA;
             @RightControllerA.performed += instance.OnRightControllerA;
             @RightControllerA.canceled += instance.OnRightControllerA;
+            @RightGrab.started += instance.OnRightGrab;
+            @RightGrab.performed += instance.OnRightGrab;
+            @RightGrab.canceled += instance.OnRightGrab;
+            @LeftGrab.started += instance.OnLeftGrab;
+            @LeftGrab.performed += instance.OnLeftGrab;
+            @LeftGrab.canceled += instance.OnLeftGrab;
+            @Turn.started += instance.OnTurn;
+            @Turn.performed += instance.OnTurn;
+            @Turn.canceled += instance.OnTurn;
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
         }
 
         /// <summary>
@@ -389,6 +516,18 @@ public partial class @GameControlls: IInputActionCollection2, IDisposable
             @RightControllerA.started -= instance.OnRightControllerA;
             @RightControllerA.performed -= instance.OnRightControllerA;
             @RightControllerA.canceled -= instance.OnRightControllerA;
+            @RightGrab.started -= instance.OnRightGrab;
+            @RightGrab.performed -= instance.OnRightGrab;
+            @RightGrab.canceled -= instance.OnRightGrab;
+            @LeftGrab.started -= instance.OnLeftGrab;
+            @LeftGrab.performed -= instance.OnLeftGrab;
+            @LeftGrab.canceled -= instance.OnLeftGrab;
+            @Turn.started -= instance.OnTurn;
+            @Turn.performed -= instance.OnTurn;
+            @Turn.canceled -= instance.OnTurn;
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
         }
 
         /// <summary>
@@ -451,5 +590,33 @@ public partial class @GameControlls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRightControllerA(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RightGrab" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRightGrab(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LeftGrab" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLeftGrab(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Turn" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTurn(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMove(InputAction.CallbackContext context);
     }
 }
