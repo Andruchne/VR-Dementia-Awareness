@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using UnityEditor.Localization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -76,10 +75,9 @@ public class GameManager : MonoBehaviour
     {
         GetInstances();
 
-        SetupQueueSystem();
         SetupInput();
 
-        ChangeLocalization(1);
+        ChangeLocalization("en-GB");
     }
 
     private void OnDestroy()
@@ -117,7 +115,7 @@ public class GameManager : MonoBehaviour
 
     #region Localization Settings
 
-    public void ChangeLocalization(int localIndex)
+    public void ChangeLocalization(string localIndex)
     {
         if (_localManager == null) { return; }
 
@@ -152,59 +150,6 @@ public class GameManager : MonoBehaviour
 
     #region Mood & Dialogue Queue
 
-    private int _currentQueueIndex = 0;
-    private Timer _queuePlayTimer;
-    private List<StoryAction> _queuedAction = new List<StoryAction>();
-    private StoryAction _currentAction;
-
-    [SerializeField]
-    [Description("Timer for queued up moods and dialogue. The given amount will be waited, before playing both.")]
-    private float queueTimer = 2;
-
-    private void SetupQueueSystem()
-    {
-        _queuePlayTimer = gameObject.AddComponent<Timer>();
-        _queuePlayTimer.Setup(queueTimer);
-
-        _dialogueManager.OnDialogueFinished += ProgressQueue;
-        _queuePlayTimer.OnTimerFinished += ExecAction;
-    }
-
-    private void QueueAction(StoryAction action)
-    {
-        if (_dialogueManager.IsPlaying)
-        {
-            _queuedAction.Add(action);
-        }
-        else
-        {
-            _currentAction = action;
-            ExecAction();
-        }
-    }
-
-    private void ProgressQueue()
-    {
-        if (_queuedAction.Count <= 0) { return; }
-
-        _queuePlayTimer.StartTimer();
-        _currentAction = _queuedAction[_currentQueueIndex];
-
-        _currentQueueIndex++;
-
-        if (_currentQueueIndex >= _queuedAction.Count)
-        {
-            _currentQueueIndex = 0;
-            _queuedAction.Clear();
-        }
-    }
-
-    private void ExecAction()
-    {
-        TransitionMood(_currentAction.moodConfig, _currentAction.moodTransitionTime);
-        StartDialogue(_currentAction.dialogue);
-    }
-
     public void SetMoodPercentage(Mood mood, int percentage)
     {
         if (_ppManager != null) { _ppManager.SetMoodPercentage(mood, percentage); }
@@ -218,11 +163,6 @@ public class GameManager : MonoBehaviour
     public void TransitionMood(VolumeConfiguration volumeConfiguration, float transitionTime)
     {
         if (_ppManager != null) { _ppManager.SwitchMood(volumeConfiguration, transitionTime); }
-    }
-
-    public void StartDialogue(LocalizationTableCollection dialogue)
-    {
-        if (_dialogueManager != null) { }
     }
 
     #endregion

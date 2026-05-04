@@ -20,8 +20,16 @@ public class InworldTTSClient : MonoBehaviour
 
     private void LoadLocalCredentials()
     {
+        string authFilePath = "";
+
+        #if UNITY_EDITOR || UNITY_STANDALONE
+        // Running on PC (Editor or Windows Build): Use the local user profile path
         string userProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        string authFilePath = Path.Combine(userProfilePath, ".inworld", "auth.json");
+        authFilePath = Path.Combine(userProfilePath, ".inworld", "auth.json");
+        #elif UNITY_ANDROID
+        // Running on Meta Quest (Android): Use the persistent data path
+        authFilePath = Path.Combine(Application.persistentDataPath, "inworld_auth.json");
+        #endif
 
         if (File.Exists(authFilePath))
         {
@@ -31,11 +39,11 @@ public class InworldTTSClient : MonoBehaviour
             // Assign API key - already encoded in base64
             base64AuthToken = creds.base64Key;
 
-            Debug.Log("Inworld Base64 token loaded successfully!");
+            Debug.Log($"Inworld Base64 token loaded successfully from: {authFilePath}");
         }
         else
         {
-            Debug.LogError($"Auth file missing at: {authFilePath}");
+            Debug.LogError($"Auth file missing at: {authFilePath}. Please ensure the file is placed correctly for the current platform.");
         }
     }
 

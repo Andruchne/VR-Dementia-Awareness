@@ -9,7 +9,7 @@ public class LocalizationManager : MonoBehaviour
 
     private void Awake()
     {
-        if (GameManager.Instance != null) { GameManager.Instance.OnInputSetup += SubscribeInput;}
+        if (GameManager.Instance != null) { GameManager.Instance.OnInputSetup += SubscribeInput; }
     }
 
     private void SubscribeInput()
@@ -26,24 +26,29 @@ public class LocalizationManager : MonoBehaviour
         }
     }
 
-    public void ChangeLanguage(int localeId)
+    public void ChangeLanguage(string localeCode)
     {
-        if (isUpdating) return;
-        StartCoroutine(SetLocale(localeId));
+        if (isUpdating) { return; }
+        StartCoroutine(SetLocale(localeCode));
     }
 
     private void OnSwitchLanguage(InputAction.CallbackContext context)
     {
-        int nextLocaleId = (LocalizationSettings.SelectedLocale.Identifier.Code == "en-GB") ? 0 : 1;
-        ChangeLanguage(nextLocaleId);
+        string nextLocaleCode = (LocalizationSettings.SelectedLocale.Identifier.Code == "en-GB") ? "nl-NL" : "en-GB";
+        ChangeLanguage(nextLocaleCode);
     }
 
-    private IEnumerator SetLocale(int localeId)
+    private IEnumerator SetLocale(string localeCode)
     {
         isUpdating = true;
 
         yield return LocalizationSettings.InitializationOperation;
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[localeId];
+
+        var targetLocale = LocalizationSettings.AvailableLocales.GetLocale(localeCode);
+        if (targetLocale != null)
+        {
+            LocalizationSettings.SelectedLocale = targetLocale;
+        }
 
         isUpdating = false;
     }

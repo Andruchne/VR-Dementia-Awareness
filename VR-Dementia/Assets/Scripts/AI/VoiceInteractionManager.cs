@@ -66,7 +66,8 @@ public class VoiceInteractionManager : MonoBehaviour
 
     private IEnumerator Start()
     {
-        groq = new GroqApi();
+        // Load the credentials dynamically based on the current platform
+        LoadGroqCredentials();
 
         #if UNITY_ANDROID
         // Request microphone permission on Android (Meta Quest) devices
@@ -499,6 +500,36 @@ public class VoiceInteractionManager : MonoBehaviour
                 }
         }
         return FMOD.RESULT.OK;
+    }
+
+    private void LoadGroqCredentials()
+    {
+        string authFilePath = "";
+
+        #if UNITY_EDITOR || UNITY_STANDALONE
+        // Running on PC: Use the standard plugin path
+        string userProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        authFilePath = Path.Combine(userProfilePath, ".openai", "auth.json");
+        #elif UNITY_ANDROID
+        // Running on Meta Quest: Use the persistent data path
+        authFilePath = Path.Combine(Application.persistentDataPath, "openai_auth.json");
+        #endif
+
+        if (File.Exists(authFilePath))
+        {
+            string jsonContent = File.ReadAllText(authFilePath);
+            GroqCredentials creds = JsonUtility.FromJson<GroqCredentials>(jsonContent);
+
+            // Initialize Groq API by explicitly passing the key, bypassing the plugin's default PC path
+            groq = new GroqApi(creds.api_key, creds.organization);
+            Debug.Log($"Groq credentials loaded successfully from: {authFilePath}");
+        }
+        else
+        {
+            Debug.LogError($"Groq Auth file missing at: {authFilePath}");
+            // Fallback to empty initialization (will likely fail if no environment variables are set)
+            groq = new GroqApi();
+        }
     }
 
     private void OnDestroy()

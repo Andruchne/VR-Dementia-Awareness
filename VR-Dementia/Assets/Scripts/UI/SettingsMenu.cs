@@ -15,11 +15,11 @@ public class SettingsMenu : MonoBehaviour
 
     public void OnSetDutchLocal()
     {
-        GameManager.Instance.ChangeLocalization(0);
+        GameManager.Instance.ChangeLocalization("nl-NL");
     }
 
     public void OnSetEnglishLocal()
     {
-        GameManager.Instance.ChangeLocalization(1);
+        GameManager.Instance.ChangeLocalization("en-GB");
     }
 }
