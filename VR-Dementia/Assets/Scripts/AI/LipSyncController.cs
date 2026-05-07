@@ -20,6 +20,10 @@ public class LipSyncController : MonoBehaviour
     [Tooltip("Lerp Speed of Lips")]
     [SerializeField] private float lerpSpeed = 20;
 
+    [Range(1, 100)]
+    [Tooltip("Internal neural network smoothing. 1 = jittery/raw, 100 = extremely smooth (Matches Meta's default 70)")]
+    [SerializeField] private int smoothAmount = 70;
+
     private uint lipSyncContext = 0;
     private List<OVRLipSync.Frame> cachedFrames = new List<OVRLipSync.Frame>();
     private FMOD.Studio.EventInstance currentAudioInstance;
@@ -34,14 +38,20 @@ public class LipSyncController : MonoBehaviour
         // when it automatically queries AudioSettings. We initialize it manually here to bypass this.
         if (OVRLipSync.IsInitialized() != OVRLipSync.Result.Success)
         {
-            // Manually feed standard fallback values (48000 Hz Sample Rate, 1024 Buffer Size)
-            OVRLipSync.Initialize(48000, 1024);
+            // IMPORTANT FIX: Inworld uses 44100 Hz. Initializing this to 48000 Hz causes 
+            // the AI frequency analysis to be shifted, heavily degrading phoneme accuracy!
+            OVRLipSync.Initialize(44100, 1024);
         }
 
         // Initialize native OVR Lipsync Engine
         if (OVRLipSync.CreateContext(ref lipSyncContext, OVRLipSync.ContextProviders.Enhanced) != OVRLipSync.Result.Success)
         {
             Debug.LogError("Failed to create OVR Lipsync Context.");
+        }
+        else
+        {
+            // Send the internal smoothing signal to the OVR context, matching Meta's native script behavior
+            OVRLipSync.SendSignal(lipSyncContext, OVRLipSync.Signals.VisemeSmoothing, smoothAmount, 0);
         }
     }
 
