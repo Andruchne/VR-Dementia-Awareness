@@ -39,6 +39,14 @@ public class VRHUDController : MonoBehaviour
         {
             // Initialize the HUD's starting yaw to exactly match the camera at spawn
             targetYaw = vrCamera.eulerAngles.y;
+
+            // Set start position to be infront of the camera
+            Vector3 targetDirection = Quaternion.Euler(0, targetYaw, 0) * Vector3.forward;
+            Vector3 targetPosition = vrCamera.position + new Vector3(0, heightOffset, 0) + (targetDirection * distance);
+            Quaternion targetRotation = Quaternion.Euler(0, targetYaw, 0);
+
+            transform.position = targetPosition;
+            transform.rotation = targetRotation;
         }
         else
         {

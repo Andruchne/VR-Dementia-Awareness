@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 59075658544606825}
   - component: {fileID: 6967103488223365717}
   - component: {fileID: 2281520355582389270}
-  - component: {fileID: 460012427490237094}
+  - component: {fileID: 877499009084466224}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -49,7 +49,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   volumeconfig: {fileID: 11400000, guid: 63c7d572c1ff1aa4bb61d96e9d2f0a33, type: 2}
-  queueTimer: 2
 --- !u!114 &6967103488223365717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,7 +94,7 @@ MonoBehaviour:
     volumePercentage: 0
   - mood: 5
     volumePercentage: 0
---- !u!114 &460012427490237094
+--- !u!114 &877499009084466224
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,9 +103,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4776708394036658469}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4543eef8f1e4c7049a7cc13774b8d2e2, type: 3}
+  m_Script: {fileID: 11500000, guid: fb8999d555f6c3c44aa5427d977ae3dd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
+  m_EditorClassIdentifier: Assembly-CSharp::TaskManager
+  taskInstances: []
 --- !u!1001 &8068548355835391289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -133,7 +133,6 @@ PrefabInstance:
         students.
 
 
-
         Juliette has early to mid-stage dementia. She is aware
         that she has dementia and is still mostly independent.
 
@@ -153,7 +152,6 @@ PrefabInstance:
         sensitivity when small mistakes happen
 
 
-
         Juliette recognizes the
         player. The player is her grandchild.
 
@@ -171,7 +169,6 @@ PrefabInstance:
         slightly forget recent parts of the conversation
 
 
-
         Juliette is generally
         present and aware of her surroundings and the current moment. She understands
         she is at home and that the player is visiting her.
@@ -184,22 +181,19 @@ PrefabInstance:
         is warm, calm, and affectionate.
 
 
+        Your output is being fed directly
+        into an Inworld Text-to-Speech engine. You MUST use bracketed emotion and
+        action tags inline to drive the voice engine.
 
-        EMOTION & TTS INSTRUCTIONS:
+        - Use ONLY these exact
+        emotion tags: [neutral], [happy], [sad], [angry], [fearful], [surprised],
+        [disgusted].
 
-        Your
-        output is being fed directly into an Inworld Text-to-Speech engine. You MUST
-        use bracketed emotion and action tags inline to drive the voice engine.
+        - Use the [neutral] tag whenever you want to speak
+        in a normal, calm, default voice.
 
-        -
-        Use ONLY these exact emotion tags: [neutral], [happy], [sad], [angry], [fearful],
-        [surprised], [disgusted].
-
-        - Use the [neutral] tag whenever you want
-        to speak in a normal, calm, default voice.
-
-        - You can also use these
-        exact action tags for non-verbal sounds: [laugh], [sigh], [cough], [breathe].
+        - You can also use these exact
+        action tags for non-verbal sounds: [laugh], [sigh], [cough], [breathe].
 
         -
         CRITICAL: DO NOT invent your own tags! DO NOT write descriptive tags like
@@ -222,7 +216,6 @@ PrefabInstance:
         word or pausing. DO NOT use brackets for pauses!
 
 
-
         Her speech style
         should feel natural:
 
@@ -238,7 +231,6 @@ PrefabInstance:
 
         She never
         becomes aggressive.
-
 
 
         All responses must be in English.
@@ -321,5 +313,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   targetMesh: {fileID: 0}
-  visemeToBlendshape: ffffffff0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e000000
+  visemeToBlendshape: ffffffff02000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000
   lerpSpeed: 30
+  smoothAmount: 70

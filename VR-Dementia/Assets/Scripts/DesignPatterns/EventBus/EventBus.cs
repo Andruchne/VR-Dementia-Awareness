@@ -20,17 +20,24 @@ public class EventBus<T> where T : Event
     }
 }
 
-#region Trigger Actions
+#region Tasks
 
-// Events for triggering certain Actions from object/characters
-public class OnGrandmaDance : Event
+public class OnUpdateTask : Event
 {
-    // This is just a placeholder, you won't take damage from grandma
-    public OnGrandmaDance(float damage)
+    // Used to update the text on the handheld menu
+    public OnUpdateTask(string taskTitle, string taskDescription) 
     {
-        this.damage = damage;
+        this.taskTitle = taskTitle;
+        this.taskDescription = taskDescription;
     }
-    public float damage;
+    public string taskTitle;
+    public string taskDescription;
+}
+
+public class OnStartSimulation : Event
+{
+    // Triggered when send button is pressed, in the play scene
+    public OnStartSimulation() { }
 }
 
 #endregion

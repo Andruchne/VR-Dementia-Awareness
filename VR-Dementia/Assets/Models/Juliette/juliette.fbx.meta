@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 28b452e28f65daa49ba8b280e48a39ef
+guid: 2736d06943d7e8040ac66840458a01ca
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -24,6 +24,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: eye
     second: {fileID: 2100000, guid: 994411d6a3dd748419600da30f9ae36e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gloss
+    second: {fileID: 2100000, guid: dfe89e5edc5c4a54e8a819ba0b1d1f78, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

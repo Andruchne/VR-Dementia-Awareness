@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     #region Variables and Instances
 
     private PostProcessingManager _ppManager;
-    private DialogueManager _dialogueManager;
     private LocalizationManager _localManager;
     private VoiceInteractionManager _voiceInterManager;
 
@@ -22,8 +21,6 @@ public class GameManager : MonoBehaviour
     {
         _ppManager = GetComponent<PostProcessingManager>();
         if (_ppManager == null) { Debug.LogWarning("GameManager: Missing PostProcessingManager - Please attach the script to Transform of GameManager."); }
-        _dialogueManager = GetComponent<DialogueManager>();
-        if (_dialogueManager == null) { Debug.LogWarning("GameManager: Missing StoryManager - Please attach the script to Transform of GameManager."); }
         _localManager = GetComponent<LocalizationManager>();
         if (_localManager == null) { Debug.LogWarning("GameManager: Missing LocalizationManager - Please attach the script to Transform of GameManager."); }
         _voiceInterManager = GetComponentInChildren<VoiceInteractionManager>();
@@ -148,7 +145,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
 
-    #region Mood & Dialogue Queue
+    #region Mood Queue
 
     public void SetMoodPercentage(Mood mood, int percentage)
     {
