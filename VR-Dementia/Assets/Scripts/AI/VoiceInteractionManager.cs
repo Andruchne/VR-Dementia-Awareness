@@ -13,6 +13,13 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Groq;
 
+public struct EmotionTimelineEvent
+{
+    public string emotion;
+    public bool isNostalgic;
+    public float startTime;
+}
+
 /// <summary>
 /// Manages all the AI processes, going from STT, to text response, to TTS.
 /// It was made FMOD compatible, and also localization settings compatible
@@ -48,6 +55,8 @@ public class VoiceInteractionManager : MonoBehaviour
     private FMOD.Studio.EventInstance dialogueInstance;
     private GCHandle stringHandle;
 
+    public List<EmotionTimelineEvent> CurrentEmotionTimeline { get; private set; } = new List<EmotionTimelineEvent>();
+
     // For showing off progress during processing
     public event Action OnProcessingStarted;
     public event Action OnProcessingFinished;
@@ -64,21 +73,28 @@ public class VoiceInteractionManager : MonoBehaviour
         }
     }
 
+    public float GetCurrentDialogueTime()
+    {
+        if (!dialogueInstance.isValid()) return 0f;
+        dialogueInstance.getTimelinePosition(out int posMs);
+        return posMs / 1000f; // Convert ms to seconds
+    }
+
     private IEnumerator Start()
     {
         // Load the credentials dynamically based on the current platform
         LoadGroqCredentials();
 
-        #if UNITY_ANDROID
+#if UNITY_ANDROID
         // Request microphone permission on Android (Meta Quest) devices
         if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.Microphone))
         {
             UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.Microphone);
         }
-        
+
         // Give the OS a brief moment in case a permission popup appears
         yield return new WaitForSeconds(0.5f);
-        #endif
+#endif
 
         // Wait for the Unity Localization system to finish initializing
         yield return LocalizationSettings.InitializationOperation;
@@ -343,30 +359,56 @@ public class VoiceInteractionManager : MonoBehaviour
         }
 
         List<string> chunkedRequests = new List<string>();
+        List<EmotionTimelineEvent> tempTimeline = new List<EmotionTimelineEvent>();
 
-        // Get the word in the bracket, to check if it's neutral or not
         // Regex extracts the word inside the brackets (Group 1) and the text following it (Group 2)
         // e.g., "[happy] Hello!" -> Group 1: "happy", Group 2: " Hello!"
         MatchCollection matches = Regex.Matches(aiResponseText, @"\[(.*?)\]([^\[]*)");
+
+        bool currentNostalgic = false;
+        string currentEmotion = "neutral";
 
         foreach (Match match in matches)
         {
             string emotionTag = match.Groups[1].Value.ToLower().Trim();
             string textSegment = match.Groups[2].Value.Trim();
 
+            // Intercept nostalgic tag
+            if (emotionTag == "nostalgic")
+            {
+                currentNostalgic = true;
+                // If there's no text right after the nostalgic tag, just skip to the next tag (which should be the emotion)
+                if (string.IsNullOrWhiteSpace(textSegment)) continue;
+            }
+            else
+            {
+                currentEmotion = emotionTag;
+            }
+
             if (!string.IsNullOrEmpty(textSegment))
             {
-                if (emotionTag == "neutral")
+                // Register this chunk in our timeline (startTime will be calculated after download)
+                tempTimeline.Add(new EmotionTimelineEvent
                 {
-                    // BOUNCER LOGIC: Strip the [neutral] tag entirely and send only the text.
+                    emotion = currentEmotion,
+                    isNostalgic = currentNostalgic,
+                    startTime = 0f
+                });
+
+                if (currentEmotion == "neutral")
+                {
+                    // Strip the [neutral] tag entirely and send only the text.
                     // This forces Inworld to use its default voice without reading the tag out loud.
                     chunkedRequests.Add(textSegment);
                 }
                 else
                 {
                     // Keep the valid tags for Inworld (e.g., [happy] Hello there!)
-                    chunkedRequests.Add($"[{emotionTag}] {textSegment}");
+                    chunkedRequests.Add($"[{currentEmotion}] {textSegment}");
                 }
+
+                // Reset nostalgic flag for the next parsed bracket
+                currentNostalgic = false;
             }
         }
 
@@ -392,6 +434,8 @@ public class VoiceInteractionManager : MonoBehaviour
             float pauseDurationSeconds = 0.2f;
             byte[] silence = new byte[(int)(44100 * 2 * pauseDurationSeconds)];
 
+            float accumulatedTime = 0f;
+
             for (int i = 0; i < audioDataArray.Length; i++)
             {
                 byte[] audio = audioDataArray[i];
@@ -401,15 +445,30 @@ public class VoiceInteractionManager : MonoBehaviour
                     // We strip it off here to prevent loud 'pops' between chunks.
                     int startIndex = (audio.Length > 44 && audio[0] == 'R' && audio[1] == 'I' && audio[2] == 'F' && audio[3] == 'F') ? 44 : 0;
 
+                    // Update the timeline with the exact start time of this chunk
+                    if (i < tempTimeline.Count)
+                    {
+                        var ev = tempTimeline[i];
+                        ev.startTime = accumulatedTime;
+                        tempTimeline[i] = ev;
+                    }
+
+                    // Calculate duration of this specific chunk to offset the next one
+                    int dataLength = audio.Length - startIndex;
+                    float chunkDuration = dataLength / (44100f * 2f * 1f);
+
                     for (int j = startIndex; j < audio.Length; j++)
                     {
                         stitchedPCM.Add(audio[j]);
                     }
 
+                    accumulatedTime += chunkDuration;
+
                     // Add a brief silence between chunks, but not after the very last one
                     if (i < audioDataArray.Length - 1)
                     {
                         stitchedPCM.AddRange(silence);
+                        accumulatedTime += pauseDurationSeconds;
                     }
                 }
             }
@@ -421,6 +480,9 @@ public class VoiceInteractionManager : MonoBehaviour
             // Save to cache
             File.WriteAllBytes(tempPath, finalWavBytes);
         });
+
+        // Set the active timeline for the ExpressionController to read
+        CurrentEmotionTimeline = tempTimeline;
 
         // Play in FMOD (Must be called on the main thread after the background task finishes)
         PlayFMODProgrammerSound(tempPath);
