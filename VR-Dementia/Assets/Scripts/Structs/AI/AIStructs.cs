@@ -38,3 +38,10 @@ public class TTSResponse
     // Base64 encoded audio string from Inworld
     public string audioContent;
 }
+
+public struct EmotionTimelineEvent
+{
+    public string emotion;
+    public bool isNostalgic;
+    public float startTime;
+}
