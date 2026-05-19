@@ -1,9 +1,11 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
 /// <summary>
-/// Manages a VR Canvas HUD with a "Lazy Follow" behavior.
-/// The HUD maintains a fixed distance, stays level horizontally (ignoring pitch/roll),
+/// This script can be attached to any GameObject
+/// The object maintains a fixed distance, stays level horizontally (ignoring pitch/roll),
 /// and smoothly follows the camera's yaw only when a certain threshold is exceeded.
 /// </summary>
 public class HeadFollow : MonoBehaviour
@@ -32,8 +34,11 @@ public class HeadFollow : MonoBehaviour
     private float targetYaw;
     private Transform targetCamera;
 
-    private void Start()
+    private IEnumerator Start()
     {
+        // Wait a brief moment to allow the Meta XR system to register the headset
+        yield return new WaitForSeconds(0.2f);
+
         DetermineActiveTarget();
 
         if (targetCamera != null)
@@ -88,17 +93,15 @@ public class HeadFollow : MonoBehaviour
 
     public void DetermineActiveTarget()
     {
-        if (XRSettings.isDeviceActive && vrCamera != null)
-        {
-            targetCamera = vrCamera;
-        }
-        else if (!XRSettings.isDeviceActive && fpsCamera != null)
-        {
-            targetCamera = fpsCamera;
-        }
-        else if (Camera.main != null)
-        {
-            targetCamera = Camera.main.transform;
-        }
+        // Actively search for connected Head-Mounted Displays (HMD)
+        List<InputDevice> hmdDevices = new List<InputDevice>();
+        InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeadMounted, hmdDevices);
+
+        // Check if the list contains valid devices indicating an active VR headset
+        bool isVRPresent = hmdDevices.Count > 0 && hmdDevices[0].isValid;
+
+        if (isVRPresent && vrCamera != null) { targetCamera = vrCamera; }
+        else if (!isVRPresent && fpsCamera != null) { targetCamera = fpsCamera; }
+        else if (Camera.main != null) { targetCamera = Camera.main.transform; }
     }
 }

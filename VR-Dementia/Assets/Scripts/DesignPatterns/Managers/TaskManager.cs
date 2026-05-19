@@ -17,14 +17,15 @@ public class TaskManager : MonoBehaviour
             if (taskInstances[i].TryGetComponent<SimulationTask>(out SimulationTask task))
             {
                 tasks.Add(task);
-                tasks[i].onTaskFinished += TriggerNextTask;
+                task.onTaskFinished += TriggerNextTask;
+            }
+            else
+            {
+                Debug.LogWarning("TaskManager: GameObject is missing a SimulationTask component!");
             }
         }
 
-        if (tasks.Count > 0)
-        {
-            tasks[0].StartTask();
-        }
+        if (tasks.Count > 0) { tasks[0].StartTask(); }
     }
 
     private void OnDestroy()
@@ -37,7 +38,10 @@ public class TaskManager : MonoBehaviour
 
     private void TriggerNextTask()
     {
-        currentTaskIndex++;
-        tasks[currentTaskIndex].StartTask();
+        if (currentTaskIndex < tasks.Count - 1)
+        {
+            currentTaskIndex++;
+            tasks[currentTaskIndex].StartTask();
+        }
     }
 }

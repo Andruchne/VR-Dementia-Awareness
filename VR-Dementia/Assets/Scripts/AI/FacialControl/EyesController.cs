@@ -1,195 +1,171 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class EyeController : MonoBehaviour
+public class EyeGazeController : MonoBehaviour
 {
     [Header("References")]
-    [Tooltip("The SkinnedMeshRenderer that contains the blendshapes for blinking.")]
     [SerializeField] private SkinnedMeshRenderer targetMesh;
-
-    [Header("Camera Targets")]
-    [Tooltip("The target to look at when a VR headset is active.")]
-    [SerializeField] private Transform vrTarget;
-    [Tooltip("The target to look at when playing in standard FPS mode.")]
-    [SerializeField] private Transform fpsTarget;
+    [SerializeField] private Transform vrCamera;
+    [SerializeField] private Transform fpsCamera;
 
     [Header("Eye Transforms")]
     [SerializeField] private Transform leftEye;
-    [SerializeField] private Transform leftEyeGloss;
     [SerializeField] private Transform rightEye;
-    [SerializeField] private Transform rightEyeGloss;
 
-    [Header("Eye Movement Limits")]
-    [SerializeField] private float maxYaw = 45f;
-    [SerializeField] private float maxPitch = 30f;
-    [SerializeField] private float eyeMoveSpeed = 12f;
+    [Header("Gaze Settings")]
+    [SerializeField] private float smoothSpeed = 20f;
+    [SerializeField] private Vector2 verticalLimits = new Vector2(-100f, -70f);
+    [SerializeField] private Vector2 horizontalLimits = new Vector2(-30f, 30f);
 
     [Header("Blink Settings")]
     [SerializeField] private int blinkIndex = 1;
-    [SerializeField] private float minBlinkInterval = 2f;
-    [SerializeField] private float maxBlinkInterval = 6f;
-    [SerializeField] private float blinkCloseDurationMs = 80f;
-    [SerializeField] private float blinkClosedDurationMs = 150f;
-    [SerializeField] private float blinkOpenDurationMs = 120f;
+    [SerializeField] private float minBlinkInterval = 3f;
+    [SerializeField] private float maxBlinkInterval = 8f;
+    [SerializeField] private float blinkCloseDurationMs = 50f;
+    [SerializeField] private float blinkClosedDurationMs = 70f;
+    [SerializeField] private float blinkOpenDurationMs = 60f;
 
-    private Transform targetToLookAt;
-
-    private Quaternion _leftEyeStartRel;
-    private Quaternion _leftEyeGlossStartRel;
-    private Quaternion _rightEyeStartRel;
-    private Quaternion _rightEyeGlossStartRel;
-
-    private float _dartTimer;
-    private Vector2 _targetDartOffset;
-    private Vector2 _currentDartOffset;
-
-    private float _currentYaw;
-    private float _currentPitch;
+    private Transform targetCamera;
+    private Vector3 lookOffset;
+    private bool isLookingAtPlayer = true;
 
     private enum BlinkState { Idle, Closing, Closed, Opening }
-    private BlinkState _blinkState = BlinkState.Idle;
-    private float _blinkTimer;
-    private float _blinkHoldTimer;
-    private float _currentBlinkWeight = 0f;
+    private BlinkState blinkState = BlinkState.Idle;
+    private float blinkTimer;
+    private float blinkHoldTimer;
+    private float currentBlinkWeight = 0f;
 
-    private void Start()
+    private IEnumerator Start()
     {
-        DetermineActiveTarget();
+        // Wait a brief moment to allow the Meta XR system to register the headset
+        yield return new WaitForSeconds(0.2f);
 
-        Quaternion inverseReference = Quaternion.Inverse(transform.rotation);
-
-        if (leftEye != null) _leftEyeStartRel = inverseReference * leftEye.rotation;
-        if (leftEyeGloss != null) _leftEyeGlossStartRel = inverseReference * leftEyeGloss.rotation;
-        if (rightEye != null) _rightEyeStartRel = inverseReference * rightEye.rotation;
-        if (rightEyeGloss != null) _rightEyeGlossStartRel = inverseReference * rightEyeGloss.rotation;
-
+        DetermineActiveCamera();
         ResetBlinkTimer();
-        ResetDartTimer();
+        StartCoroutine(GazeBehaviorRoutine());
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        if (targetMesh != null) HandleBlinking();
-        if (targetToLookAt != null) HandleEyeMovement();
+        if (targetMesh != null) { HandleBlinking(); }
+        if (targetCamera == null || leftEye == null || rightEye == null) { return; }
+
+        UpdateEye(leftEye);
+        UpdateEye(rightEye);
     }
 
-    public void DetermineActiveTarget()
+    private void DetermineActiveCamera()
     {
-        if (XRSettings.isDeviceActive && vrTarget != null)
+        // Actively search for connected Head-Mounted Displays (HMD)
+        List<InputDevice> hmdDevices = new List<InputDevice>();
+        InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeadMounted, hmdDevices);
+
+        // Check if the list contains valid devices indicating an active VR headset
+        bool isVRPresent = hmdDevices.Count > 0 && hmdDevices[0].isValid;
+
+        if (isVRPresent && vrCamera != null)
         {
-            targetToLookAt = vrTarget;
+            targetCamera = vrCamera;
         }
-        else if (!XRSettings.isDeviceActive && fpsTarget != null)
+        else if (!isVRPresent && fpsCamera != null)
         {
-            targetToLookAt = fpsTarget;
+            targetCamera = fpsCamera;
         }
         else if (Camera.main != null)
         {
-            targetToLookAt = Camera.main.transform;
+            targetCamera = Camera.main.transform;
+        }
+
+        if (targetCamera == null)
+        {
+            Debug.LogError("EyeGazeController: No valid camera found!");
         }
     }
 
-    private void HandleEyeMovement()
+    private void UpdateEye(Transform eye)
     {
-        _dartTimer -= Time.deltaTime;
-        if (_dartTimer <= 0)
-        {
-            if (Random.value < 0.7f)
-            {
-                _targetDartOffset = Vector2.zero;
-                _dartTimer = Random.Range(1.5f, 4f);
-            }
-            else
-            {
-                _targetDartOffset = new Vector2(Random.Range(-20f, 20f), Random.Range(-15f, 15f));
-                _dartTimer = Random.Range(0.5f, 1.5f);
-            }
-        }
+        // Calculate the clamped rotation and apply it to the eye
+        Vector3 targetPos = isLookingAtPlayer ? (targetCamera.position + lookOffset) : (eye.parent.position + eye.parent.forward * 3f + eye.parent.up * -1.5f);
+        Vector3 dirToTarget = targetPos - eye.position;
+        Quaternion targetLocalRot = Quaternion.Inverse(eye.parent.rotation) * Quaternion.LookRotation(dirToTarget);
 
-        _currentDartOffset = Vector2.Lerp(_currentDartOffset, _targetDartOffset, Time.deltaTime * 20f);
+        float angleX = Mathf.Clamp(NormalizeAngle(targetLocalRot.eulerAngles.x), verticalLimits.x, verticalLimits.y);
+        float angleY = Mathf.Clamp(NormalizeAngle(targetLocalRot.eulerAngles.y), horizontalLimits.x, horizontalLimits.y);
 
-        Vector3 eyesCenter = transform.position;
-        if (leftEye != null && rightEye != null)
-        {
-            eyesCenter = (leftEye.position + rightEye.position) / 2f;
-        }
-
-        Vector3 directionToTarget = targetToLookAt.position - eyesCenter;
-        Quaternion lookRotation = Quaternion.LookRotation(directionToTarget, transform.up);
-
-        Quaternion localLookRotation = Quaternion.Inverse(transform.rotation) * lookRotation;
-        Vector3 euler = localLookRotation.eulerAngles;
-
-        float targetPitch = NormalizeAngle(euler.x) + _currentDartOffset.y;
-        float targetYaw = NormalizeAngle(euler.y) + _currentDartOffset.x;
-
-        targetPitch = Mathf.Clamp(targetPitch, -maxPitch, maxPitch);
-        targetYaw = Mathf.Clamp(targetYaw, -maxYaw, maxYaw);
-
-        _currentPitch = Mathf.Lerp(_currentPitch, targetPitch, Time.deltaTime * eyeMoveSpeed);
-        _currentYaw = Mathf.Lerp(_currentYaw, targetYaw, Time.deltaTime * eyeMoveSpeed);
-
-        Quaternion clampedRelativeRot = Quaternion.Euler(_currentPitch, _currentYaw, 0f);
-        Quaternion finalGlobalRotation = transform.rotation * clampedRelativeRot;
-
-        if (leftEye != null) leftEye.rotation = finalGlobalRotation * _leftEyeStartRel;
-        if (leftEyeGloss != null) leftEyeGloss.rotation = finalGlobalRotation * _leftEyeGlossStartRel;
-        if (rightEye != null) rightEye.rotation = finalGlobalRotation * _rightEyeStartRel;
-        if (rightEyeGloss != null) rightEyeGloss.rotation = finalGlobalRotation * _rightEyeGlossStartRel;
+        eye.localRotation = Quaternion.Slerp(eye.localRotation, Quaternion.Euler(angleX, angleY, 0f), Time.deltaTime * smoothSpeed);
     }
 
     private void HandleBlinking()
     {
-        switch (_blinkState)
+        switch (blinkState)
         {
             case BlinkState.Idle:
-                _blinkTimer -= Time.deltaTime;
-                if (_blinkTimer <= 0) _blinkState = BlinkState.Closing;
+                blinkTimer -= Time.deltaTime;
+                if (blinkTimer <= 0)
+                {
+                    blinkState = BlinkState.Closing;
+                    if (Random.value < 0.7f) { GenerateNewLookOffset(); }
+                }
                 break;
 
             case BlinkState.Closing:
-                float closeSpeed = 100f / (blinkCloseDurationMs / 1000f);
-                _currentBlinkWeight = Mathf.MoveTowards(_currentBlinkWeight, 100f, closeSpeed * Time.deltaTime);
-                if (_currentBlinkWeight >= 100f)
+                currentBlinkWeight = Mathf.MoveTowards(currentBlinkWeight, 100f, (100f / (blinkCloseDurationMs / 1000f)) * Time.deltaTime);
+                if (currentBlinkWeight >= 100f)
                 {
-                    _blinkState = BlinkState.Closed;
-                    _blinkHoldTimer = blinkClosedDurationMs / 1000f;
+                    blinkState = BlinkState.Closed;
+                    blinkHoldTimer = blinkClosedDurationMs / 1000f;
                 }
-                targetMesh.SetBlendShapeWeight(blinkIndex, _currentBlinkWeight);
+                targetMesh.SetBlendShapeWeight(blinkIndex, currentBlinkWeight);
                 break;
 
             case BlinkState.Closed:
-                _blinkHoldTimer -= Time.deltaTime;
-                if (_blinkHoldTimer <= 0) _blinkState = BlinkState.Opening;
+                blinkHoldTimer -= Time.deltaTime;
+                if (blinkHoldTimer <= 0) { blinkState = BlinkState.Opening; }
                 break;
 
             case BlinkState.Opening:
-                float openSpeed = 100f / (blinkOpenDurationMs / 1000f);
-                _currentBlinkWeight = Mathf.MoveTowards(_currentBlinkWeight, 0f, openSpeed * Time.deltaTime);
-                if (_currentBlinkWeight <= 0f)
+                currentBlinkWeight = Mathf.MoveTowards(currentBlinkWeight, 0f, (100f / (blinkOpenDurationMs / 1000f)) * Time.deltaTime);
+                if (currentBlinkWeight <= 0f)
                 {
-                    _blinkState = BlinkState.Idle;
+                    blinkState = BlinkState.Idle;
                     ResetBlinkTimer();
                 }
-                targetMesh.SetBlendShapeWeight(blinkIndex, _currentBlinkWeight);
+                targetMesh.SetBlendShapeWeight(blinkIndex, currentBlinkWeight);
                 break;
         }
     }
 
-    private float NormalizeAngle(float angle)
+    private void GenerateNewLookOffset()
     {
-        while (angle > 180f) angle -= 360f;
-        while (angle < -180f) angle += 360f;
-        return angle;
+        // Create random offset to simulate organic micro-movements
+        lookOffset = new Vector3(Random.Range(-0.04f, 0.04f), Random.Range(-0.04f, 0.04f), Random.Range(-0.04f, 0.04f));
     }
 
     private void ResetBlinkTimer()
     {
-        _blinkTimer = Random.Range(minBlinkInterval, maxBlinkInterval);
+        blinkTimer = Random.Range(minBlinkInterval, maxBlinkInterval);
     }
 
-    private void ResetDartTimer()
+    private float NormalizeAngle(float angle)
     {
-        _dartTimer = Random.Range(1f, 3f);
+        // Normalizes angles to a -180 to 180 range for clamping
+        while (angle > 180f) { angle -= 360f; }
+        while (angle < -180f) { angle += 360f; }
+        return angle;
+    }
+
+    private IEnumerator GazeBehaviorRoutine()
+    {
+        // Toggle between focusing on the player and looking away
+        while (true)
+        {
+            isLookingAtPlayer = true;
+            yield return new WaitForSeconds(Random.Range(4f, 8f));
+
+            isLookingAtPlayer = false;
+            yield return new WaitForSeconds(Random.Range(1.5f, 3f));
+        }
     }
 }
