@@ -21,7 +21,7 @@ public class TaskManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("TaskManager: GameObject is missing a SimulationTask component!");
+                Debug.LogWarning("TaskManager: GameObject is missing a SimulationTask component");
             }
         }
 

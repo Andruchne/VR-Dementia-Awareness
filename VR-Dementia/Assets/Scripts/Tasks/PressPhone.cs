@@ -12,6 +12,9 @@ public class PressPhone : SimulationTask
     [Header("Phone Setup")]
     [SerializeField] private Transform phone;
 
+    [Header("Hand Setup")]
+    [SerializeField] private Transform[] leftHandComponents;
+
     private Transform targetCamera;
 
     private IEnumerator Start()
@@ -20,6 +23,10 @@ public class PressPhone : SimulationTask
         yield return new WaitForSeconds(0.2f);
 
         DetermineActiveCamera();
+        for (int i = 0; i < leftHandComponents.Length; i++)
+        {
+            leftHandComponents[i].gameObject.SetActive(false);
+        }
     }
 
     private void DetermineActiveCamera()
@@ -52,7 +59,7 @@ public class PressPhone : SimulationTask
         if (headFollow != null) { headFollow.enabled = false; }
 
         float elapsedTime = 0f;
-        float duration = 1f;
+        float duration = 0.75f;
 
         // We want to rotate exactly 90 degrees downwards
         float totalAngleToRotate = 90f;
@@ -60,11 +67,18 @@ public class PressPhone : SimulationTask
 
         while (elapsedTime < duration)
         {
-            // Calculate how many degrees we need to rotate in this specific frame
-            float angleThisFrame = (totalAngleToRotate / duration) * Time.deltaTime;
+            // Normalize time to a 0.0 to 1.0 range
+            float normalizedTime = elapsedTime / duration;
 
-            // Clamp the angle to ensure we don't overshoot past exactly 90 degrees
-            if (currentRotatedAngle + angleThisFrame > totalAngleToRotate) { angleThisFrame = totalAngleToRotate - currentRotatedAngle; }
+            // Apply an Ease-In curve (starts slow, then accelerates)
+            // Using a cubic curve (t^3) for a distinct, organic drag at the beginning
+            float easedTime = normalizedTime * normalizedTime * normalizedTime;
+
+            // Calculate the exact angle the phone should be at in this specific frame
+            float targetAngleThisFrame = totalAngleToRotate * easedTime;
+
+            // Calculate the difference between where we need to be and where we currently are
+            float angleThisFrame = targetAngleThisFrame - currentRotatedAngle;
 
             // Rotate the phone around the camera's position
             phone.RotateAround(targetCamera.position, targetCamera.right, angleThisFrame);
@@ -75,7 +89,18 @@ public class PressPhone : SimulationTask
             yield return null;
         }
 
+        // Snap to the exact final angle to prevent tiny floating point inaccuracies
+        float remainingAngle = totalAngleToRotate - currentRotatedAngle;
+        if (remainingAngle > 0f)
+        {
+            phone.RotateAround(targetCamera.position, targetCamera.right, remainingAngle);
+        }
+
         phone.gameObject.SetActive(false);
+        for (int i = 0; i < leftHandComponents.Length; i++)
+        {
+            leftHandComponents[i].gameObject.SetActive(true);
+        }
         FinishTask();
     }
 }

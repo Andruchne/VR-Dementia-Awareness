@@ -144,4 +144,9 @@ public class PhysicsProxyFollower : MonoBehaviour
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
     }
+
+    public bool IsGrabbed()
+    {
+        return grabCollisionHandler.IsGrabbed;
+    }
 }

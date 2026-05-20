@@ -162,10 +162,10 @@ public class EyeGazeController : MonoBehaviour
         while (true)
         {
             isLookingAtPlayer = true;
-            yield return new WaitForSeconds(Random.Range(4f, 8f));
+            yield return new WaitForSeconds(Random.Range(3f, 8f));
 
             isLookingAtPlayer = false;
-            yield return new WaitForSeconds(Random.Range(1.5f, 3f));
+            yield return new WaitForSeconds(Random.Range(2f, 4f));
         }
     }
 }
