@@ -8,14 +8,17 @@ using System.Threading.Tasks;
 public class InworldTTSClient : MonoBehaviour
 {
     [Header("Inworld TTS Settings")]
-    public string voiceId = "Ashley"; // Options: Ashley, Dennis, Alex, Craig, etc.
-    public string modelId = "inworld-tts-1.5-mini";
+    [SerializeField] string englishVoiceId = "default-att0kitmzafhiciftzuddw__hester_voice_clone_en";
+    [SerializeField] string dutchVoiceId = "default-att0kitmzafhiciftzuddw__hester_voice_clone_nl";
+    [SerializeField] string modelId = "inworld-tts-1.5-mini";
 
     private string base64AuthToken;
+    private string voiceId;
 
     private void Awake()
     {
         LoadLocalCredentials();
+        voiceId = englishVoiceId;
     }
 
     private void LoadLocalCredentials()
@@ -96,5 +99,11 @@ public class InworldTTSClient : MonoBehaviour
             TTSResponse response = JsonUtility.FromJson<TTSResponse>(www.downloadHandler.text);
             return Convert.FromBase64String(response.audioContent);
         }
+    }
+
+    public void SetVoiceLanguage(bool isEnglish)
+    {
+        if (isEnglish) { voiceId = englishVoiceId; }
+        else { voiceId = dutchVoiceId; }
     }
 }
