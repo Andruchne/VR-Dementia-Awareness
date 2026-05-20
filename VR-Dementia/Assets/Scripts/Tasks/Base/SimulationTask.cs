@@ -10,7 +10,6 @@ public class SimulationTask : MonoBehaviour
     public virtual void StartTask() 
     {
         EventBus<OnUpdateTask>.Publish(new OnUpdateTask(taskTitle, taskDescription));
-        Debug.Log("huhu");
     }
 
     public virtual void FinishTask() 
