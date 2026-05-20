@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Localization-Assets-Shared
   m_GUID: e1501188d04b4ff47bbf3e28376c09c5
   m_SerializeEntries:
+  - m_GUID: 15ae7a22519ba5f45a52e9d2ceb50c23
+    m_Address: Assets/LocalizationAssets/Translations/PhoneUI/Phone UI Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3b8f230b989279644914075bf811554a
     m_Address: Assets/LocalizationAssets/Translations/Moods/Moods Shared Data.asset
     m_ReadOnly: 1
