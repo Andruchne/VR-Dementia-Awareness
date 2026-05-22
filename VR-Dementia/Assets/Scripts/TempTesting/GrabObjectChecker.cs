@@ -6,6 +6,7 @@ public class GrabObjectChecker : MonoBehaviour
     [SerializeField] private PhysicsProxyFollower grabbableObject;
     [SerializeField] private Transform door;
     [SerializeField] private Transform text;
+    [SerializeField] private Transform grabText;
 
     private void Awake()
     {
@@ -23,11 +24,13 @@ public class GrabObjectChecker : MonoBehaviour
         {
             toArea.gameObject.SetActive(true);
             text.gameObject.SetActive(true);
+            grabText.gameObject.SetActive(false);
         }
         else if (!grabbableObject.IsGrabbed() && door.gameObject.activeSelf)
         {
             toArea.gameObject.SetActive(false);
             text.gameObject.SetActive(false);
+            grabText.gameObject.SetActive(true);
         }
     }
 
@@ -39,6 +42,7 @@ public class GrabObjectChecker : MonoBehaviour
             toArea.gameObject.SetActive(false);
             door.gameObject.SetActive(false);
             text.gameObject.SetActive(false);
+            grabText.gameObject.SetActive(false);
         }
     }
 }

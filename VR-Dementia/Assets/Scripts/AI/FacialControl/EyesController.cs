@@ -39,7 +39,6 @@ public class EyeGazeController : MonoBehaviour
 
     private IEnumerator Start()
     {
-        // Wait a brief moment to allow the Meta XR system to register the headset
         yield return new WaitForSeconds(0.2f);
 
         DetermineActiveCamera();
@@ -58,38 +57,25 @@ public class EyeGazeController : MonoBehaviour
 
     private void DetermineActiveCamera()
     {
-        // Actively search for connected Head-Mounted Displays (HMD)
         List<InputDevice> hmdDevices = new List<InputDevice>();
         InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeadMounted, hmdDevices);
 
-        // Check if the list contains valid devices indicating an active VR headset
         bool isVRPresent = hmdDevices.Count > 0 && hmdDevices[0].isValid;
 
-        if (isVRPresent && vrCamera != null)
-        {
-            targetCamera = vrCamera;
-        }
-        else if (!isVRPresent && fpsCamera != null)
-        {
-            targetCamera = fpsCamera;
-        }
-        else if (Camera.main != null)
-        {
-            targetCamera = Camera.main.transform;
-        }
+        if (isVRPresent && vrCamera != null) { targetCamera = vrCamera; }
+        else if (!isVRPresent && fpsCamera != null) { targetCamera = fpsCamera; }
+        else if (Camera.main != null) { targetCamera = Camera.main.transform; }
 
-        if (targetCamera == null)
-        {
-            Debug.LogError("EyeGazeController: No valid camera found!");
-        }
+        if (targetCamera == null) { Debug.LogError("EyeGazeController: No valid camera found!"); }
     }
 
     private void UpdateEye(Transform eye)
     {
-        // Calculate the clamped rotation and apply it to the eye
         Vector3 targetPos = isLookingAtPlayer ? (targetCamera.position + lookOffset) : (eye.parent.position + eye.parent.forward * 3f + eye.parent.up * -1.5f);
         Vector3 dirToTarget = targetPos - eye.position;
-        Quaternion targetLocalRot = Quaternion.Inverse(eye.parent.rotation) * Quaternion.LookRotation(dirToTarget);
+
+        // Multiply by Euler(-90, 0, 0) to align Unity's logic with the mesh's default orientation
+        Quaternion targetLocalRot = Quaternion.Inverse(eye.parent.rotation) * Quaternion.LookRotation(dirToTarget) * Quaternion.Euler(-90f, 0f, 0f);
 
         float angleX = Mathf.Clamp(NormalizeAngle(targetLocalRot.eulerAngles.x), verticalLimits.x, verticalLimits.y);
         float angleY = Mathf.Clamp(NormalizeAngle(targetLocalRot.eulerAngles.y), horizontalLimits.x, horizontalLimits.y);
@@ -139,7 +125,6 @@ public class EyeGazeController : MonoBehaviour
 
     private void GenerateNewLookOffset()
     {
-        // Create random offset to simulate organic micro-movements
         lookOffset = new Vector3(Random.Range(-0.04f, 0.04f), Random.Range(-0.04f, 0.04f), Random.Range(-0.04f, 0.04f));
     }
 
@@ -150,7 +135,6 @@ public class EyeGazeController : MonoBehaviour
 
     private float NormalizeAngle(float angle)
     {
-        // Normalizes angles to a -180 to 180 range for clamping
         while (angle > 180f) { angle -= 360f; }
         while (angle < -180f) { angle += 360f; }
         return angle;
@@ -158,7 +142,6 @@ public class EyeGazeController : MonoBehaviour
 
     private IEnumerator GazeBehaviorRoutine()
     {
-        // Toggle between focusing on the player and looking away
         while (true)
         {
             isLookingAtPlayer = true;
