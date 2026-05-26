@@ -15,10 +15,10 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639153894360322183
+  lastModified: 639153896828298811
   FileSizes:
   - Name: Desktop
-    Value: 1554
+    Value: 1664
   Exists: 1
 --- !u!114 &-8663448103879957142
 MonoBehaviour:
@@ -116,6 +116,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &-7246494850655119788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/OneShotSFX/UI_Button_PressedSFX
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/OneShotSFX/UI_Button_PressedSFX
+  Guid:
+    Data1: 606472600
+    Data2: 1319835365
+    Data3: -1160274556
+    Data4: -14304325
+  Banks:
+  - {fileID: 1982609782087560113}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-6301496419575727263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +158,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639153894360283361
+  lastModified: 639153896828256591
   FileSizes:
   - Name: Desktop
     Value: 1640
@@ -164,6 +191,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 3919
+--- !u!114 &-3696680913691161011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/OneShotSFX/Object_PickUpSFX
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/OneShotSFX/Object_PickUpSFX
+  Guid:
+    Data1: -1661207070
+    Data2: 1231680295
+    Data3: -433939836
+    Data4: 2088783377
+  Banks:
+  - {fileID: 1982609782087560113}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-1364194543260975454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,6 +293,8 @@ MonoBehaviour:
   - {fileID: -5804514334135676053}
   - {fileID: 5767688956607964298}
   - {fileID: 7016947237050314524}
+  - {fileID: -7246494850655119788}
+  - {fileID: -3696680913691161011}
   EditorParameters:
   - {fileID: 7856198239711691406}
   - {fileID: -1330277757104103027}
@@ -247,7 +303,7 @@ MonoBehaviour:
   - {fileID: -6301496419575727263}
   StringsBanks:
   - {fileID: -8750722972122330615}
-  cacheTime: 639153894371108353
+  cacheTime: 639153896828875746
   cacheVersion: 131635
 --- !u!114 &1282885528394992424
 MonoBehaviour:
@@ -308,10 +364,10 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/One_Shot_SFX.bank
   Name: One_Shot_SFX
   StudioPath: bank:/One_Shot_SFX
-  lastModified: 639153894371108353
+  lastModified: 639153896828875746
   FileSizes:
   - Name: Desktop
-    Value: 21408
+    Value: 29280
   Exists: 1
 --- !u!114 &3955906471414611834
 MonoBehaviour:
