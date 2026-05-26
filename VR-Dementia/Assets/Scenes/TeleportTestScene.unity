@@ -4358,6 +4358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 592761082}
   - component: {fileID: 592761081}
+  - component: {fileID: 592761083}
   m_Layer: 0
   m_Name: PressPhone
   m_TagString: Untagged
@@ -4401,6 +4402,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 995906959}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &592761083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 592761080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b739d5c6ce172848b7708c500f72eb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputChecker
+  checkSteps:
+  - actionReference: {fileID: -8525429354371678379, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    requiredDirection: 2
+  - actionReference: {fileID: 1263111715868034790, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    requiredDirection: 1
 --- !u!1 &605022493
 GameObject:
   m_ObjectHideFlags: 0
