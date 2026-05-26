@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639153896828298811
+  lastModified: 639154026672593418
   FileSizes:
   - Name: Desktop
     Value: 1664
@@ -158,7 +158,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639153896828256591
+  lastModified: 639104608808316754
   FileSizes:
   - Name: Desktop
     Value: 1640
@@ -303,7 +303,7 @@ MonoBehaviour:
   - {fileID: -6301496419575727263}
   StringsBanks:
   - {fileID: -8750722972122330615}
-  cacheTime: 639153896828875746
+  cacheTime: 639154026672679879
   cacheVersion: 131635
 --- !u!114 &1282885528394992424
 MonoBehaviour:
@@ -344,7 +344,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639153894370410119
+  lastModified: 639104608808942269
   FileSizes:
   - Name: Desktop
     Value: 8136160
@@ -364,7 +364,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/One_Shot_SFX.bank
   Name: One_Shot_SFX
   StudioPath: bank:/One_Shot_SFX
-  lastModified: 639153896828875746
+  lastModified: 639154026672679879
   FileSizes:
   - Name: Desktop
     Value: 29280
@@ -384,7 +384,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Character.bank
   Name: Character
   StudioPath: bank:/Character
-  lastModified: 639106539142824403
+  lastModified: 639104608806659112
   FileSizes:
   - Name: Desktop
     Value: 1502
@@ -544,7 +544,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Bank A.bank
   Name: Bank A
   StudioPath: bank:/Bank A
-  lastModified: 639106539138793696
+  lastModified: 639104608806407354
   FileSizes:
   - Name: Desktop
     Value: 1502
@@ -564,7 +564,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Channel_Ambience.bank
   Name: Channel_Ambience
   StudioPath: bank:/Channel_Ambience
-  lastModified: 639153894360076851
+  lastModified: 639104608806639000
   FileSizes:
   - Name: Desktop
     Value: 3290016
