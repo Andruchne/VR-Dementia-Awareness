@@ -336,6 +336,7 @@ MonoBehaviour:
   - Channel_Ambience
   - Character
   - Music
+  - One_Shot_SFX
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0
