@@ -90,11 +90,17 @@ VR-Dementia/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Prope
 VR-Dementia/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
 
 # =========================
-# FMOD Studio
+# FMOD Studio & Unity Integration
 # =========================
 
+# FMOD Studio project cache
 Sound_System/.cache/
 Sound_System/.fsbcache/
 Sound_System/.user/
 Sound_System/.backup/
+Sound_System/Build/
 *.fsprouser
+
+# FMOD Cache in Unity Project
+VR-Dementia/[Aa]ssets/FMODStudioCache.asset
+VR-Dementia/[Aa]ssets/FMODStudioCache.asset.meta
