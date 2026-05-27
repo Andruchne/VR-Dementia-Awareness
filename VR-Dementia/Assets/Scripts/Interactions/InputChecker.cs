@@ -19,31 +19,61 @@ public class InputChecker : MonoBehaviour
     private int currentIndex = 0;
     private Coroutine volumeRoutine;
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return new WaitForSeconds(0.5f);
+
         for (int i = 0; i < checkSteps.Length; i++)
         {
-            if (checkSteps[i].locomotionComponent != null) { checkSteps[i].locomotionComponent.GetComponent<Toggle>().isOn = false; }
+            for (int a = 0; a < checkSteps[i].locomotionComponent.Length; a++)
+            {
+                checkSteps[i].locomotionComponent[a].SetActive(false);
+            }
         }
 
         if (successVolume != null) { successVolume.weight = 0f; }
 
-        SetupCurrentInput();
+        EventBus<OnStartSimulation>.OnEvent += InitiateCheck;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        if (checkSteps == null || currentIndex >= checkSteps.Length) { return; }
+        EventBus<OnStartSimulation>.OnEvent -= InitiateCheck;
 
+        if (checkSteps == null || currentIndex >= checkSteps.Length) { return; }
         if (currentIndex < checkSteps.Length && checkSteps[currentIndex].actionReference != null)
         {
             checkSteps[currentIndex].actionReference.action.performed -= InputPressed;
         }
     }
 
+    private void CheckPalmMenu()
+    {
+        EventBus<OnChangePalmMenuActive>.Publish(new OnChangePalmMenuActive(true));
+        EventBus<OnPalmMenuVisibilityChanged>.OnEvent += PalmMenuVisibilityChanged;
+    }
+
+    private void PalmMenuVisibilityChanged(OnPalmMenuVisibilityChanged evt)
+    {
+        if (evt.isVisible)
+        {
+            EventBus<OnPalmMenuVisibilityChanged>.OnEvent -= PalmMenuVisibilityChanged;
+            TriggerSuccessFeedback();
+        }
+    }
+
+    private void InitiateCheck(OnStartSimulation evt)
+    {
+        SetupCurrentInput();
+    }
+
     private void SetupCurrentInput()
     {
-        if (currentIndex >= checkSteps.Length) { return; }
+        if (currentIndex >= checkSteps.Length) 
+        {
+            CheckPalmMenu();
+            return; 
+        }
 
         InputAction currentAction = checkSteps[currentIndex].actionReference.action;
         if (currentAction != null)
@@ -51,7 +81,10 @@ public class InputChecker : MonoBehaviour
             currentAction.Enable();
             currentAction.performed += InputPressed;
 
-            if (checkSteps[currentIndex].locomotionComponent != null) { checkSteps[currentIndex].locomotionComponent.GetComponent<Toggle>().isOn = true; }
+            for (int i = 0; i < checkSteps[currentIndex].locomotionComponent.Length; i++)
+            {
+                checkSteps[currentIndex].locomotionComponent[i].SetActive(true);
+            }
         }
     }
 

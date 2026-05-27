@@ -10,5 +10,5 @@ public struct InputStep
 {
     public InputActionReference actionReference;
     public JoystickDirection requiredDirection;
-    public GameObject locomotionComponent;
+    public GameObject[] locomotionComponent;
 }

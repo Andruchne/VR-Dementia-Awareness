@@ -20,9 +20,9 @@ public class Timer : MonoBehaviour
 
     // As MonoBehaviour is in use, using the class constructor is not an option
     // To use this timer, instantiate a timer object and call Initialize() for setup
-    public void Setup(float waitTime, bool loop = false, bool startTimer = false)
+    public void Setup(float waitTimeSeconds, bool loop = false, bool startTimer = false)
     {
-        _waitTime = waitTime;
+        _waitTime = waitTimeSeconds;
         _loop = loop;
         if (startTimer) { StartTimer(); }
     }

@@ -20,6 +20,31 @@ public class EventBus<T> where T : Event
     }
 }
 
+#region Controls
+
+public class OnChangePalmMenuActive : Event
+{
+    // Trigger and set, to control whether palm menu should be visisble
+    public OnChangePalmMenuActive(bool isActive) 
+    { 
+        this.isActive = isActive;
+    }
+    public bool isActive;
+}
+
+public class OnPalmMenuVisibilityChanged : Event
+{
+    // Notifies of current visibility state of the palm menu
+    public OnPalmMenuVisibilityChanged(bool isVisible)
+    {
+        this.isVisible = isVisible;
+    }
+    public bool isVisible;
+}
+
+#endregion
+
+
 #region Tasks
 
 public class OnUpdateTask : Event

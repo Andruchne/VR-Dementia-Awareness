@@ -1,18 +1,19 @@
 using System;
 using UnityEngine;
+using UnityEngine.Localization;
 
 public class SimulationTask : MonoBehaviour
 {
-    [SerializeField] private string taskTitle;
-    [TextArea(3,3)][SerializeField] private string taskDescription;
+    [SerializeField] LocalizedString taskTitle;
+    [SerializeField] LocalizedString taskDescription;
     public event Action onTaskFinished;
 
-    public virtual void StartTask() 
+    public virtual void StartTask()
     {
-        EventBus<OnUpdateTask>.Publish(new OnUpdateTask(taskTitle, taskDescription));
+        EventBus<OnUpdateTask>.Publish(new OnUpdateTask(taskTitle.GetLocalizedString(), taskDescription.GetLocalizedString()));
     }
 
-    public virtual void FinishTask() 
+    public virtual void FinishTask()
     {
         onTaskFinished?.Invoke();
     }

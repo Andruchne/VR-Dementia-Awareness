@@ -1,6 +1,7 @@
 using UnityEngine;
 using Oculus.Interaction;
 using Oculus.Interaction.HandGrab;
+using System;
 
 /// <summary>
 /// Handles fading the handheld menu in the left hand in/out.
@@ -37,6 +38,21 @@ public class PalmMenuFader : MonoBehaviour
     [Tooltip("How smoothly the menu fades in and out")]
     public float fadeSpeed = 12;
 
+    public event Action<bool> OnMenuVisibilityChange;
+
+    private bool isActive;
+    private bool angledAfterActivation;
+
+    private void Start()
+    {
+        EventBus<OnChangePalmMenuActive>.OnEvent += SetActiveness;
+    }
+
+    private void OnDestroy()
+    {
+        EventBus<OnChangePalmMenuActive>.OnEvent -= SetActiveness;
+    }
+
     private void Update()
     {
         if (headTransform == null || palmTransform == null || menuCanvasGroup == null) { return; }
@@ -44,18 +60,19 @@ public class PalmMenuFader : MonoBehaviour
         float targetAlpha = 0f;
 
         // Only calculate visibility if the hand/controller is not holding anything
-        if (!IsHoldingObject())
+        if (!IsHoldingObject() && isActive)
         {
             Vector3 directionToFace = (headTransform.position - palmTransform.position).normalized;
 
             // Depending on how your Palm Transform is oriented, you might need to adjust -palmTransform.up
             float angleToFace = Vector3.Angle(-palmTransform.up, directionToFace);
 
-            if (angleToFace <= startFadingAngle)
+            if (angleToFace <= startFadingAngle && !angledAfterActivation)
             {
                 // Map angle between startFadingAngle and fullyVisibleAngle to a 0 to 1 range
                 targetAlpha = 1f - Mathf.Clamp01((angleToFace - fullyVisibleAngle) / (startFadingAngle - fullyVisibleAngle));
             }
+            else if (angleToFace > startFadingAngle && angledAfterActivation) { angledAfterActivation = false; }
         }
 
         // Smoothly transition the current alpha to the target alpha
@@ -76,11 +93,13 @@ public class PalmMenuFader : MonoBehaviour
         {
             menuCanvasGroup.interactable = true;
             menuCanvasGroup.blocksRaycasts = true;
+            EventBus<OnPalmMenuVisibilityChanged>.Publish(new OnPalmMenuVisibilityChanged(true));
         }
         else
         {
             menuCanvasGroup.interactable = false;
             menuCanvasGroup.blocksRaycasts = false;
+            EventBus<OnPalmMenuVisibilityChanged>.Publish(new OnPalmMenuVisibilityChanged(false));
         }
     }
 
@@ -100,5 +119,16 @@ public class PalmMenuFader : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void SetActiveness(OnChangePalmMenuActive newActive)
+    {
+        Vector3 directionToFace = (headTransform.position - palmTransform.position).normalized;
+        float angleToFace = Vector3.Angle(-palmTransform.up, directionToFace);
+
+        if (angleToFace <= startFadingAngle) { angledAfterActivation = true; }
+        else { angledAfterActivation = false; }
+
+        isActive = newActive.isActive;
     }
 }
