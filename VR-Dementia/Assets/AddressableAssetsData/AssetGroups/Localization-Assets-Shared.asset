@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44a1000bdf6f78047ad51eb42991cb5c
+    m_Address: Assets/LocalizationAssets/Translations/Pop-up/Pop-up Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 57b2098feb6f574448254b7b7f646ec4
     m_Address: Assets/LocalizationAssets/Translations/UI/UI Shared Data.asset
     m_ReadOnly: 1
