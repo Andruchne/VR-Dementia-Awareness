@@ -337,6 +337,7 @@ MonoBehaviour:
   - Character
   - Music
   - One_Shot_SFX
+  - VoiceLines_Juliette
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0
