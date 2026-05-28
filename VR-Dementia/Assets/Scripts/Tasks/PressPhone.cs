@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.XR;
 
 public class PressPhone : SimulationTask
 {
@@ -22,6 +20,8 @@ public class PressPhone : SimulationTask
     {
         yield return new WaitForSeconds(1.0f);
 
+        indicatorHUD.SetActive(false);
+
         // Deactivate handheld menu - it will be activated during InputChecker activeness
         EventBus<OnChangePalmMenuActive>.Publish(new OnChangePalmMenuActive(false));
         for (int i = 0; i < leftHandComponents.Length; i++)
@@ -30,7 +30,7 @@ public class PressPhone : SimulationTask
         }
 
         timer = gameObject.AddComponent<Timer>();
-        timer.Setup(3, false, true);
+        timer.Setup(3, true, true);
         timer.OnTimerFinished += ShowReminder;
     }
 
@@ -48,6 +48,7 @@ public class PressPhone : SimulationTask
     {
         EventBus<OnStartSimulation>.Publish(new OnStartSimulation());
 
+        indicatorHUD.SetActive(false);
         phone.gameObject.SetActive(false);
         for (int i = 0; i < leftHandComponents.Length; i++)
         {
@@ -67,12 +68,26 @@ public class PressPhone : SimulationTask
                 }
             case 1:
                 {
-
+                    StartCoroutine(AnimateSendButtonImage());
                     timer.StopTimer();
                     break;
                 }
         }
 
         reminderIndex++;
+    }
+
+    private IEnumerator AnimateSendButtonImage()
+    {
+        Color baseColor = sendButtonImage.color;
+        float pulseSpeed = 5f;
+
+        while (true)
+        {
+            baseColor.a = 0.7f + (Mathf.Sin(Time.time * pulseSpeed) * 0.3f);
+            sendButtonImage.color = baseColor;
+
+            yield return null;
+        }
     }
 }
