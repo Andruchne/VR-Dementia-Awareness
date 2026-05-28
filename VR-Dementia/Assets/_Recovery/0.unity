@@ -4961,8 +4961,9 @@ GameObject:
   - component: {fileID: 614256827}
   - component: {fileID: 614256826}
   - component: {fileID: 614256825}
+  - component: {fileID: 614256829}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: EnterBuildingTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5061,6 +5062,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &614256829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614256824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 873d9417379f14540adfb9833daae438, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnterHouseTrigger
 --- !u!1 &645641519 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6670385433087266602, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}

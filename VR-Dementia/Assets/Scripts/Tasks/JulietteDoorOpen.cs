@@ -24,6 +24,8 @@ public class JulietteDoorOpen : SimulationTask
 
     private void Start()
     {
+        indicatorHUD.SetActive(false);
+
         // Setup localization changes
         LocalizationSettings.SelectedLocaleChanged += HandleLocalizationChanged;
         if (LocalizationSettings.SelectedLocale != null)
@@ -81,6 +83,8 @@ public class JulietteDoorOpen : SimulationTask
                     break;
                 }
         }
+        sequenceIndex++;
+        Debug.LogWarning("blabl: " + sequenceIndex);
     }
 
 
