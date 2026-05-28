@@ -15,10 +15,10 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639155621340627450
+  lastModified: 639155760752559460
   FileSizes:
   - Name: Desktop
-    Value: 2316
+    Value: 2474
   Exists: 1
 --- !u!114 &-8663448103879957142
 MonoBehaviour:
@@ -212,7 +212,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639155621340587170
+  lastModified: 639155760752514005
   FileSizes:
   - Name: Desktop
     Value: 1640
@@ -272,6 +272,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 3919
+--- !u!114 &-4094897572088249565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Character_VoiceLines_NL/VoiceLine_Humming
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Character_VoiceLines_NL/VoiceLine_Humming
+  Guid:
+    Data1: 1419272399
+    Data2: 1205326256
+    Data3: -508289144
+    Data4: -822788150
+  Banks:
+  - {fileID: 3154195897731381311}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-3983877221728806097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,6 +430,33 @@ MonoBehaviour:
   - Inside
   - Outside
   Exists: 1
+--- !u!114 &-1255286663611699888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Character_VoiceLines_NL/VoiceLineNL_1(REPEATING)
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Character_VoiceLines_NL/VoiceLineNL_1(REPEATING)
+  Guid:
+    Data1: 970042953
+    Data2: 1123464323
+    Data3: 753644468
+    Data4: 65786456
+  Banks:
+  - {fileID: 3154195897731381311}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,6 +501,9 @@ MonoBehaviour:
   - {fileID: 8859817347954663000}
   - {fileID: 2367142381313569685}
   - {fileID: 1718918759449741034}
+  - {fileID: -4094897572088249565}
+  - {fileID: -1255286663611699888}
+  - {fileID: 4428023902470981222}
   EditorParameters:
   - {fileID: 7856198239711691406}
   - {fileID: -1330277757104103027}
@@ -455,7 +512,7 @@ MonoBehaviour:
   - {fileID: -6301496419575727263}
   StringsBanks:
   - {fileID: -8750722972122330615}
-  cacheTime: 639155621343556120
+  cacheTime: 639155760754130402
   cacheVersion: 131635
 --- !u!114 &868972411745571389
 MonoBehaviour:
@@ -644,10 +701,10 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/VoiceLines_Juliette.bank
   Name: VoiceLines_Juliette
   StudioPath: bank:/VoiceLines_Juliette
-  lastModified: 639155621343556120
+  lastModified: 639155760754130402
   FileSizes:
   - Name: Desktop
-    Value: 577056
+    Value: 745344
   Exists: 1
 --- !u!114 &3162175952104342649
 MonoBehaviour:
@@ -720,6 +777,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &4428023902470981222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Character_VoiceLines_EN/VoiceLineEN_1(REPEATING)
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Character_VoiceLines_EN/VoiceLineEN_1(REPEATING)
+  Guid:
+    Data1: 1919732338
+    Data2: 1192599303
+    Data3: 1927469750
+    Data4: -1353419810
+  Banks:
+  - {fileID: 3154195897731381311}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &4566398464282665295
 MonoBehaviour:
   m_ObjectHideFlags: 0
