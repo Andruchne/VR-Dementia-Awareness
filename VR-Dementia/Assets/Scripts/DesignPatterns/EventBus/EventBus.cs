@@ -65,4 +65,10 @@ public class OnStartSimulation : Event
     public OnStartSimulation() { }
 }
 
+public class OnEnterBuilding : Event
+{
+    // Triggered when player enters the building
+    public OnEnterBuilding() { }
+}
+
 #endregion

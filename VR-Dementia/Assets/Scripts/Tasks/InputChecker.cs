@@ -1,12 +1,10 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using UnityEngine.Rendering;
 using FMODUnity;
 
-public class InputChecker : MonoBehaviour
+public class InputChecker : SimulationTask
 {
     [Header("Input Settings")]
     [SerializeField] InputStep[] checkSteps;
@@ -14,7 +12,7 @@ public class InputChecker : MonoBehaviour
     [Header("Feedback Settings")]
     [SerializeField] private EventReference successSound;
     [SerializeField] private Volume successVolume;
-    [SerializeField] private float volumeTransitionTime = 1f;
+    [SerializeField] private float volumeTransitionTime = 1;
 
     private int currentIndex = 0;
     private Coroutine volumeRoutine;
@@ -32,14 +30,10 @@ public class InputChecker : MonoBehaviour
         }
 
         if (successVolume != null) { successVolume.weight = 0f; }
-
-        EventBus<OnStartSimulation>.OnEvent += InitiateCheck;
     }
 
     private void OnDestroy()
     {
-        EventBus<OnStartSimulation>.OnEvent -= InitiateCheck;
-
         if (checkSteps == null || currentIndex >= checkSteps.Length) { return; }
         if (currentIndex < checkSteps.Length && checkSteps[currentIndex].actionReference != null)
         {
@@ -59,11 +53,13 @@ public class InputChecker : MonoBehaviour
         {
             EventBus<OnPalmMenuVisibilityChanged>.OnEvent -= PalmMenuVisibilityChanged;
             TriggerSuccessFeedback();
+            FinishTask();
         }
     }
 
-    private void InitiateCheck(OnStartSimulation evt)
+    public override void StartTask()
     {
+        base.StartTask();
         SetupCurrentInput();
     }
 
