@@ -19,47 +19,40 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 135970476032
-    m_Localized: Volledige tutorial
+    m_Localized: 1. Volledige tutorial
     m_Metadata:
       m_Items: []
   - m_Id: 1030389026816
-    m_Localized: Voltooi de bewegingshandleiding
-    m_Metadata:
-      m_Items: []
-  - m_Id: 12970695905280
-    m_Localized: Rond de draaibewegingstutorial af
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13126120034304
-    m_Localized: Rond de menutoegangstutorial af
+    m_Localized: Rond de bewegings-, draai- en menututorial af
     m_Metadata:
       m_Items: []
   - m_Id: 13457117728768
-    m_Localized: Ga het huis binnen
+    m_Localized: 2. Ga naar de woonkamer
     m_Metadata:
       m_Items: []
   - m_Id: 13851956924416
-    m_Localized: Ga de woonkamer binnen
+    m_Localized: Ga het huis binnen en ga naar de woonkamer
     m_Metadata:
       m_Items: []
   - m_Id: 14008039559168
-    m_Localized: Praat met Juliette
+    m_Localized: 3. Praat met Juliette
     m_Metadata:
       m_Items: []
   - m_Id: 14236343914496
-    m_Localized: Breng de suiker
+    m_Localized: Praat met Juliette over verschillende onderwerpen
     m_Metadata:
       m_Items: []
   - m_Id: 14579354095616
-    m_Localized: Ga naar het keukenkastje
+    m_Localized: 4. Breng de suiker
     m_Metadata:
       m_Items: []
   - m_Id: 14708005982208
-    m_Localized: Pak de suiker uit het keukenkastje
+    m_Localized: Ga naar het keukenkastje, pak de suiker en breng deze terug naar
+      de tafel
     m_Metadata:
       m_Items: []
-  - m_Id: 14817330515968
-    m_Localized: Breng de suiker terug naar de tafel
+  - m_Id: 42919133761536
+    m_Localized: 5. Praat met Juliette
     m_Metadata:
       m_Items: []
   references:

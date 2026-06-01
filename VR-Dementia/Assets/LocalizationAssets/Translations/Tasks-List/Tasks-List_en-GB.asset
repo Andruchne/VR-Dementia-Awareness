@@ -19,47 +19,40 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 135970476032
-    m_Localized: Complete tutorial
+    m_Localized: 1. Complete tutorial
     m_Metadata:
       m_Items: []
   - m_Id: 1030389026816
-    m_Localized: Complete the movement tutorial
-    m_Metadata:
-      m_Items: []
-  - m_Id: 12970695905280
-    m_Localized: Complete the rotation tutorial
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13126120034304
-    m_Localized: Complete the menu access tutorial
+    m_Localized: Complete the movement, rotation, and menu tutorials
     m_Metadata:
       m_Items: []
   - m_Id: 13457117728768
-    m_Localized: Enter the house
+    m_Localized: 2. Go to the living room
     m_Metadata:
       m_Items: []
   - m_Id: 13851956924416
-    m_Localized: Enter the living room
+    m_Localized: Enter the house and go to the living room
     m_Metadata:
       m_Items: []
   - m_Id: 14008039559168
-    m_Localized: Talk with Juliette
+    m_Localized: 3. Talk with Juliette
     m_Metadata:
       m_Items: []
   - m_Id: 14236343914496
-    m_Localized: Bring the sugar
+    m_Localized: Talk with Juliette about different topics
     m_Metadata:
       m_Items: []
   - m_Id: 14579354095616
-    m_Localized: Head towards the kitchen cabinet
+    m_Localized: 4. Bring the sugar
     m_Metadata:
       m_Items: []
   - m_Id: 14708005982208
-    m_Localized: Pick up the sugar from the cabinet
+    m_Localized: Head towards the kitchen cabinet, pick up the sugar, and bring it
+      back to the table
     m_Metadata:
       m_Items: []
-  - m_Id: 14817330515968
-    m_Localized: Bring the sugar back to the table
+  - m_Id: 42919133761536
+    m_Localized: 5. Talk with Juliette
     m_Metadata:
       m_Items: []
   references:

@@ -20,15 +20,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1030389026816
-    m_Key: 1.1 Tutorial - Movement
-    m_Metadata:
-      m_Items: []
-  - m_Id: 12970695905280
-    m_Key: 1.2 Tutorial - Rotation
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13126120034304
-    m_Key: 1.3 Tutorial - Access menu
+    m_Key: 1.0 Tutorial - description
     m_Metadata:
       m_Items: []
   - m_Id: 13457117728768
@@ -36,7 +28,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13851956924416
-    m_Key: 3.0 Living room
+    m_Key: 2.0 Entrance - Description
     m_Metadata:
       m_Items: []
   - m_Id: 14008039559168
@@ -44,19 +36,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 14236343914496
-    m_Key: 4.0 Sugar
+    m_Key: 0.0 Conversation - Description
     m_Metadata:
       m_Items: []
   - m_Id: 14579354095616
-    m_Key: 4.1 Head towards sugar
+    m_Key: 3.0 Bring the sugar
     m_Metadata:
       m_Items: []
   - m_Id: 14708005982208
-    m_Key: 4.2 Pick up sugar
+    m_Key: 3.0 Bring the sugar - Description
     m_Metadata:
       m_Items: []
-  - m_Id: 14817330515968
-    m_Key: 4.3 Bring the sugar
+  - m_Id: 42919133761536
+    m_Key: 0.1 Conversation
     m_Metadata:
       m_Items: []
   m_Metadata:
