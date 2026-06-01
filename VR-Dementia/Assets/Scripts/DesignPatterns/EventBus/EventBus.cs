@@ -1,3 +1,4 @@
+using FMODUnity;
 using System;
 using UnityEngine;
 
@@ -44,6 +45,26 @@ public class OnPalmMenuVisibilityChanged : Event
 
 #endregion
 
+#region JulietteTalk
+
+public class OnJulietteTalk : Event
+{
+    // Used to make Juliette talk
+    // This ensures the audio is coming from the right direction
+    public OnJulietteTalk(EventReference phrase)
+    {
+        this.phrase = phrase;
+    }
+    public EventReference phrase;
+}
+
+public class OnJulietteFinishedTalk : Event
+{
+    public OnJulietteFinishedTalk() { }
+}
+
+#endregion
+
 
 #region Tasks
 
@@ -69,6 +90,24 @@ public class OnEnterBuilding : Event
 {
     // Triggered when player enters the building
     public OnEnterBuilding() { }
+}
+
+public class OnJulietteSitDown : Event
+{
+    // Triggered after Juliette sat down
+    public OnJulietteSitDown() { }
+}
+
+public class OnSugarPlacedDown : Event
+{
+    // Triggered when sugar is placed infront of Juliette
+    public OnSugarPlacedDown() { }
+}
+
+public class OnPlayerSitDown : Event
+{
+    // Triggered when player sits down (after sugar has been brought)
+    public OnPlayerSitDown() { }
 }
 
 #endregion

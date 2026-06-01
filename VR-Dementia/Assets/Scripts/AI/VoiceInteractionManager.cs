@@ -21,6 +21,8 @@ using Groq;
 /// </summary>
 public class VoiceInteractionManager : MonoBehaviour
 {
+    public const int MAX_RECORDING_SECONDS = 60;
+
     [Header("Groq Setup")]
     private GroqApi groq;
     private List<ChatMessage> messages = new List<ChatMessage>();
@@ -40,7 +42,6 @@ public class VoiceInteractionManager : MonoBehaviour
     private int nativeRate;
     private int nativeChannels;
     private int recordDeviceId = 0; // Default microphone
-    private const int MAX_RECORDING_SECONDS = 20;
     private bool isRecording = false;
 
     [Header("FMOD Playback Setup")]

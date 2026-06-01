@@ -66,14 +66,14 @@ public class JulietteDoorOpen : SimulationTask
         {
             case 0:
                 {
-                    if (!currentGreeting.IsNull) { RuntimeManager.PlayOneShot(currentGreeting); }
+                    if (!currentGreeting.IsNull) { EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentGreeting)); }
                     // Set wait time for the reminder sequences to show up
                     timer.SetWaitTime(remindAfterSeconds);
                     break;
                 }
             case 1:
                 {
-                    if (!currentGreeting.IsNull) { RuntimeManager.PlayOneShot(currentComeIn); }
+                    if (!currentComeIn.IsNull) { EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentComeIn)); }
                     break;
                 }
             case 2:

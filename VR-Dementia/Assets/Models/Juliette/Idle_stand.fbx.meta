@@ -1,34 +1,9 @@
 fileFormatVersion: 2
-guid: d19aeac66e33db848afb646ba30c1422
+guid: 62f6eb17c0c81aa488dda95f1977dbc6
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Body
-    second: {fileID: 2100000, guid: c86e912962806d64b88f2b9c86e0fd5f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Clothes
-    second: {fileID: 2100000, guid: 72dd5b78052131d43a831b24f725458d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Hair cards
-    second: {fileID: 2100000, guid: 70b6fc6879b04c3458ff64f4acf85e6e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: eye
-    second: {fileID: 2100000, guid: 994411d6a3dd748419600da30f9ae36e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gloss
-    second: {fileID: 2100000, guid: dfe89e5edc5c4a54e8a819ba0b1d1f78, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
