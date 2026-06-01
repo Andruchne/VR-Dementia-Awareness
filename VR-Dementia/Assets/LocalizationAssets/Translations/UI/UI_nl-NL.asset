@@ -16,8 +16,7 @@ MonoBehaviour:
     m_Code: nl-NL
   m_SharedData: {fileID: 11400000, guid: 57b2098feb6f574448254b7b7f646ec4, type: 2}
   m_Metadata:
-    m_Items:
-    - rid: 6188845924669194330
+    m_Items: []
   m_TableData:
   - m_Id: 4835561472
     m_Localized: Start
@@ -43,43 +42,10 @@ MonoBehaviour:
     m_Localized: Terug
     m_Metadata:
       m_Items: []
-  - m_Id: 112299693301760
-    m_Localized: Taal
+  - m_Id: 23877661062909952
+    m_Localized: Takenlijst
     m_Metadata:
       m_Items: []
-  - m_Id: 112817253638144
-    m_Localized: Weet je zeker dat je wilt afsluiten?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 113123593019392
-    m_Localized: Blijven
-    m_Metadata:
-      m_Items: []
-  - m_Id: 156571784175616
-    m_Localized: 'Druk op [A] om opname te stoppen
-
-      (Rechtercontroller, onderste
-      knop)'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 156570228088832
-    m_Localized: 'Druk op [A] om spraak op te nemen
-
-      (Rechtercontroller, onderste
-      knop)'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 156567237550080
-    m_Localized: Nog {0} vragen over
-    m_Metadata:
-      m_Items:
-      - rid: 6188845924669194330
   references:
     version: 2
-    RefIds:
-    - rid: 6188845924669194330
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-        m_SharedEntries:
-        - id: 156567237550080
+    RefIds: []

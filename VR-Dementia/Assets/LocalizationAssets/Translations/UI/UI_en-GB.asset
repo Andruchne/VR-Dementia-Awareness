@@ -16,8 +16,7 @@ MonoBehaviour:
     m_Code: en-GB
   m_SharedData: {fileID: 11400000, guid: 57b2098feb6f574448254b7b7f646ec4, type: 2}
   m_Metadata:
-    m_Items:
-    - rid: 6188845924669194331
+    m_Items: []
   m_TableData:
   - m_Id: 4835561472
     m_Localized: Start
@@ -43,41 +42,10 @@ MonoBehaviour:
     m_Localized: Return
     m_Metadata:
       m_Items: []
-  - m_Id: 112299693301760
-    m_Localized: Language
+  - m_Id: 23877661062909952
+    m_Localized: Tasks list
     m_Metadata:
       m_Items: []
-  - m_Id: 112817253638144
-    m_Localized: Are you sure you want to leave?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 113123593019392
-    m_Localized: Stay
-    m_Metadata:
-      m_Items: []
-  - m_Id: 156570228088832
-    m_Localized: 'Press [A] to Speak
-
-      (Right Controller, lower Button)'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 156571784175616
-    m_Localized: 'Press [A] to stop recording
-
-      (Right Controller, lower Button)'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 156567237550080
-    m_Localized: 'Questions remaining: {0}'
-    m_Metadata:
-      m_Items:
-      - rid: 6188845924669194331
   references:
     version: 2
-    RefIds:
-    - rid: 6188845924669194331
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-        m_SharedEntries:
-        - id: 156567237550080
+    RefIds: []
