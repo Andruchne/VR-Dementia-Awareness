@@ -55,7 +55,12 @@ public class JulietteDoorOpen : SimulationTask
     private void GuestEntersBuilding(OnEnterBuilding evt)
     {
         timer.StopTimer();
-        indicatorHUD.SetActive(false);
+
+        if (indicatorHUD != null)
+        {
+            indicatorHUD.SetActive(false);
+            indicatorHUD.transform.parent.gameObject.SetActive(false);
+        }
 
         FinishTask();
     }
@@ -78,13 +83,17 @@ public class JulietteDoorOpen : SimulationTask
                 }
             case 2:
                 {
-                    if (indicatorHUD != null) { indicatorHUD.SetActive(true); }
+                    if (indicatorHUD != null) 
+                    {
+                        indicatorHUD.SetActive(true);
+                        indicatorHUD.transform.parent.gameObject.SetActive(true);
+                    }
                     timer.StopTimer();
                     break;
                 }
         }
+
         sequenceIndex++;
-        Debug.LogWarning("blabl: " + sequenceIndex);
     }
 
 

@@ -215,14 +215,12 @@ public class VoiceInteractionManager : MonoBehaviour
             // Specifically replace the response rule to keep her a "Dutch woman" in the prompt
             systemPrompt = systemPrompt.Replace("All responses must be in Dutch.", "All responses must be in English.");
             Debug.Log($"Language switched to English (Code: {newLocale.Identifier.Code}).");
-            inworldTTS.SetVoiceLanguage(true);
         }
         else if (newLocale.Identifier.Code.StartsWith("nl"))
         {
             sttLanguage = "nl";
             systemPrompt = systemPrompt.Replace("All responses must be in English.", "All responses must be in Dutch.");
             Debug.Log($"Language switched to Dutch (Code: {newLocale.Identifier.Code}).");
-            inworldTTS.SetVoiceLanguage(false);
         }
     }
 

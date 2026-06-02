@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Localization.Settings;
 
 public class JulietteConversation : SimulationTask
 {

@@ -47,10 +47,6 @@ MonoBehaviour:
     m_Key: 3.0 Bring the sugar - Description
     m_Metadata:
       m_Items: []
-  - m_Id: 42919133761536
-    m_Key: 0.1 Conversation
-    m_Metadata:
-      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

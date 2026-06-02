@@ -118,17 +118,29 @@ public class AskGetSugar : SimulationTask
                 }
             case 4:
                 {
-                    if (indicatorHUD != null) { indicatorHUD.SetActive(true); }
+                    if (indicatorHUD != null) 
+                    { 
+                        indicatorHUD.SetActive(true);
+                        indicatorHUD.transform.parent.gameObject.SetActive(true);
+                    }
                     timer.StopTimer();
                     break;
                 }
         }
+
         sequenceIndex++;
     }
 
     private void SugarPlaced(OnSugarPlacedDown evt)
     {
         EventBus<OnJulietteFinishedTalk>.OnEvent -= JulietteFinishedTalk;
+
+        if (indicatorHUD != null)
+        {
+            indicatorHUD.SetActive(false);
+            indicatorHUD.transform.parent.gameObject.SetActive(false);
+        }
+
         FinishTask();
     }
 

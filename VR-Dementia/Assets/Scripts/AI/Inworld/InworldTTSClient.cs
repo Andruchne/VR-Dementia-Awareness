@@ -100,10 +100,4 @@ public class InworldTTSClient : MonoBehaviour
             return Convert.FromBase64String(response.audioContent);
         }
     }
-
-    public void SetVoiceLanguage(bool isEnglish)
-    {
-        if (isEnglish) { voiceId = englishVoiceId; }
-        else { voiceId = dutchVoiceId; }
-    }
 }
