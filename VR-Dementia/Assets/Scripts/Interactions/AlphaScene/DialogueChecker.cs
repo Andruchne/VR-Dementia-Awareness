@@ -166,7 +166,7 @@ public class DialogueChecker : MonoBehaviour
                 if (promptText != null) { promptText.text = op.Result; }
             };
 
-            recordingTimerCoroutine = StartCoroutine(AutoStopRecordingTimer(VoiceInteractionManager.MAX_RECORDING_SECONDS));
+            recordingTimerCoroutine = StartCoroutine(AutoStopRecordingTimer(20));
         }
         else
         {

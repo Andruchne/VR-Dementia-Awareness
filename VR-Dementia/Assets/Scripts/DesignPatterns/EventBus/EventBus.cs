@@ -107,7 +107,12 @@ public class OnSugarPlacedDown : Event
 public class OnPlayerSitDown : Event
 {
     // Triggered when player sits down (after sugar has been brought)
-    public OnPlayerSitDown() { }
+    public OnPlayerSitDown(bool isSitting) 
+    {
+        this.isSitting = isSitting;
+    }
+
+    public bool isSitting;
 }
 
 #endregion

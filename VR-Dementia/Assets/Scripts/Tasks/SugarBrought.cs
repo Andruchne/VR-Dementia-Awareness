@@ -32,6 +32,8 @@ public class SugarBrought : SimulationTask
 
     private void PlayerSatDown(OnPlayerSitDown evt)
     {
+        if (!evt.isSitting) { return; }
+
         FinishTask();
     }
 

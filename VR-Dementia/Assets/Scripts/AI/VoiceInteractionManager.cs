@@ -21,7 +21,7 @@ using Groq;
 /// </summary>
 public class VoiceInteractionManager : MonoBehaviour
 {
-    public const int MAX_RECORDING_SECONDS = 60;
+    private const int MAX_RECORDING_SECONDS = 60;
 
     [Header("Groq Setup")]
     private GroqApi groq;
@@ -43,6 +43,7 @@ public class VoiceInteractionManager : MonoBehaviour
     private int nativeChannels;
     private int recordDeviceId = 0; // Default microphone
     private bool isRecording = false;
+    private float recordingStartTime = 0f; // Tracks when the recording started
 
     [Header("FMOD Playback Setup")]
     [SerializeField] private EventReference fmodDialogueEvent;
@@ -111,7 +112,15 @@ public class VoiceInteractionManager : MonoBehaviour
 
     private void Update()
     {
-        // Make sure keyboard is connected
+        // Automatically stop and process if the maximum recording time is reached
+        if (isRecording && (Time.time - recordingStartTime >= MAX_RECORDING_SECONDS))
+        {
+            Debug.Log($"Maximum recording duration of {MAX_RECORDING_SECONDS} seconds reached. Auto-stopping...");
+            StopRecordingAndProcess();
+        }
+
+        // Make sure keyboard is connected before checking for input
+        // Moved below the timer check so VR headsets without a keyboard still trigger the auto-stop
         if (Keyboard.current == null) { return; }
 
         // Record voice when spacebar is pressed / stop when pressed once more
@@ -143,6 +152,7 @@ public class VoiceInteractionManager : MonoBehaviour
         }
 
         isRecording = true;
+        recordingStartTime = Time.time; // Store the exact time the recording started
 
         // Start recording into our custom micSound object (false = no looping)
         RuntimeManager.CoreSystem.recordStart(recordDeviceId, micSound, false);
@@ -578,14 +588,14 @@ public class VoiceInteractionManager : MonoBehaviour
     {
         string authFilePath = "";
 
-#if UNITY_EDITOR || UNITY_STANDALONE
+        #if UNITY_EDITOR || UNITY_STANDALONE
         // Running on PC: Use the standard plugin path
         string userProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         authFilePath = Path.Combine(userProfilePath, ".openai", "auth.json");
-#elif UNITY_ANDROID
+        #elif UNITY_ANDROID
         // Running on Meta Quest: Use the persistent data path
         authFilePath = Path.Combine(Application.persistentDataPath, "openai_auth.json");
-#endif
+        #endif
 
         if (File.Exists(authFilePath))
         {
