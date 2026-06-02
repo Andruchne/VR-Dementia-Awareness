@@ -10,47 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: UI Shared Data
+  m_Name: Pop-up Shared Data
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
-  m_TableCollectionName: UI
-  m_TableCollectionNameGuidString: 57b2098feb6f574448254b7b7f646ec4
+  m_TableCollectionName: Pop-up
+  m_TableCollectionNameGuidString: 44a1000bdf6f78047ad51eb42991cb5c
   m_Entries:
-  - m_Id: 4835561472
-    m_Key: 01 Buttons
+  - m_Id: 254686232576
+    m_Key: 01. Pop-up
     m_Metadata:
       m_Items: []
-  - m_Id: 45620973568
-    m_Key: 02 Buttons
+  - m_Id: 350295392256
+    m_Key: 02. Pop-up
     m_Metadata:
       m_Items: []
-  - m_Id: 58212274176
-    m_Key: 03 Buttons
+  - m_Id: 520546385920
+    m_Key: 03. Pop-up
     m_Metadata:
       m_Items: []
-  - m_Id: 455236702208
-    m_Key: Language - ENG
-    m_Metadata:
-      m_Items: []
-  - m_Id: 656630403072
-    m_Key: Language - NL
-    m_Metadata:
-      m_Items: []
-  - m_Id: 111696590135296
-    m_Key: 04 Buttons
-    m_Metadata:
-      m_Items: []
-  - m_Id: 23877661062909952
-    m_Key: 05 Task Lists
+  - m_Id: 677539184640
+    m_Key: 04. Pop-up
     m_Metadata:
       m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    rid: 1942707929555927046
+    rid: 3502049607669252101
   references:
     version: 2
     RefIds:
-    - rid: 1942707929555927046
+    - rid: 3502049607669252101
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
       data:
-        m_CustomEpoch: 1774624123161
+        m_CustomEpoch: 1779871171660

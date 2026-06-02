@@ -10,40 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: UI_en-GB
+  m_Name: Pop-up_en-GB
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
   m_LocaleId:
     m_Code: en-GB
-  m_SharedData: {fileID: 11400000, guid: 57b2098feb6f574448254b7b7f646ec4, type: 2}
+  m_SharedData: {fileID: 11400000, guid: 44a1000bdf6f78047ad51eb42991cb5c, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 4835561472
-    m_Localized: Start
+  - m_Id: 254686232576
+    m_Localized: Press Send to begin.
     m_Metadata:
       m_Items: []
-  - m_Id: 45620973568
-    m_Localized: Exit
+  - m_Id: 350295392256
+    m_Localized: Go to the house.
     m_Metadata:
       m_Items: []
-  - m_Id: 58212274176
-    m_Localized: Settings
+  - m_Id: 520546385920
+    m_Localized: Get the sugar from the cabinet.
     m_Metadata:
       m_Items: []
-  - m_Id: 455236702208
-    m_Localized: English
-    m_Metadata:
-      m_Items: []
-  - m_Id: 656630403072
-    m_Localized: Dutch
-    m_Metadata:
-      m_Items: []
-  - m_Id: 111696590135296
-    m_Localized: Return
-    m_Metadata:
-      m_Items: []
-  - m_Id: 23877661062909952
-    m_Localized: Tasks list
+  - m_Id: 677539184640
+    m_Localized: Talk to Juliette about her day.
     m_Metadata:
       m_Items: []
   references:
