@@ -12017,7 +12017,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7114770129336771053, guid: df64bf5efda75be4db0c812f9277d678, type: 3}
       propertyPath: m_Name
-      value: FlatUnityCanvas Task List (1)
+      value: FlatUnityCanvas Microphone
       objectReference: {fileID: 0}
     - target: {fileID: 7114770130731238579, guid: df64bf5efda75be4db0c812f9277d678, type: 3}
       propertyPath: m_SizeDelta.x
@@ -19003,7 +19003,7 @@ GameObject:
   - component: {fileID: 1718991268}
   - component: {fileID: 1718991270}
   m_Layer: 4
-  m_Name: Image
+  m_Name: Microphone Animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

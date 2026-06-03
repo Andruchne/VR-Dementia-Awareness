@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: Default Local Group
   m_GUID: 291322a826ce31d4fa907f31db6230ef
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 76cb0be4b0d3ef346a8537111aee9d45
+    m_Address: Assets/UI/Icons/Microphone/MicActive.anim
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8ff0dd2feaf2d5046a59af66fe8fe5eb, type: 2}
   m_SchemaSet:
