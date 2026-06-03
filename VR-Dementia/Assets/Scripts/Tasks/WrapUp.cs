@@ -34,6 +34,11 @@ public class WrapUp : SimulationTask
     {
         LocalizationSettings.SelectedLocaleChanged += HandleLocalizationChanged;
 
+        if (LocalizationSettings.SelectedLocale != null)
+        {
+            HandleLocalizationChanged(LocalizationSettings.SelectedLocale);
+        }
+
         if (blackScreenImage != null)
         {
             Color c = blackScreenImage.color;

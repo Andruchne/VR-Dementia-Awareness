@@ -8,17 +8,14 @@ using System.Threading.Tasks;
 public class InworldTTSClient : MonoBehaviour
 {
     [Header("Inworld TTS Settings")]
-    [SerializeField] string englishVoiceId = "default-att0kitmzafhiciftzuddw__hester_voice_clone_en";
-    [SerializeField] string dutchVoiceId = "default-att0kitmzafhiciftzuddw__hester_voice_clone_nl";
+    [SerializeField] string voiceId = "default-att0kitmzafhiciftzuddw__alzheimer_nederland_material";
     [SerializeField] string modelId = "inworld-tts-1.5-mini";
 
     private string base64AuthToken;
-    private string voiceId;
 
     private void Awake()
     {
         LoadLocalCredentials();
-        voiceId = englishVoiceId;
     }
 
     private void LoadLocalCredentials()

@@ -51,20 +51,19 @@ public class AskGetSugar : SimulationTask
         timer = gameObject.AddComponent<Timer>();
         timer.OnTimerFinished += PlaySequence;
 
-        EventBus<OnJulietteSitDown>.OnEvent += JulietteSatDown;
         EventBus<OnSugarPlacedDown>.OnEvent += SugarPlaced;
     }
 
     private void OnDestroy()
     {
         timer.OnTimerFinished -= PlaySequence;
-        EventBus<OnJulietteSitDown>.OnEvent -= JulietteSatDown;
         EventBus<OnJulietteFinishedTalk>.OnEvent -= JulietteFinishedTalk;
         EventBus<OnSugarPlacedDown>.OnEvent -= SugarPlaced;
     }
 
-    private void JulietteSatDown(OnJulietteSitDown evt)
+    public override void StartTask()
     {
+        base.StartTask();
         timer.Setup(forgotSugarDelay, false, true);
         EventBus<OnJulietteFinishedTalk>.OnEvent += JulietteFinishedTalk;
     }
@@ -119,9 +118,9 @@ public class AskGetSugar : SimulationTask
             case 4:
                 {
                     if (indicatorHUD != null) 
-                    { 
+                    {
                         indicatorHUD.SetActive(true);
-                        indicatorHUD.transform.parent.gameObject.SetActive(true);
+                        indicatorHUD.transform.parent.parent.gameObject.SetActive(true);
                     }
                     timer.StopTimer();
                     break;
@@ -138,7 +137,7 @@ public class AskGetSugar : SimulationTask
         if (indicatorHUD != null)
         {
             indicatorHUD.SetActive(false);
-            indicatorHUD.transform.parent.gameObject.SetActive(false);
+            indicatorHUD.transform.parent.parent.gameObject.SetActive(false);
         }
 
         FinishTask();

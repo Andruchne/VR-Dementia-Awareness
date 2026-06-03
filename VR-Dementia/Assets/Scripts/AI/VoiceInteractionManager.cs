@@ -204,6 +204,8 @@ public class VoiceInteractionManager : MonoBehaviour
         Debug.Log($"[MEASURE] TTS: {stopwatch.ElapsedMilliseconds} ms | TTS Finished.");
 
         OnProcessingFinished?.Invoke();
+        StartCoroutine(WaitForSpeechToFinish());
+
     }
 
     private void HandleLocalizationChanged(Locale newLocale)
@@ -618,5 +620,14 @@ public class VoiceInteractionManager : MonoBehaviour
 
         // Ensure the FMOD recording sound buffer is released when the object is destroyed
         if (micSound.hasHandle()) { micSound.release(); }
+    }
+
+    private IEnumerator WaitForSpeechToFinish()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        while (GameManager.Instance.VoiceInterManager.IsSpeaking) { yield return null; }
+
+        EventBus<OnJulietteFinishedTalk>.Publish(new OnJulietteFinishedTalk());
     }
 }

@@ -1,9 +1,10 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 /// <summary>
-/// Offline processes raw PCM audio data into OVR Lipsync Visemes,
+/// Processes raw PCM audio data into OVR Lipsync Visemes,
 /// and synchronizes the blendshapes with an active FMOD EventInstance.
 /// </summary>
 public class LipSyncController : MonoBehaviour
@@ -31,6 +32,11 @@ public class LipSyncController : MonoBehaviour
     private bool isPlaying = false;
     private int sampleRate = 44100;
     private const int FRAME_SIZE = 1024;
+
+    private ConcurrentQueue<short[]> liveAudioQueue = new ConcurrentQueue<short[]>();
+    private bool isLiveMode = false;
+    private bool isLiveStereo = false;
+    private OVRLipSync.Frame liveFrame = new OVRLipSync.Frame();
 
     private void Start()
     {
@@ -61,6 +67,7 @@ public class LipSyncController : MonoBehaviour
     /// </summary>
     public void PrepareAndPlayVisemes(byte[] rawPcmData, int audioSampleRate, FMOD.Studio.EventInstance fmodInstance)
     {
+        isLiveMode = false;
         sampleRate = audioSampleRate;
         currentAudioInstance = fmodInstance;
         cachedFrames.Clear();
@@ -92,13 +99,44 @@ public class LipSyncController : MonoBehaviour
         isPlaying = true;
     }
 
+    public void EnqueueLiveAudio(short[] pcmData, bool stereo, FMOD.Studio.EventInstance fmodInstance)
+    {
+        currentAudioInstance = fmodInstance;
+        isLiveStereo = stereo;
+        isLiveMode = true;
+        isPlaying = false;
+        liveAudioQueue.Enqueue(pcmData);
+    }
+
     private void Update()
     {
+        if (isLiveMode && currentAudioInstance.isValid())
+        {
+            currentAudioInstance.getPlaybackState(out FMOD.Studio.PLAYBACK_STATE state);
+
+            if (state == FMOD.Studio.PLAYBACK_STATE.STOPPING || state == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                isLiveMode = false;
+                ResetBlendshapes();
+                return;
+            }
+
+            // Process all audio chunks instantly to get the latest phonetic state
+            while (liveAudioQueue.TryDequeue(out short[] frameData))
+            {
+                OVRLipSync.ProcessFrame(lipSyncContext, frameData, liveFrame, isLiveStereo);
+            }
+
+            // Lerp the blendshapes smoothly just ONCE per graphical frame
+            UpdateBlendshapes(liveFrame);
+            return;
+        }
+
         if (!isPlaying || !currentAudioInstance.isValid() || targetMesh == null) { return; }
 
-        currentAudioInstance.getPlaybackState(out FMOD.Studio.PLAYBACK_STATE state);
+        currentAudioInstance.getPlaybackState(out FMOD.Studio.PLAYBACK_STATE stateOffline);
 
-        if (state == FMOD.Studio.PLAYBACK_STATE.STOPPING || state == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+        if (stateOffline == FMOD.Studio.PLAYBACK_STATE.STOPPING || stateOffline == FMOD.Studio.PLAYBACK_STATE.STOPPED)
         {
             isPlaying = false;
             ResetBlendshapes();

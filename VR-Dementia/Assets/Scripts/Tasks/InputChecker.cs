@@ -102,15 +102,10 @@ public class InputChecker : SimulationTask
             else if (currentStep.requiredDirection == JoystickDirection.Up && axisValue.y > 0.5f) { inputPassed = true; }
             else if (currentStep.requiredDirection == JoystickDirection.Horizontal && Mathf.Abs(axisValue.x) > 0.5f) { inputPassed = true; }
         }
-        else
-        {
-            inputPassed = true;
-        }
+        else { inputPassed = true; }
 
         if (inputPassed)
         {
-            Debug.LogWarning($"Input ('{context.action.name}') was successfully performed!");
-
             TriggerSuccessFeedback();
 
             currentAction.performed -= InputPressed;

@@ -24,8 +24,6 @@ public class JulietteDoorOpen : SimulationTask
 
     private void Start()
     {
-        indicatorHUD.SetActive(false);
-
         // Setup localization changes
         LocalizationSettings.SelectedLocaleChanged += HandleLocalizationChanged;
         if (LocalizationSettings.SelectedLocale != null)
@@ -49,7 +47,7 @@ public class JulietteDoorOpen : SimulationTask
     {
         base.StartTask();
         // Set the delay time for the grandma to show up & greet
-        timer.Setup(julietteGreetingDelay, true, true);
+        timer.Setup(julietteGreetingDelay, false, true);
     }
 
     private void GuestEntersBuilding(OnEnterBuilding evt)
@@ -59,21 +57,30 @@ public class JulietteDoorOpen : SimulationTask
         if (indicatorHUD != null)
         {
             indicatorHUD.SetActive(false);
-            indicatorHUD.transform.parent.gameObject.SetActive(false);
+            indicatorHUD.transform.parent.parent.gameObject.SetActive(false);
         }
 
         FinishTask();
     }
 
+    private void SetReminderTimer(OnJulietteFinishedTalk evt)
+    {
+        if (isFinished) { return; }
+
+        timer.Setup(remindAfterSeconds, true, true);
+    }
+
     private void PlaySequence()
     {
+        if (isFinished) { return; }
+
         switch (sequenceIndex)
         {
             case 0:
                 {
                     if (!currentGreeting.IsNull) { EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentGreeting)); }
                     // Set wait time for the reminder sequences to show up
-                    timer.SetWaitTime(remindAfterSeconds);
+                    EventBus<OnJulietteFinishedTalk>.OnEvent += SetReminderTimer;
                     break;
                 }
             case 1:
@@ -86,7 +93,7 @@ public class JulietteDoorOpen : SimulationTask
                     if (indicatorHUD != null) 
                     {
                         indicatorHUD.SetActive(true);
-                        indicatorHUD.transform.parent.gameObject.SetActive(true);
+                        indicatorHUD.transform.parent.parent.gameObject.SetActive(true);
                     }
                     timer.StopTimer();
                     break;

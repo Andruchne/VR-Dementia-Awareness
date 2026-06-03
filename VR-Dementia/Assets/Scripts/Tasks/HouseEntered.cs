@@ -12,19 +12,35 @@ public class HouseEntered : SimulationTask
 
     private EventReference currentSitDown;
 
+    private Timer timer;
+
     private void Start()
     {
         LocalizationSettings.SelectedLocaleChanged += HandleLocalizationChanged;
         EventBus<OnEnterBuilding>.OnEvent += BuildingEntered;
+
+        if (LocalizationSettings.SelectedLocale != null)
+        {
+            HandleLocalizationChanged(LocalizationSettings.SelectedLocale);
+        }
+
+        timer = gameObject.AddComponent<Timer>();
+        timer.OnTimerFinished += PlayVoice;
     }
 
     private void OnDestroy()
     {
         LocalizationSettings.SelectedLocaleChanged -= HandleLocalizationChanged;
         EventBus<OnEnterBuilding>.OnEvent -= BuildingEntered;
+        timer.OnTimerFinished -= PlayVoice;
     }
 
     private void BuildingEntered(OnEnterBuilding evt)
+    {
+        timer.Setup(julietteSitDownDelay, false, true);
+    }
+
+    private void PlayVoice()
     {
         EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentSitDown));
         FinishTask();

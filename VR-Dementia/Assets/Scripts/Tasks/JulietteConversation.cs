@@ -9,10 +9,20 @@ public class JulietteConversation : SimulationTask
     [Header("How many questions can be asked")]
     [SerializeField] int maxQuestions = 5;
     private int questionsAsked;
-    private bool isProcessing = false;
+    private bool isProcessing;
+
+    // Used when you're already sitting, but the script is checking only after the fact
+    private bool isSitting;
+
+    private void Start()
+    {
+        EventBus<OnPlayerSitDown>.OnEvent += PlayerSatDown;
+    }
 
     private void OnDestroy()
     {
+        EventBus<OnJulietteFinishedTalk>.OnEvent -= SpeechFinished;
+
         if (actionButton != null)
         {
             actionButton.action.performed -= OnStartDialogue;
@@ -24,24 +34,19 @@ public class JulietteConversation : SimulationTask
     public override void StartTask()
     {
         base.StartTask();
-
-        if (actionButton != null)
-        {
-            actionButton.action.Enable();
-            actionButton.action.performed += OnStartDialogue;
-            EventBus<OnPlayerSitDown>.OnEvent += PlayerSatDown;
-        }
+        // Called for when the player is already sitting
+        PlayerSatDown(new OnPlayerSitDown(isSitting));
     }
 
     public override void FinishTask()
     {
         base.FinishTask();
 
+        EventBus<OnPlayerSitDown>.OnEvent -= PlayerSatDown;
         if (actionButton != null)
         {
             actionButton.action.Disable();
             actionButton.action.performed -= OnStartDialogue;
-            EventBus<OnPlayerSitDown>.OnEvent -= PlayerSatDown;
         }
     }
 
@@ -60,17 +65,25 @@ public class JulietteConversation : SimulationTask
         GameManager.Instance.StopRecordingVoice();
         questionsAsked++;
 
-        if (questionsAsked >= maxQuestions) { FinishTask(); }
+        if (questionsAsked >= maxQuestions) { EventBus<OnJulietteFinishedTalk>.OnEvent += SpeechFinished; }
+    }
+
+    private void SpeechFinished(OnJulietteFinishedTalk evt)
+    {
+        EventBus<OnJulietteFinishedTalk>.OnEvent -= SpeechFinished;
+        FinishTask();
     }
 
     private void PlayerSatDown(OnPlayerSitDown evt)
     {
-        if (evt.isSitting)
+        isSitting = evt.isSitting;  
+
+        if (isActive && evt.isSitting)
         {
             actionButton.action.Enable();
             actionButton.action.performed += OnStartDialogue;
         }
-        else
+        else if (isActive)
         {
             actionButton.action.Disable();
             actionButton.action.performed -= OnStartDialogue;

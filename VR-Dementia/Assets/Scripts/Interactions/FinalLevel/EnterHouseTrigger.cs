@@ -4,7 +4,10 @@ public class EnterHouseTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        EventBus<OnEnterBuilding>.Publish(new OnEnterBuilding());
-        gameObject.SetActive(false);
+        if (other.tag == "Player")
+        {
+            EventBus<OnEnterBuilding>.Publish(new OnEnterBuilding());
+            gameObject.SetActive(false);
+        }
     }
 }

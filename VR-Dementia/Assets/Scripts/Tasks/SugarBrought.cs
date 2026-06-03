@@ -16,6 +16,11 @@ public class SugarBrought : SimulationTask
     {
         LocalizationSettings.SelectedLocaleChanged += HandleLocalizationChanged;
         EventBus<OnPlayerSitDown>.OnEvent += PlayerSatDown;
+
+        if (LocalizationSettings.SelectedLocale != null)
+        {
+            HandleLocalizationChanged(LocalizationSettings.SelectedLocale);
+        }
     }
 
     private void OnDestroy()
