@@ -22,13 +22,10 @@ public class AskGetSugar : SimulationTask
 
     [Header("Reminder Indicator Settings")]
     [SerializeField] float remindAfterSeconds = 60;
-    [SerializeField] GameObject cabinetPosIndicator;
+    [SerializeField] GrabSugarTrigger grabSugarTrigger;
     [SerializeField] EventReference enSmallCabinet;
     [SerializeField] EventReference nlSmallCabinet;
     [SerializeField] GameObject indicatorHUD;
-
-    [Header("Grab Tutorial")]
-    [SerializeField] GameObject grabTutorialPicture;
 
 
     private EventReference currentForgotSugar;
@@ -41,6 +38,8 @@ public class AskGetSugar : SimulationTask
 
     private void Start()
     {
+        if (grabSugarTrigger != null) { grabSugarTrigger.gameObject.SetActive(false); }
+
         // Setup localization changes
         LocalizationSettings.SelectedLocaleChanged += HandleLocalizationChanged;
         if (LocalizationSettings.SelectedLocale != null)
@@ -72,18 +71,19 @@ public class AskGetSugar : SimulationTask
     {
         switch (sequenceIndex)
         {
-            case 0:
+            case 1:
                 {
                     timer.Setup(bringSugarSamDelay, false, true);
                     break;
                 }
-            case 1:
+            case 2:
                 {
                     timer.Setup(sorryRobinDelay, false, true);
                     break;
                 }
             case 3:
                 {
+                    if (grabSugarTrigger != null) { grabSugarTrigger.gameObject.SetActive(true); }
                     timer.Setup(remindAfterSeconds, true, true);
                     break;
                 }
@@ -111,13 +111,13 @@ public class AskGetSugar : SimulationTask
                 }
             case 3:
                 {
-                    if (cabinetPosIndicator != null) { cabinetPosIndicator.SetActive(true); }
+                    if (grabSugarTrigger != null) { grabSugarTrigger.ShowPosIndication(); }
                     if (!currentSmallCabinet.IsNull) { EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentSmallCabinet)); }
                     break;
                 }
             case 4:
                 {
-                    if (indicatorHUD != null) 
+                    if (indicatorHUD != null)
                     {
                         indicatorHUD.SetActive(true);
                         indicatorHUD.transform.parent.parent.gameObject.SetActive(true);

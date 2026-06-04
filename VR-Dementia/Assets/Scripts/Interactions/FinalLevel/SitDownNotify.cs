@@ -4,11 +4,17 @@ public class SitDownNotify : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        EventBus<OnPlayerSitDown>.Publish(new OnPlayerSitDown(true));
+        if (other.tag == "Player")
+        {
+            EventBus<OnPlayerSitDown>.Publish(new OnPlayerSitDown(true));
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        EventBus<OnPlayerSitDown>.Publish(new OnPlayerSitDown(false));
+        if (other.tag == "Player")
+        {
+            EventBus<OnPlayerSitDown>.Publish(new OnPlayerSitDown(false));
+        }
     }
 }

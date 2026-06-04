@@ -88,5 +88,8 @@ public class JulietteConversation : SimulationTask
             actionButton.action.Disable();
             actionButton.action.performed -= OnStartDialogue;
         }
+
+        if (evt.isSitting) { FinishTask(); }
+        Debug.LogWarning("Skipping dialogue");
     }
 }

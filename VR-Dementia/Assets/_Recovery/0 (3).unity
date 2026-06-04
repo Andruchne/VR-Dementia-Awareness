@@ -496,7 +496,7 @@ GameObject:
   - component: {fileID: 50410355}
   - component: {fileID: 50410354}
   m_Layer: 0
-  m_Name: SugarPosIndicator
+  m_Name: SugarGrabTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -571,7 +571,8 @@ Transform:
   m_LocalPosition: {x: 15.98776, y: 0.073, z: 10.511}
   m_LocalScale: {x: 1.548, y: 0.03411609, z: 1.548}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1017750441}
   m_Father: {fileID: 1195564739}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &50410354
@@ -13892,7 +13893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1017750441
 Transform:
   m_ObjectHideFlags: 0
@@ -13902,12 +13903,12 @@ Transform:
   m_GameObject: {fileID: 1017750440}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.152, y: 1.597, z: 10.511}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.75209355, y: 44.67101, z: 0}
+  m_LocalScale: {x: 0.64599484, y: 29.311686, z: 0.64599484}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 676467314}
-  m_Father: {fileID: 1195564739}
+  m_Father: {fileID: 50410353}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1060027090
 GameObject:
@@ -14651,7 +14652,7 @@ GameObject:
   - component: {fileID: 1163253632}
   - component: {fileID: 1163253631}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: SitTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15222,7 +15223,6 @@ Transform:
   - {fileID: 1186452437}
   - {fileID: 438886868}
   - {fileID: 1343492837}
-  - {fileID: 1017750441}
   - {fileID: 50410353}
   - {fileID: 1691951462}
   - {fileID: 1163253635}
@@ -23384,6 +23384,10 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3858231209350300722, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
+      propertyPath: grabSugarTrigger
+      value: 
+      objectReference: {fileID: 50410354}
+    - target: {fileID: 3858231209350300722, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
       propertyPath: bringSugarSamDelay
       value: 0.5
       objectReference: {fileID: 0}
@@ -23463,6 +23467,10 @@ PrefabInstance:
       propertyPath: 'checkSteps.Array.data[1].locomotionComponent.Array.data[1]'
       value: 
       objectReference: {fileID: 1524564388}
+    - target: {fileID: 8148148951006987554, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
+      propertyPath: julietteGoAheadDelay
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8860843513531215736, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
       propertyPath: leftEye
       value: 
