@@ -15,8 +15,8 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 291322a826ce31d4fa907f31db6230ef
   m_SerializeEntries:
-  - m_GUID: 76cb0be4b0d3ef346a8537111aee9d45
-    m_Address: Assets/UI/Icons/Microphone/MicActive.anim
+  - m_GUID: c592a853bc6420345be85f2525a5ddf3
+    m_Address: Assets/UI/Icons/Hourglass/Hourglass.anim
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
