@@ -25,6 +25,11 @@ public class LipSyncController : MonoBehaviour
     [Tooltip("Internal neural network smoothing. 1 = jittery/raw, 100 = extremely smooth (Matches Meta's default 70)")]
     [SerializeField] private int smoothAmount = 70;
 
+    [Header("Live FMOD Audio Tuning")]
+    [Range(1f, 50f)]
+    [Tooltip("Pusht die FMOD Audio-Amplitude künstlich nach oben, damit die Lippen stark ausschlagen. Standard: 10")]
+    [SerializeField] private float liveAudioGain = 10f;
+
     private uint lipSyncContext = 0;
     private List<OVRLipSync.Frame> cachedFrames = new List<OVRLipSync.Frame>();
     private FMOD.Studio.EventInstance currentAudioInstance;
@@ -33,64 +38,53 @@ public class LipSyncController : MonoBehaviour
     private int sampleRate = 44100;
     private const int FRAME_SIZE = 1024;
 
-    private ConcurrentQueue<short[]> liveAudioQueue = new ConcurrentQueue<short[]>();
+    private ConcurrentQueue<float[]> liveAudioQueue = new ConcurrentQueue<float[]>();
+    private List<float> liveSampleBuffer = new List<float>();
+
     private bool isLiveMode = false;
     private bool isLiveStereo = false;
     private OVRLipSync.Frame liveFrame = new OVRLipSync.Frame();
 
     private void Start()
     {
-        // FMOD completely disables Unity's built-in audio system, causing OVRLipSync to fail
-        // when it automatically queries AudioSettings. We initialize it manually here to bypass this.
         if (OVRLipSync.IsInitialized() != OVRLipSync.Result.Success)
         {
-            // IMPORTANT FIX: Inworld uses 44100 Hz. Initializing this to 48000 Hz causes 
-            // the AI frequency analysis to be shifted, heavily degrading phoneme accuracy!
             OVRLipSync.Initialize(44100, 1024);
         }
 
-        // Initialize native OVR Lipsync Engine
         if (OVRLipSync.CreateContext(ref lipSyncContext, OVRLipSync.ContextProviders.Enhanced) != OVRLipSync.Result.Success)
         {
             Debug.LogError("Failed to create OVR Lipsync Context.");
         }
         else
         {
-            // Send the internal smoothing signal to the OVR context, matching Meta's native script behavior
             OVRLipSync.SendSignal(lipSyncContext, OVRLipSync.Signals.VisemeSmoothing, smoothAmount, 0);
         }
     }
 
-    /// <summary>
-    /// Converts raw PCM data into OVR Frames for later playback synchronization.
-    /// Call this right before playing the FMOD audio.
-    /// </summary>
     public void PrepareAndPlayVisemes(byte[] rawPcmData, int audioSampleRate, FMOD.Studio.EventInstance fmodInstance)
     {
         isLiveMode = false;
         sampleRate = audioSampleRate;
         currentAudioInstance = fmodInstance;
         cachedFrames.Clear();
+        liveSampleBuffer.Clear();
 
-        // Convert byte[] (16-bit PCM) to short[]
         int shortLength = rawPcmData.Length / 2;
         short[] shortData = new short[shortLength];
         Buffer.BlockCopy(rawPcmData, 0, shortData, 0, rawPcmData.Length);
 
-        // Process data in standard chunk sizes
         for (int i = 0; i < shortData.Length; i += FRAME_SIZE)
         {
             int remaining = shortData.Length - i;
             int currentFrameSize = Mathf.Min(FRAME_SIZE, remaining);
 
-            // Pad the last frame with zeros if it's smaller than FRAME_SIZE to avoid internal OVR errors
             short[] frameData = new short[FRAME_SIZE];
             Array.Copy(shortData, i, frameData, 0, currentFrameSize);
 
             OVRLipSync.Frame frame = new OVRLipSync.Frame();
             OVRLipSync.ProcessFrame(lipSyncContext, frameData, frame);
 
-            // Clone frame to prevent OVR from recycling and overwriting the reference
             OVRLipSync.Frame clonedFrame = new OVRLipSync.Frame();
             clonedFrame.CopyInput(frame);
             cachedFrames.Add(clonedFrame);
@@ -99,7 +93,7 @@ public class LipSyncController : MonoBehaviour
         isPlaying = true;
     }
 
-    public void EnqueueLiveAudio(short[] pcmData, bool stereo, FMOD.Studio.EventInstance fmodInstance)
+    public void EnqueueLiveAudio(float[] pcmData, bool stereo, FMOD.Studio.EventInstance fmodInstance)
     {
         currentAudioInstance = fmodInstance;
         isLiveStereo = stereo;
@@ -118,16 +112,38 @@ public class LipSyncController : MonoBehaviour
             {
                 isLiveMode = false;
                 ResetBlendshapes();
+                liveSampleBuffer.Clear();
+
+                while (liveAudioQueue.TryDequeue(out _)) { }
                 return;
             }
 
-            // Process all audio chunks instantly to get the latest phonetic state
-            while (liveAudioQueue.TryDequeue(out short[] frameData))
+            while (liveAudioQueue.TryDequeue(out float[] incomingData))
             {
-                OVRLipSync.ProcessFrame(lipSyncContext, frameData, liveFrame, isLiveStereo);
+                liveSampleBuffer.AddRange(incomingData);
             }
 
-            // Lerp the blendshapes smoothly just ONCE per graphical frame
+            int channels = isLiveStereo ? 2 : 1;
+            int requiredSamples = FRAME_SIZE * channels;
+
+            while (liveSampleBuffer.Count >= requiredSamples)
+            {
+                float[] chunk = new float[requiredSamples];
+                liveSampleBuffer.CopyTo(0, chunk, 0, requiredSamples);
+                liveSampleBuffer.RemoveRange(0, requiredSamples);
+
+                if (liveAudioGain != 1f)
+                {
+                    for (int i = 0; i < chunk.Length; i++)
+                    {
+                        // Fix the audio, so it's not too quiet for lip evaluation
+                        chunk[i] = Mathf.Clamp(chunk[i] * liveAudioGain, -1f, 1f);
+                    }
+                }
+
+                OVRLipSync.ProcessFrame(lipSyncContext, chunk, liveFrame, isLiveStereo);
+            }
+
             UpdateBlendshapes(liveFrame);
             return;
         }
@@ -143,10 +159,8 @@ public class LipSyncController : MonoBehaviour
             return;
         }
 
-        // Retrieve current timeline position in milliseconds from FMOD
         currentAudioInstance.getTimelinePosition(out int timelinePosMs);
 
-        // Calculate the corresponding cached frame index
         float timeInSeconds = timelinePosMs / 1000f;
         int currentFrameIndex = Mathf.FloorToInt((timeInSeconds * sampleRate) / FRAME_SIZE);
 
@@ -162,10 +176,8 @@ public class LipSyncController : MonoBehaviour
         {
             int blendshapeIndex = visemeToBlendshape[i];
 
-            // Skip unassigned or invalid blendshapes (-1 handles your 'sil' setup gracefully)
             if (blendshapeIndex >= 0 && blendshapeIndex < targetMesh.sharedMesh.blendShapeCount)
             {
-                // Convert OVR weights (0.0 - 1.0) to Unity weights (0 - 100)
                 float targetWeight = frame.Visemes[i] * 100f;
                 float currentWeight = targetMesh.GetBlendShapeWeight(blendshapeIndex);
 
@@ -187,7 +199,6 @@ public class LipSyncController : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Memory cleanup for native Meta code
         if (lipSyncContext != 0)
         {
             OVRLipSync.DestroyContext(lipSyncContext);

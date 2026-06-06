@@ -51,8 +51,24 @@ public class EyeGazeController : MonoBehaviour
         if (targetMesh != null) { HandleBlinking(); }
         if (targetCamera == null || leftEye == null || rightEye == null) { return; }
 
-        UpdateEye(leftEye);
-        UpdateEye(rightEye);
+        // Central point between the eyes to guarantee parallel gaze (to prevent cross-eyed looks)
+        Vector3 headCenter = (leftEye.position + rightEye.position) / 2f;
+        Vector3 currentTargetPos;
+
+        if (isLookingAtPlayer)
+        {
+            // Scale the random offset by distance to prevent the eyes from darting sideways when user stands close
+            float distToCam = Vector3.Distance(headCenter, targetCamera.position);
+            Vector3 scaledOffset = lookOffset * distToCam;
+            currentTargetPos = targetCamera.position + scaledOffset;
+        }
+        else
+        {
+            currentTargetPos = headCenter + leftEye.parent.forward * 3f + leftEye.parent.up * -1.5f;
+        }
+
+        UpdateEye(leftEye, currentTargetPos, headCenter);
+        UpdateEye(rightEye, currentTargetPos, headCenter);
     }
 
     private void DetermineActiveCamera()
@@ -69,16 +85,23 @@ public class EyeGazeController : MonoBehaviour
         if (targetCamera == null) { Debug.LogError("EyeGazeController: No valid camera found!"); }
     }
 
-    private void UpdateEye(Transform eye)
+    private void UpdateEye(Transform eye, Vector3 targetPos, Vector3 headCenter)
     {
-        Vector3 targetPos = isLookingAtPlayer ? (targetCamera.position + lookOffset) : (eye.parent.position + eye.parent.forward * 3f + eye.parent.up * -1.5f);
-        Vector3 dirToTarget = targetPos - eye.position;
+        // Use headCenter instead of eye position so both eyes point exactly the same way
+        Vector3 dirToTarget = targetPos - headCenter;
 
-        // Multiply by Euler(-90, 0, 0) to align Unity's logic with the mesh's default orientation
-        Quaternion targetLocalRot = Quaternion.Inverse(eye.parent.rotation) * Quaternion.LookRotation(dirToTarget) * Quaternion.Euler(-90f, 0f, 0f);
+        // Raw rotation pointing at the target
+        Quaternion lookRot = Quaternion.LookRotation(dirToTarget);
+        // Convert it to head's local space
+        Quaternion localLookRot = Quaternion.Inverse(eye.parent.rotation) * lookRot;
 
-        float angleX = Mathf.Clamp(NormalizeAngle(targetLocalRot.eulerAngles.x), verticalLimits.x, verticalLimits.y);
-        float angleY = Mathf.Clamp(NormalizeAngle(targetLocalRot.eulerAngles.y), horizontalLimits.x, horizontalLimits.y);
+        Vector3 cleanEuler = localLookRot.eulerAngles;
+        float cleanPitch = NormalizeAngle(cleanEuler.x);
+        float cleanYaw = NormalizeAngle(cleanEuler.y);
+
+        // Apply offset from model
+        float angleX = Mathf.Clamp(cleanPitch - 90f, verticalLimits.x, verticalLimits.y);
+        float angleY = Mathf.Clamp(cleanYaw, horizontalLimits.x, horizontalLimits.y);
 
         eye.localRotation = Quaternion.Slerp(eye.localRotation, Quaternion.Euler(angleX, angleY, 0f), Time.deltaTime * smoothSpeed);
     }

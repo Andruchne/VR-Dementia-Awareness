@@ -496,7 +496,7 @@ GameObject:
   - component: {fileID: 50410355}
   - component: {fileID: 50410354}
   m_Layer: 0
-  m_Name: SugarPosIndicator
+  m_Name: SugarGrabChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7297,7 +7297,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &546715576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14651,7 +14651,7 @@ GameObject:
   - component: {fileID: 1163253632}
   - component: {fileID: 1163253631}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: SitDownTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14757,7 +14757,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.18887225, z: -0, w: 0.9820017}
   m_LocalPosition: {x: 9.968, y: 0.686, z: 11.124}
-  m_LocalScale: {x: 1.3787196, y: 1.3787194, z: 1.3787196}
+  m_LocalScale: {x: 0.9112144, y: 1.3787194, z: 0.9215913}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1195564739}
@@ -18187,6 +18187,27 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!1 &1496544174 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2245136537960966336, guid: 9dfefaa16491a5f479dc97122c09f877, type: 3}
+  m_PrefabInstance: {fileID: 1524564379}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1496544176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496544174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e88745d49e12cd74ca752099a93e2a11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction.Samples::Oculus.Interaction.Locomotion.LocomotionSeatedSetting
+  _seated: {fileID: 759464146}
+  _standing: {fileID: 759464128}
+  _locomotor: {fileID: 1524564385}
+  _seatedHeightOffset: 0.5
 --- !u!1 &1522771954
 GameObject:
   m_ObjectHideFlags: 0
@@ -18494,7 +18515,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 102481292348519251, guid: 9dfefaa16491a5f479dc97122c09f877, type: 3}
     m_RemovedGameObjects:
     - {fileID: 4444982076079165973, guid: 9dfefaa16491a5f479dc97122c09f877, type: 3}
     - {fileID: 732959077749416708, guid: 9dfefaa16491a5f479dc97122c09f877, type: 3}
@@ -18515,6 +18537,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 331336401011833616, guid: 9dfefaa16491a5f479dc97122c09f877, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1252585504}
+    - targetCorrespondingSourceObject: {fileID: 2245136537960966336, guid: 9dfefaa16491a5f479dc97122c09f877, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1496544176}
     - targetCorrespondingSourceObject: {fileID: 7791369969664514387, guid: 9dfefaa16491a5f479dc97122c09f877, type: 3}
       insertIndex: -1
       addedObject: {fileID: 295243455}
@@ -23348,6 +23373,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1524564392}
     - target: {fileID: 3578192122802604163, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
+      propertyPath: fadeDuration
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3578192122802604163, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
       propertyPath: blackScreenImage
       value: 
       objectReference: {fileID: 2094637059}
@@ -23383,6 +23412,10 @@ PrefabInstance:
       propertyPath: sorryRobinDelay
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3858231209350300722, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
+      propertyPath: grabSugarTrigger
+      value: 
+      objectReference: {fileID: 50410354}
     - target: {fileID: 3858231209350300722, guid: e1f9ce38e0c631e49a2590dc28697e92, type: 3}
       propertyPath: bringSugarSamDelay
       value: 0.5

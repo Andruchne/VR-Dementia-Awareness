@@ -7,17 +7,16 @@ public class GrabSugarTrigger : MonoBehaviour
     [SerializeField] GameObject placeSugarHere;
 
     private MeshRenderer triggerArea;
-    private bool stopChecking;
-    private bool showIndication;
 
+    private bool isActive;
     private bool userInside;
+    private bool showIndicator;
+    private bool wasGrabbed;
 
     private void Start()
     {
         triggerArea = GetComponent<MeshRenderer>();
-
-        if (triggerArea != null) { triggerArea.enabled = false; }
-        if (grabTutorialWindow != null) { grabTutorialWindow.SetActive(false); }
+        SetActive(false);
 
         EventBus<OnSugarPlacedDown>.OnEvent += SugarPlaced;
     }
@@ -27,60 +26,89 @@ public class GrabSugarTrigger : MonoBehaviour
         EventBus<OnSugarPlacedDown>.OnEvent -= SugarPlaced;
     }
 
-    private void Update()
-    {
-        if (stopChecking) { return; }
-
-        if (sugarGrabbable.IsGrabbed())
-        {
-            triggerArea.enabled = false;
-            grabTutorialWindow.SetActive(false);
-            placeSugarHere.SetActive(true);
-        }
-        else if (!triggerArea.enabled && !sugarGrabbable.IsGrabbed() && showIndication)
-        {
-            grabTutorialWindow.SetActive(true);
-            placeSugarHere.SetActive(false);
-        }
-        else if (sugarGrabbable.IsGrabbed() && !userInside && showIndication)
-        {
-            showIndication = false;
-            grabTutorialWindow.SetActive(false);
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
-        {
-            if (showIndication) { triggerArea.enabled = false; }
-            grabTutorialWindow.SetActive(true);
-            userInside = true;
-        }
+        if (other.tag == "Player") { userInside = true; }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player") { userInside = false; }
+        
+    }
+
+    public void SetActive(bool isActive)
+    {
+        if (triggerArea == null || grabTutorialWindow == null) { return; }
+        this.isActive = isActive;
+        showIndicator = isActive;
+
+        // Turn off everything if disabled
+        if (!isActive)
         {
-            if (showIndication) { triggerArea.enabled = true; }
+            triggerArea.enabled = false;
             grabTutorialWindow.SetActive(false);
-            userInside = false;
+            placeSugarHere.SetActive(false);
         }
+        /*
+        else
+        {
+            if (userInside)
+            {
+                triggerArea.enabled = false;
+                grabTutorialWindow.SetActive(true);
+            }
+            else
+            {
+                triggerArea.enabled = true;
+                grabTutorialWindow.SetActive(false);
+            }
+        }
+        */
+    }
+
+    private void CheckCurrentlyVisible()
+    {
+        if (!isActive) { return; }
+
+        // Toggle the area visibility, based on if the player is inside
+        if (showIndicator) 
+        { 
+            triggerArea.enabled = !userInside;
+            grabTutorialWindow.SetActive(userInside);
+        }
+
+        if (sugarGrabbable.IsGrabbed())
+        {
+            placeSugarHere.SetActive(true);
+
+            showIndicator = false;
+            triggerArea.enabled = false;
+            grabTutorialWindow.SetActive(false);
+            wasGrabbed = true;
+        }
+        else if (!sugarGrabbable.IsGrabbed())
+        {
+            placeSugarHere.SetActive(false);
+
+            if (wasGrabbed && userInside)
+            {
+                showIndicator = true;
+                wasGrabbed = false;
+            }
+        }
+    }
+
+    private void Update()
+    {
+        CheckCurrentlyVisible();
     }
 
     private void SugarPlaced(OnSugarPlacedDown evt)
     {
         // We could technically also destroy the object, but this prevents potential null reference issues in other scripts
-        stopChecking = true;
         triggerArea.enabled = false;
         grabTutorialWindow.SetActive(false);
-    }
-
-    public void ShowPosIndication()
-    {
-        showIndication = true;
-        if (userInside) { triggerArea.enabled = false; }
-        else { triggerArea.enabled = true; }
+        isActive = false;
     }
 }

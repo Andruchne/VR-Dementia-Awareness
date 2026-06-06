@@ -38,8 +38,6 @@ public class AskGetSugar : SimulationTask
 
     private void Start()
     {
-        if (grabSugarTrigger != null) { grabSugarTrigger.gameObject.SetActive(false); }
-
         // Setup localization changes
         LocalizationSettings.SelectedLocaleChanged += HandleLocalizationChanged;
         if (LocalizationSettings.SelectedLocale != null)
@@ -78,12 +76,12 @@ public class AskGetSugar : SimulationTask
                 }
             case 2:
                 {
+                    if (grabSugarTrigger != null) { grabSugarTrigger.SetActive(true); }
                     timer.Setup(sorryRobinDelay, false, true);
                     break;
                 }
             case 3:
                 {
-                    if (grabSugarTrigger != null) { grabSugarTrigger.gameObject.SetActive(true); }
                     timer.Setup(remindAfterSeconds, true, true);
                     break;
                 }
@@ -111,8 +109,7 @@ public class AskGetSugar : SimulationTask
                 }
             case 3:
                 {
-                    if (grabSugarTrigger != null) { grabSugarTrigger.ShowPosIndication(); }
-                    if (!currentSmallCabinet.IsNull) { EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentSmallCabinet)); }
+                    if (!currentSmallCabinet.IsNull) { EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentSmallCabinet));}
                     break;
                 }
             case 4:
@@ -140,6 +137,8 @@ public class AskGetSugar : SimulationTask
             indicatorHUD.transform.parent.parent.gameObject.SetActive(false);
         }
 
+        timer.StopTimer();
+
         FinishTask();
     }
 
@@ -150,12 +149,14 @@ public class AskGetSugar : SimulationTask
             currentForgotSugar = enForgotSugar;
             currentBringSugarSam = enBringSugarSam;
             currentSorryRobin = enSorryRobin;
+            currentSmallCabinet = enSmallCabinet;
         }
         else if (newLocale.Identifier.Code.StartsWith("nl"))
         {
             currentForgotSugar = nlForgotSugar;
             currentBringSugarSam = nlBringSugarSam;
             currentSorryRobin = nlSorryRobin;
+            currentSmallCabinet = nlSmallCabinet;
         }
     }
 }

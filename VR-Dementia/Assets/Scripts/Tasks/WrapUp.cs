@@ -18,7 +18,7 @@ public class WrapUp : SimulationTask
 
     [Header("Fade Settings")]
     [SerializeField] Image blackScreenImage;
-    [SerializeField] float fadeFinishOffset = 0.5f;
+    [SerializeField] float fadeDuration = 0.5f;
 
     private EventReference currentRecord;
 
@@ -58,6 +58,10 @@ public class WrapUp : SimulationTask
             fadeTimer.OnTimerRunning -= UpdateFade;
             fadeTimer.OnTimerFinished -= FinishFade;
         }
+
+        EventBus<OnJulietteFinishedTalk>.OnEvent -= JulietteFinishedTalk;
+
+        RuntimeManager.GetEventDescription(humming.Guid).unloadSampleData();
     }
 
     public override void StartTask()
@@ -71,6 +75,13 @@ public class WrapUp : SimulationTask
         fadeTimer = gameObject.AddComponent<Timer>();
         fadeTimer.OnTimerRunning += UpdateFade;
         fadeTimer.OnTimerFinished += FinishFade;
+
+        EventBus<OnJulietteFinishedTalk>.OnEvent += JulietteFinishedTalk;
+    }
+
+    private void JulietteFinishedTalk(OnJulietteFinishedTalk evt)
+    {
+        timer.Setup(hummingDelay, false, true);
     }
 
     private void PlayVoicelines()
@@ -80,24 +91,12 @@ public class WrapUp : SimulationTask
             case 0:
                 {
                     EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentRecord));
-                    timer.Setup(hummingDelay, false, true);
                     break;
                 }
             case 1:
                 {
                     EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(humming));
-
-                    FMOD.GUID hummingGuid = humming.Guid;
-                    EventDescription eventDesc = RuntimeManager.GetEventDescription(hummingGuid);
-
-                    if (eventDesc.isValid())
-                    {
-                        eventDesc.getLength(out int lengthMs);
-                        float lengthSeconds = lengthMs / 1000f;
-                        float fadeDuration = Mathf.Max(0.1f, lengthSeconds - fadeFinishOffset);
-
-                        StartFadeToBlack(fadeDuration);
-                    }
+                    StartFadeToBlack(fadeDuration);
                     break;
                 }
         }

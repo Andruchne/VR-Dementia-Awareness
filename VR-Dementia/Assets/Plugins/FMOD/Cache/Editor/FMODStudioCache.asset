@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639160024657293917
+  lastModified: 639163348471348759
   FileSizes:
   - Name: Desktop
     Value: 2474
@@ -212,7 +212,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639160024657283895
+  lastModified: 639112805170234676
   FileSizes:
   - Name: Desktop
     Value: 1640
@@ -512,7 +512,7 @@ MonoBehaviour:
   - {fileID: -6301496419575727263}
   StringsBanks:
   - {fileID: -8750722972122330615}
-  cacheTime: 639160024657956218
+  cacheTime: 639163348471403853
   cacheVersion: 131635
 --- !u!114 &868972411745571389
 MonoBehaviour:
@@ -580,7 +580,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639160024657880918
+  lastModified: 639112805170465389
   FileSizes:
   - Name: Desktop
     Value: 8136160
@@ -627,7 +627,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/One_Shot_SFX.bank
   Name: One_Shot_SFX
   StudioPath: bank:/One_Shot_SFX
-  lastModified: 639160024657891048
+  lastModified: 639159384199974610
   FileSizes:
   - Name: Desktop
     Value: 29280
@@ -701,7 +701,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/VoiceLines_Juliette.bank
   Name: VoiceLines_Juliette
   StudioPath: bank:/VoiceLines_Juliette
-  lastModified: 639160024657956218
+  lastModified: 639163348471403853
   FileSizes:
   - Name: Desktop
     Value: 745344
@@ -748,7 +748,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Character.bank
   Name: Character
   StudioPath: bank:/Character
-  lastModified: 639160024653754533
+  lastModified: 639112805170234676
   FileSizes:
   - Name: Desktop
     Value: 1502
@@ -1043,7 +1043,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Bank A.bank
   Name: Bank A
   StudioPath: bank:/Bank A
-  lastModified: 639160024653507427
+  lastModified: 639112805169999187
   FileSizes:
   - Name: Desktop
     Value: 1502
@@ -1117,7 +1117,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Channel_Ambience.bank
   Name: Channel_Ambience
   StudioPath: bank:/Channel_Ambience
-  lastModified: 639160024653754533
+  lastModified: 639112805170212888
   FileSizes:
   - Name: Desktop
     Value: 3290016

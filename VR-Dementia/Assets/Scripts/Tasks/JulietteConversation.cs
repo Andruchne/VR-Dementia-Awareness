@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,13 +12,7 @@ public class JulietteConversation : SimulationTask
     private int questionsAsked;
     private bool isProcessing;
 
-    // Used when you're already sitting, but the script is checking only after the fact
     private bool isSitting;
-
-    private void Start()
-    {
-        EventBus<OnPlayerSitDown>.OnEvent += PlayerSatDown;
-    }
 
     private void OnDestroy()
     {
@@ -34,7 +29,10 @@ public class JulietteConversation : SimulationTask
     public override void StartTask()
     {
         base.StartTask();
-        // Called for when the player is already sitting
+
+        EventBus<OnPlayerSitDown>.OnEvent += PlayerSatDown;
+
+        // Setup the event. We only skip when this event fires with isSitting = true.
         PlayerSatDown(new OnPlayerSitDown(isSitting));
     }
 
@@ -76,20 +74,27 @@ public class JulietteConversation : SimulationTask
 
     private void PlayerSatDown(OnPlayerSitDown evt)
     {
-        isSitting = evt.isSitting;  
+        isSitting = evt.isSitting;
 
         if (isActive && evt.isSitting)
         {
             actionButton.action.Enable();
             actionButton.action.performed += OnStartDialogue;
+
+            // Only skip when player is actually sitting
+            StartCoroutine(SkipTaskDelay());
         }
         else if (isActive)
         {
             actionButton.action.Disable();
             actionButton.action.performed -= OnStartDialogue;
         }
+    }
 
-        if (evt.isSitting) { FinishTask(); }
+    private IEnumerator SkipTaskDelay()
+    {
+        yield return null;
         Debug.LogWarning("Skipping dialogue");
+        FinishTask();
     }
 }

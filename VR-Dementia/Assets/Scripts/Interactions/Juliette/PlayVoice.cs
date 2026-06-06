@@ -26,7 +26,22 @@ public class PlayVoice : MonoBehaviour
 
     private void PlayVoiceSound(OnJulietteTalk evt)
     {
-        if (!evt.phrase.IsNull) { StartCoroutine(PlayAudioRoutine(evt.phrase)); }
+        if (!evt.phrase.IsNull)
+        {
+            // Stop current voice if it is already playing
+            StopVoiceSound();
+
+            StartCoroutine(PlayAudioRoutine(evt.phrase));
+        }
+    }
+
+    public void StopVoiceSound()
+    {
+        // Stop the instance immediately if valid
+        if (currentInstance.isValid())
+        {
+            currentInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
     }
 
     private IEnumerator PlayAudioRoutine(EventReference eventRef)
@@ -114,18 +129,18 @@ public class PlayVoice : MonoBehaviour
     {
         int samples = (int)(length * inchannels);
         float[] buffer = new float[samples];
+
+        // Copy audio data from FMOD memory
         Marshal.Copy(inbuffer, buffer, 0, samples);
+
+        // Pass it through to the output so the audio is actually audible
         Marshal.Copy(buffer, 0, outbuffer, samples);
 
         if (_activeInstance != null && _activeInstance.lipSyncController != null)
         {
-            short[] shortBuffer = new short[samples];
-            for (int i = 0; i < samples; i++)
-            {
-                shortBuffer[i] = (short)(Mathf.Clamp(buffer[i], -1f, 1f) * 32767f);
-            }
-
-            _activeInstance.lipSyncController.EnqueueLiveAudio(shortBuffer, inchannels == 2, _activeInstance.currentInstance);
+            // NEW: Wir übergeben direkt das float Array. Das spart Rechenleistung 
+            // und vermeidet die unsaubere short-Konvertierung.
+            _activeInstance.lipSyncController.EnqueueLiveAudio(buffer, inchannels == 2, _activeInstance.currentInstance);
         }
 
         return FMOD.RESULT.OK;

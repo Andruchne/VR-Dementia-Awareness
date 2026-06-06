@@ -31,7 +31,7 @@ public class SugarBrought : SimulationTask
     {
         timer.OnTimerFinished -= PlayPhrase;
         LocalizationSettings.SelectedLocaleChanged -= HandleLocalizationChanged;
-        EventBus<OnPlayerSitDown>.OnEvent -= PlayerSatDown;
+        EventBus<OnJulietteFinishedTalk>.OnEvent -= PhraseFinished;
     }
 
     public override void StartTask()
@@ -42,14 +42,12 @@ public class SugarBrought : SimulationTask
 
     public void PlayPhrase()
     {
+        EventBus<OnJulietteFinishedTalk>.OnEvent += PhraseFinished;
         EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentGoAhead));
-        EventBus<OnPlayerSitDown>.OnEvent += PlayerSatDown;
     }
 
-    private void PlayerSatDown(OnPlayerSitDown evt)
+    private void PhraseFinished(OnJulietteFinishedTalk evt)
     {
-        if (!evt.isSitting) { return; }
-        Debug.LogWarning("sat down");
         FinishTask();
     }
 
