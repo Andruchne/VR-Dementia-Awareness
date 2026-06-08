@@ -42,12 +42,20 @@ MonoBehaviour:
     m_Localized: Return
     m_Metadata:
       m_Items: []
-  - m_Id: 23877661062909952
-    m_Localized: Tasks list
+  - m_Id: 26435062634364928
+    m_Localized: Do you really want to leave?
     m_Metadata:
       m_Items: []
   - m_Id: 26354250973708288
     m_Localized: Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26435701431058432
+    m_Localized: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26435736528994304
+    m_Localized: No
     m_Metadata:
       m_Items: []
   references:

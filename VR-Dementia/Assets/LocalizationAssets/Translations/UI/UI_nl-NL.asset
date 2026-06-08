@@ -42,12 +42,22 @@ MonoBehaviour:
     m_Localized: Terug
     m_Metadata:
       m_Items: []
-  - m_Id: 23877661062909952
-    m_Localized: Takenlijst
+  - m_Id: 26435062634364928
+    m_Localized: Weet je zeker dat je wilt verlaten?
     m_Metadata:
       m_Items: []
   - m_Id: 26354250973708288
     m_Localized: Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26435701431058432
+    m_Localized: Ja
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26435736528994304
+    m_Localized: 'Nee
+
+'
     m_Metadata:
       m_Items: []
   references:

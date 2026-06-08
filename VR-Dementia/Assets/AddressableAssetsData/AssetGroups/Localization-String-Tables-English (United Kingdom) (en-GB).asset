@@ -45,6 +45,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en-GB
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf1075c5ad8d75a4fb772c7544c46204
+    m_Address: Video-tutorial_en-GB
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-GB
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c65c00e2f5e15e340a432c4aa8e53c2c
     m_Address: Questions-Tutorial_en-GB
     m_ReadOnly: 1

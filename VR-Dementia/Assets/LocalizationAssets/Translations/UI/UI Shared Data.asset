@@ -39,12 +39,20 @@ MonoBehaviour:
     m_Key: 04 Buttons
     m_Metadata:
       m_Items: []
-  - m_Id: 23877661062909952
-    m_Key: 05 Task Lists
-    m_Metadata:
-      m_Items: []
   - m_Id: 26354250973708288
     m_Key: Menu Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26435062634364928
+    m_Key: Confirmation Exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26435701431058432
+    m_Key: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26435736528994304
+    m_Key: No
     m_Metadata:
       m_Items: []
   m_Metadata:
