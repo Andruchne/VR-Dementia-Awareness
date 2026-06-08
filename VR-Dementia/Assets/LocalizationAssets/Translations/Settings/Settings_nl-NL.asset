@@ -10,54 +10,36 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: UI_nl-NL
+  m_Name: Settings_nl-NL
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
   m_LocaleId:
     m_Code: nl-NL
-  m_SharedData: {fileID: 11400000, guid: 57b2098feb6f574448254b7b7f646ec4, type: 2}
+  m_SharedData: {fileID: 11400000, guid: dc7502f7e47d516499f361fe22bbc1bb, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 4835561472
-    m_Localized: Start
+  - m_Id: 19389202432
+    m_Localized: Taal
     m_Metadata:
       m_Items: []
-  - m_Id: 45620973568
-    m_Localized: Afsluiten
+  - m_Id: 308116701184
+    m_Localized: Type Beweging
     m_Metadata:
       m_Items: []
-  - m_Id: 58212274176
-    m_Localized: Instellingen
-    m_Metadata:
-      m_Items: []
-  - m_Id: 455236702208
+  - m_Id: 282468532224
     m_Localized: Engels
     m_Metadata:
       m_Items: []
-  - m_Id: 656630403072
+  - m_Id: 289569488896
     m_Localized: Nederlands
     m_Metadata:
       m_Items: []
-  - m_Id: 111696590135296
-    m_Localized: Terug
+  - m_Id: 497623744512
+    m_Localized: Teleporteren
     m_Metadata:
       m_Items: []
-  - m_Id: 26435062634364928
-    m_Localized: Weet je zeker dat je wilt verlaten?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26354250973708288
-    m_Localized: Menu
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26435701431058432
-    m_Localized: Ja
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26435736528994304
-    m_Localized: 'Nee
-
-'
+  - m_Id: 672589135872
+    m_Localized: Glijden
     m_Metadata:
       m_Items: []
   references:

@@ -40,9 +40,20 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d1edcdf203e06244829dd4e0ad0df7c
+    m_Address: Assets/LocalizationAssets/Translations/VideoTutorial/Video-tutorial
+      Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 854629128a034764280fcdb6d87e1b23
     m_Address: Assets/LocalizationAssets/Translations/Questions-Tutorial/Questions-Tutorial
       Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc7502f7e47d516499f361fe22bbc1bb
+    m_Address: Assets/LocalizationAssets/Translations/Settings/Settings Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

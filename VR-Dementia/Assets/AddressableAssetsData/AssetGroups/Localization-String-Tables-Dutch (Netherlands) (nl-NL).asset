@@ -33,8 +33,20 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-nl-NL
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93e372afcde3c3549977b72709715be1
+    m_Address: Settings_nl-NL
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-nl-NL
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9475f97569a2c8347a232b974f4cffa2
     m_Address: Tasks-List_nl-NL
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-nl-NL
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac66948e823901c4d9983cd2ea75101f
+    m_Address: Video-tutorial_nl-NL
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-nl-NL

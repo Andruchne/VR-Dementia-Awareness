@@ -27,6 +27,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en-GB
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 26a165ab6ac80c041b3f437fb8b375dc
+    m_Address: Settings_en-GB
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-GB
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 366f63c50f17ad04d94cea87f99c1f12
     m_Address: Placeholder_en-GB
     m_ReadOnly: 1
@@ -41,6 +47,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 48c657003c2f36344b64dfa538d89c7f
     m_Address: UI_en-GB
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-GB
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf1075c5ad8d75a4fb772c7544c46204
+    m_Address: Video-tutorial_en-GB
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en-GB

@@ -10,59 +10,45 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: UI Shared Data
+  m_Name: Settings Shared Data
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
-  m_TableCollectionName: UI
-  m_TableCollectionNameGuidString: 57b2098feb6f574448254b7b7f646ec4
+  m_TableCollectionName: Settings
+  m_TableCollectionNameGuidString: dc7502f7e47d516499f361fe22bbc1bb
   m_Entries:
-  - m_Id: 4835561472
-    m_Key: Menu - Start
+  - m_Id: 19389202432
+    m_Key: Language
     m_Metadata:
       m_Items: []
-  - m_Id: 45620973568
-    m_Key: Menu - Exit
+  - m_Id: 282468532224
+    m_Key: English
     m_Metadata:
       m_Items: []
-  - m_Id: 58212274176
-    m_Key: Menu - Settings
+  - m_Id: 289569488896
+    m_Key: 'Dutch
+
+'
     m_Metadata:
       m_Items: []
-  - m_Id: 455236702208
-    m_Key: Language - ENG
+  - m_Id: 308116701184
+    m_Key: Movement Type
     m_Metadata:
       m_Items: []
-  - m_Id: 656630403072
-    m_Key: Language - NL
+  - m_Id: 497623744512
+    m_Key: Teleport
     m_Metadata:
       m_Items: []
-  - m_Id: 111696590135296
-    m_Key: 04 Buttons
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26354250973708288
-    m_Key: Menu Title
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26435062634364928
-    m_Key: Confirmation Exit
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26435701431058432
-    m_Key: Yes
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26435736528994304
-    m_Key: No
+  - m_Id: 672589135872
+    m_Key: Slide
     m_Metadata:
       m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    rid: 1942707929555927046
+    rid: 386092601542967405
   references:
     version: 2
     RefIds:
-    - rid: 1942707929555927046
+    - rid: 386092601542967405
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
       data:
-        m_CustomEpoch: 1774624123161
+        m_CustomEpoch: 1780930294682
