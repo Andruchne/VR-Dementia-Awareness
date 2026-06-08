@@ -18,17 +18,12 @@ public class WrapUp : SimulationTask
 
     [Header("Fade Settings")]
     [SerializeField] Image blackScreenImage;
-    [SerializeField] float fadeDuration = 0.5f;
+    [SerializeField] float fadeDuration = 8.0f;
 
     private EventReference currentRecord;
 
     private int sequenceIndex;
     private Timer timer;
-    private Timer fadeTimer;
-
-    private Color fadeStartColor;
-    private Color fadeTargetColor;
-    private float currentFadeDuration;
 
     private void Start()
     {
@@ -38,13 +33,6 @@ public class WrapUp : SimulationTask
         {
             HandleLocalizationChanged(LocalizationSettings.SelectedLocale);
         }
-
-        if (blackScreenImage != null)
-        {
-            Color c = blackScreenImage.color;
-            c.a = 0f;
-            blackScreenImage.color = c;
-        }
     }
 
     private void OnDestroy()
@@ -52,12 +40,6 @@ public class WrapUp : SimulationTask
         LocalizationSettings.SelectedLocaleChanged -= HandleLocalizationChanged;
 
         if (timer != null) { timer.OnTimerFinished -= PlayVoicelines; }
-
-        if (fadeTimer != null)
-        {
-            fadeTimer.OnTimerRunning -= UpdateFade;
-            fadeTimer.OnTimerFinished -= FinishFade;
-        }
 
         EventBus<OnJulietteFinishedTalk>.OnEvent -= JulietteFinishedTalk;
 
@@ -71,10 +53,6 @@ public class WrapUp : SimulationTask
         timer = gameObject.AddComponent<Timer>();
         timer.Setup(recordDelay, false, true);
         timer.OnTimerFinished += PlayVoicelines;
-
-        fadeTimer = gameObject.AddComponent<Timer>();
-        fadeTimer.OnTimerRunning += UpdateFade;
-        fadeTimer.OnTimerFinished += FinishFade;
 
         EventBus<OnJulietteFinishedTalk>.OnEvent += JulietteFinishedTalk;
     }
@@ -96,36 +74,12 @@ public class WrapUp : SimulationTask
             case 1:
                 {
                     EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(humming));
-                    StartFadeToBlack(fadeDuration);
+                    EventBus<OnTransitionScreen>.Publish(new OnTransitionScreen(1.0f, fadeDuration));
                     break;
                 }
         }
 
         sequenceIndex++;
-    }
-
-    private void StartFadeToBlack(float duration)
-    {
-        if (blackScreenImage == null) { return; }
-
-        currentFadeDuration = duration;
-        fadeStartColor = blackScreenImage.color;
-        fadeTargetColor = new Color(fadeStartColor.r, fadeStartColor.g, fadeStartColor.b, 1f);
-
-        fadeTimer.Setup(duration, false, true);
-    }
-
-    private void UpdateFade()
-    {
-        if (blackScreenImage == null || currentFadeDuration <= 0) { return; }
-
-        float elapsedTime = currentFadeDuration - fadeTimer.GetTimeLeft();
-        blackScreenImage.color = Color.Lerp(fadeStartColor, fadeTargetColor, elapsedTime / currentFadeDuration);
-    }
-
-    private void FinishFade()
-    {
-        if (blackScreenImage != null) { blackScreenImage.color = fadeTargetColor; }
     }
 
     private void HandleLocalizationChanged(Locale newLocale)

@@ -77,6 +77,21 @@ public class OnJulietteFinishedTalk : Event
 
 #endregion
 
+#region UI
+
+public class OnTransitionScreen : Event
+{
+    // Triggered to transition screen to black
+    public OnTransitionScreen(float targetPercent, float duration)
+    {
+        this.targetPercent = targetPercent;
+        this.duration = duration;
+    }
+    public float targetPercent;
+    public float duration;
+}
+
+#endregion
 
 #region Tasks
 
