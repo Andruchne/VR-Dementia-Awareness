@@ -19,6 +19,7 @@ public class InputChecker : SimulationTask
 
     private IEnumerator Start()
     {
+        
         yield return new WaitForSeconds(0.5f);
 
         for (int i = 0; i < checkSteps.Length; i++)

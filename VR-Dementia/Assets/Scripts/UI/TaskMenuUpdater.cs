@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class TaskMenuUpdater : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI title;
-    [SerializeField] TextMeshProUGUI description;
+    private int currentIndex;
 
     private void Awake()
     {
@@ -18,7 +17,6 @@ public class TaskMenuUpdater : MonoBehaviour
 
     private void UpdateTask(OnUpdateTask task)
     {
-        title.text = task.taskTitle;
-        description.text = task.taskDescription;
+        currentIndex++;
     }
 }

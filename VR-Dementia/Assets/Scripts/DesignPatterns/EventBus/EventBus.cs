@@ -43,6 +43,18 @@ public class OnPalmMenuVisibilityChanged : Event
     public bool isVisible;
 }
 
+public class OnMoved : Event
+{
+    // Notifies when player has moved (used for input tutorial)
+    public OnMoved() { }
+}
+
+public class OnTurned : Event
+{
+    // Notifies when player has turned (used for input tutorial)
+    public OnTurned() { }
+}
+
 #endregion
 
 #region JulietteTalk
@@ -71,13 +83,7 @@ public class OnJulietteFinishedTalk : Event
 public class OnUpdateTask : Event
 {
     // Used to update the text on the handheld menu
-    public OnUpdateTask(string taskTitle, string taskDescription) 
-    {
-        this.taskTitle = taskTitle;
-        this.taskDescription = taskDescription;
-    }
-    public string taskTitle;
-    public string taskDescription;
+    public OnUpdateTask() { }
 }
 
 public class OnStartSimulation : Event

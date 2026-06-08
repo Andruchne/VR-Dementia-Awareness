@@ -16,15 +16,15 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: 57b2098feb6f574448254b7b7f646ec4
   m_Entries:
   - m_Id: 4835561472
-    m_Key: 01 Buttons
+    m_Key: Menu - Start
     m_Metadata:
       m_Items: []
   - m_Id: 45620973568
-    m_Key: 02 Buttons
+    m_Key: Menu - Exit
     m_Metadata:
       m_Items: []
   - m_Id: 58212274176
-    m_Key: 03 Buttons
+    m_Key: Menu - Settings
     m_Metadata:
       m_Items: []
   - m_Id: 455236702208
@@ -41,6 +41,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 23877661062909952
     m_Key: 05 Task Lists
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26354250973708288
+    m_Key: Menu Title
     m_Metadata:
       m_Items: []
   m_Metadata:

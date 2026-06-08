@@ -1,11 +1,8 @@
 using System;
 using UnityEngine;
-using UnityEngine.Localization;
 
 public class SimulationTask : MonoBehaviour
 {
-    [SerializeField] LocalizedString taskTitle;
-    [SerializeField] LocalizedString taskDescription;
     public event Action onTaskFinished;
 
     protected bool isActive;
@@ -15,7 +12,7 @@ public class SimulationTask : MonoBehaviour
     {
         if (isActive) { return; }
 
-        EventBus<OnUpdateTask>.Publish(new OnUpdateTask(taskTitle.GetLocalizedString(), taskDescription.GetLocalizedString()));
+        EventBus<OnUpdateTask>.Publish(new OnUpdateTask());
         isActive = true;
     }
 
