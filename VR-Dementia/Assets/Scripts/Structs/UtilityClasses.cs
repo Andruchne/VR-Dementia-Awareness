@@ -15,10 +15,9 @@ public struct InputStep
 }
 
 
-// Used to update tasks on menu
+// Used to deactivate multiple components (e.g. during the locomotion tutorial)
 [Serializable]
-public struct TaskLine
+public class Components
 {
-    public TextMeshProUGUI title;
-    public TextMeshProUGUI description;
+    public GameObject[] components;
 }

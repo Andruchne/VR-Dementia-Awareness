@@ -6,16 +6,27 @@ using UnityEngine.Rendering;
 public class LocomotionTutorial : SimulationTask
 {
     [Header("Feedback Settings")]
-    [SerializeField] private EventReference successSound;
-    [SerializeField] private Volume successVolume;
-    [SerializeField] private float volumeTransitionTime = 1.0f;
+    [SerializeField] EventReference successSound;
+    [SerializeField] Volume successVolume;
+    [SerializeField] float volumeTransitionTime = 1.0f;
+
+    [Header("Locomotion Activation Order")]
+    [SerializeField] Components[] locomotionComponents;
 
     private int currentIndex;
     private Coroutine volumeRoutine;
 
     private void Start()
     {
-        SetupCurrentLocomotion();
+        // Deactivate all listed locomotion components
+        EventBus<OnChangePalmMenuActive>.Publish(new OnChangePalmMenuActive(false));
+        for (int i = 0; i < locomotionComponents.Length; i++)
+        {
+            for (int a = 0; a < locomotionComponents[i].components.Length; a++)
+            {
+                locomotionComponents[i].components[a].SetActive(false);
+            }
+        }
 
         if (successVolume != null) { successVolume.weight = 0.0f; }
     }
@@ -30,43 +41,60 @@ public class LocomotionTutorial : SimulationTask
     public override void StartTask()
     {
         base.StartTask();
-        SetupCurrentLocomotion();
+        AdvanceCurrentLocomotion();
     }
 
     private void MovingPerformed(OnMoved evt)
     {
-        SetupCurrentLocomotion();
+        AdvanceCurrentLocomotion();
     }
 
     private void TurnPerformed(OnTurned evt)
     {
-        SetupCurrentLocomotion();
+        AdvanceCurrentLocomotion();
     }
 
-    private void SetupCurrentLocomotion()
+    private void AdvanceCurrentLocomotion()
     {
+        Debug.LogWarning(currentIndex);
+
+        if (currentIndex < locomotionComponents.Length)
+        {
+            for (int i = 0; i < locomotionComponents[currentIndex].components.Length; i++)
+            {
+                locomotionComponents[currentIndex].components[i].SetActive(true);
+            }
+        }
+
         switch (currentIndex)
         {
+            case 0:
+                {
+                    EventBus<OnTurned>.OnEvent += TurnPerformed;
+                    break;
+                }
             case 1:
                 {
                     EventBus<OnMoved>.OnEvent += MovingPerformed;
+                    EventBus<OnTurned>.OnEvent -= TurnPerformed;
                     break;
                 }
             case 2:
                 {
                     EventBus<OnMoved>.OnEvent -= MovingPerformed;
-                    EventBus<OnTurned>.OnEvent += TurnPerformed;
-                    break;
-                }
-            case 3:
-                {
-                    EventBus<OnTurned>.OnEvent -= TurnPerformed;
                     EventBus<OnChangePalmMenuActive>.Publish(new OnChangePalmMenuActive(true));
                     EventBus<OnPalmMenuVisibilityChanged>.OnEvent += PalmMenuVisibilityChanged;
                     break;
                 }
+            case 3:
+                {
+                    EventBus<OnPalmMenuVisibilityChanged>.OnEvent -= PalmMenuVisibilityChanged;
+                    FinishTask();
+                    break;
+                }
         }
 
+        if (currentIndex > 0) { TriggerSuccessFeedback(); }
         currentIndex++;
     }
 
@@ -74,9 +102,7 @@ public class LocomotionTutorial : SimulationTask
     {
         if (evt.isVisible)
         {
-            EventBus<OnPalmMenuVisibilityChanged>.OnEvent -= PalmMenuVisibilityChanged;
-            TriggerSuccessFeedback();
-            FinishTask();
+            AdvanceCurrentLocomotion();
         }
     }
 

@@ -40,7 +40,7 @@ public class LocomotionPerformedNotifier : MonoBehaviour
         }
         for (int i = 0; i < handTurnLocomotion.Length; i++)
         {
-            controllerTurnLocomotion[i].WhenLocomotionPerformed += PlayerRotated;
+            handTurnLocomotion[i].WhenLocomotionPerformed += PlayerRotated;
         }
     }
 
@@ -70,12 +70,10 @@ public class LocomotionPerformedNotifier : MonoBehaviour
     private void PlayerMoved(LocomotionEvent evt)
     {
         EventBus<OnMoved>.Publish(new OnMoved());
-        Debug.LogWarning("Moved");
     }
 
     private void PlayerRotated(LocomotionEvent evt)
     {
         EventBus<OnTurned>.Publish(new OnTurned());
-        Debug.LogWarning("Turned");
     }
 }

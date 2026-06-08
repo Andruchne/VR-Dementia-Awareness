@@ -24,7 +24,7 @@ public class PressPhone : SimulationTask
         // Safety delay, to make sure the hand components are not reactivated by another script
         yield return new WaitForSeconds(1.0f);
 
-        indicatorHUD.SetActive(false);
+        if (indicatorHUD != null) { indicatorHUD.SetActive(false); }
 
         // Deactivate handheld menu - it will be activated during InputChecker activeness
         EventBus<OnChangePalmMenuActive>.Publish(new OnChangePalmMenuActive(false));
@@ -53,7 +53,7 @@ public class PressPhone : SimulationTask
         EventBus<OnStartSimulation>.Publish(new OnStartSimulation());
 
         timer.StopTimer();
-        indicatorHUD.SetActive(false);
+        if (indicatorHUD != null) { indicatorHUD.SetActive(false); }
         phone.gameObject.SetActive(false);
         for (int i = 0; i < leftHandComponents.Length; i++)
         {
