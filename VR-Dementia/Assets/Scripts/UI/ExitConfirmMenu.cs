@@ -6,8 +6,6 @@ using UnityEngine;
 /// </summary>
 public class ExitConfirmMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject exitConfirm;
-
     public void OnExitConfirm()
     {
         Application.Quit();
@@ -16,11 +14,6 @@ public class ExitConfirmMenu : MonoBehaviour
 
     public void OnStayConfirm()
     {
-        exitConfirm.SetActive(false);
-    }
-
-    public void OnLoadNextLevel()
-    {
-        GameManager.Instance.LoadSceneNext();
+        gameObject.SetActive(false);
     }
 }

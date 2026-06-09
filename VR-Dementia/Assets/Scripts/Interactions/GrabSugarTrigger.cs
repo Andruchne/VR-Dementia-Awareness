@@ -50,21 +50,6 @@ public class GrabSugarTrigger : MonoBehaviour
             grabTutorialWindow.SetActive(false);
             placeSugarHere.SetActive(false);
         }
-        /*
-        else
-        {
-            if (userInside)
-            {
-                triggerArea.enabled = false;
-                grabTutorialWindow.SetActive(true);
-            }
-            else
-            {
-                triggerArea.enabled = true;
-                grabTutorialWindow.SetActive(false);
-            }
-        }
-        */
     }
 
     private void CheckCurrentlyVisible()

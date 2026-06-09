@@ -8,17 +8,20 @@ using UnityEngine.UI;
 public class WrapUp : SimulationTask
 {
     [Header("Record Voicelines")]
-    [SerializeField] float recordDelay = 2;
+    [SerializeField] float recordDelay = 2.0f;
     [SerializeField] EventReference enRecord;
     [SerializeField] EventReference nlRecord;
 
     [Header("Humming Voiceline")]
-    [SerializeField] float hummingDelay = 1;
+    [SerializeField] float hummingDelay = 1.0f;
     [SerializeField] EventReference humming;
 
     [Header("Fade Settings")]
     [SerializeField] Image blackScreenImage;
     [SerializeField] float fadeDuration = 8.0f;
+
+    [Header("Restart after Hum Timer")]
+    [SerializeField] float restartDelay = 1.0f;
 
     private EventReference currentRecord;
 
@@ -39,7 +42,7 @@ public class WrapUp : SimulationTask
     {
         LocalizationSettings.SelectedLocaleChanged -= HandleLocalizationChanged;
 
-        if (timer != null) { timer.OnTimerFinished -= PlayVoicelines; }
+        if (timer != null) { timer.OnTimerFinished -= PlaySequences; }
 
         EventBus<OnJulietteFinishedTalk>.OnEvent -= JulietteFinishedTalk;
 
@@ -52,17 +55,29 @@ public class WrapUp : SimulationTask
 
         timer = gameObject.AddComponent<Timer>();
         timer.Setup(recordDelay, false, true);
-        timer.OnTimerFinished += PlayVoicelines;
+        timer.OnTimerFinished += PlaySequences;
 
         EventBus<OnJulietteFinishedTalk>.OnEvent += JulietteFinishedTalk;
     }
 
     private void JulietteFinishedTalk(OnJulietteFinishedTalk evt)
     {
-        timer.Setup(hummingDelay, false, true);
+        switch (sequenceIndex)
+        {
+            case 1:
+                {
+                    timer.Setup(hummingDelay, false, true);
+                    break;
+                }
+            case 2:
+                {
+                    timer.Setup(restartDelay, false, true);
+                    break;
+                }
+        }
     }
 
-    private void PlayVoicelines()
+    private void PlaySequences()
     {
         switch (sequenceIndex)
         {
@@ -75,6 +90,11 @@ public class WrapUp : SimulationTask
                 {
                     EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(humming));
                     EventBus<OnTransitionScreen>.Publish(new OnTransitionScreen(1.0f, fadeDuration));
+                    break;
+                }
+            case 2:
+                {
+                    GameManager.Instance.RestartCurrentScene();
                     break;
                 }
         }

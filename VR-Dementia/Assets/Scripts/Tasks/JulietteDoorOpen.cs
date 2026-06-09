@@ -12,7 +12,6 @@ public class JulietteDoorOpen : SimulationTask
 
     [Header("Reminder Indicator Settings")]
     [SerializeField] float remindAfterSeconds = 60;
-    [SerializeField] GameObject indicatorHUD;
     [SerializeField] EventReference enJulietteComeIn;
     [SerializeField] EventReference nlJulietteComeIn;
 
@@ -48,17 +47,14 @@ public class JulietteDoorOpen : SimulationTask
         base.StartTask();
         // Set the delay time for the grandma to show up & greet
         timer.Setup(julietteGreetingDelay, false, true);
+        EventBus<OnUpdateTask>.Publish(new OnUpdateTask());
     }
 
     private void GuestEntersBuilding(OnEnterBuilding evt)
     {
         timer.StopTimer();
 
-        if (indicatorHUD != null)
-        {
-            indicatorHUD.SetActive(false);
-            indicatorHUD.transform.parent.parent.gameObject.SetActive(false);
-        }
+        EventBus<OnShowIndicator>.Publish(new OnShowIndicator(false));
 
         FinishTask();
     }
@@ -90,11 +86,7 @@ public class JulietteDoorOpen : SimulationTask
                 }
             case 2:
                 {
-                    if (indicatorHUD != null) 
-                    {
-                        indicatorHUD.SetActive(true);
-                        indicatorHUD.transform.parent.parent.gameObject.SetActive(true);
-                    }
+                    EventBus<OnShowIndicator>.Publish(new OnShowIndicator(true, IndicatorHUDs.EnterHome));
                     timer.StopTimer();
                     break;
                 }

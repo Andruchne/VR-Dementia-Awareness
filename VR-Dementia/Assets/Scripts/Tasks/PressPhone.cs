@@ -12,26 +12,16 @@ public class PressPhone : SimulationTask
 
     [Header("Hint Setup")]
     [SerializeField] float remindAfterSeconds = 60;
-    [SerializeField] GameObject indicatorHUD;
     [SerializeField] Image sendButtonImage;
     private Timer timer;
     private int reminderIndex;
 
-
-
     private IEnumerator Start()
     {
         // Safety delay, to make sure the hand components are not reactivated by another script
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
 
-        if (indicatorHUD != null) { indicatorHUD.SetActive(false); }
-
-        // Deactivate handheld menu - it will be activated during InputChecker activeness
-        EventBus<OnChangePalmMenuActive>.Publish(new OnChangePalmMenuActive(false));
-        for (int i = 0; i < leftHandComponents.Length; i++)
-        {
-            leftHandComponents[i].gameObject.SetActive(false);
-        }
+        phone.gameObject.SetActive(false);
 
         timer = gameObject.AddComponent<Timer>();
         timer.Setup(remindAfterSeconds, true, true);
@@ -43,6 +33,16 @@ public class PressPhone : SimulationTask
         timer.OnTimerFinished -= ShowReminder;
     }
 
+    public override void StartTask()
+    {
+        base.StartTask();
+        phone.gameObject.SetActive(true);
+        for (int i = 0; i < leftHandComponents.Length; i++)
+        {
+            leftHandComponents[i].gameObject.SetActive(false);
+        }
+    }
+
     public void SendButtonPressed()
     {
         HidePhone();
@@ -50,10 +50,10 @@ public class PressPhone : SimulationTask
 
     private void HidePhone()
     {
-        EventBus<OnStartSimulation>.Publish(new OnStartSimulation());
+        EventBus<OnPhoneSendPressed>.Publish(new OnPhoneSendPressed());
 
         timer.StopTimer();
-        if (indicatorHUD != null) { indicatorHUD.SetActive(false); }
+        EventBus<OnShowIndicator>.Publish(new OnShowIndicator(false));
         phone.gameObject.SetActive(false);
         for (int i = 0; i < leftHandComponents.Length; i++)
         {
@@ -68,7 +68,7 @@ public class PressPhone : SimulationTask
         {
             case 0:
                 {
-                    if (indicatorHUD != null) { indicatorHUD.SetActive(true); }
+                    EventBus<OnShowIndicator>.Publish(new OnShowIndicator(true, IndicatorHUDs.PressSend));
                     break;
                 }
             case 1:

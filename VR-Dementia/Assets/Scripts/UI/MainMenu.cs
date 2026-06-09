@@ -11,15 +11,24 @@ public class MainMenu : MonoBehaviour
 
     public void OnExitClicked()
     {
+        gameObject.SetActive(false);
         exitConfirm.SetActive(true);
     }
 
     public void OnSettingsClicked()
     {
+        gameObject.SetActive(false);
         settingsWindow.SetActive(true);
     }
 
     public void OnStartClicked()
     {
-        GameManager.Instance.LoadSceneNext();
-    }}
+        gameObject.SetActive(false);
+        EventBus<OnStartSimulation>.Publish(new OnStartSimulation());
+    }
+
+    public void OnRestartSimulation()
+    {
+        GameManager.Instance.RestartCurrentScene();
+    }
+}

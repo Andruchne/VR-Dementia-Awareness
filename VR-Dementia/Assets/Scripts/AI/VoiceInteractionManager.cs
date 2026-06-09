@@ -118,17 +118,6 @@ public class VoiceInteractionManager : MonoBehaviour
             Debug.Log($"Maximum recording duration of {MAX_RECORDING_SECONDS} seconds reached. Auto-stopping...");
             StopRecordingAndProcess();
         }
-
-        // Make sure keyboard is connected before checking for input
-        // Moved below the timer check so VR headsets without a keyboard still trigger the auto-stop
-        if (Keyboard.current == null) { return; }
-
-        // Record voice when spacebar is pressed / stop when pressed once more
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
-        {
-            if (!isRecording) { StartRecording(); }
-            else { StopRecordingAndProcess(); }
-        }
     }
 
     public void DiscardRecording()
@@ -223,6 +212,15 @@ public class VoiceInteractionManager : MonoBehaviour
             sttLanguage = "nl";
             systemPrompt = systemPrompt.Replace("All responses must be in English.", "All responses must be in Dutch.");
             Debug.Log($"Language switched to Dutch (Code: {newLocale.Identifier.Code}).");
+        }
+
+        // Apply the newly translated system prompt to the active history immediately if it exists
+        if (messages.Count > 0 && messages[0].Role == "system")
+        {
+            ChatMessage updatedSystemMessage = messages[0];
+            updatedSystemMessage.Content = systemPrompt;
+            messages[0] = updatedSystemMessage; // Force value back into the list indexer
+            Debug.Log("System prompt updated dynamically in active conversation history.");
         }
     }
 
@@ -325,7 +323,7 @@ public class VoiceInteractionManager : MonoBehaviour
             {
                 ChatMessage updatedSystemMessage = messages[0];
                 updatedSystemMessage.Content = systemPrompt;
-                messages[0] = updatedSystemMessage;
+                messages[0] = updatedSystemMessage; // Force value back into the list indexer
             }
         }
 

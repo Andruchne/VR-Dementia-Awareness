@@ -6,28 +6,18 @@ using UnityEngine.Rendering;
 public class LocomotionTutorial : SimulationTask
 {
     [Header("Feedback Settings")]
-    [SerializeField] EventReference successSound;
-    [SerializeField] Volume successVolume;
-    [SerializeField] float volumeTransitionTime = 1.0f;
+    [SerializeField] private EventReference successSound;
+    [SerializeField] private Volume successVolume;
+    [SerializeField] private float volumeTransitionTime = 1.0f;
 
-    [Header("Locomotion Activation Order")]
-    [SerializeField] Components[] locomotionComponents;
+    [Header("VR Character for Controller visibility")]
+    [SerializeField] private OVRManager vrConfig;
 
     private int currentIndex;
     private Coroutine volumeRoutine;
 
     private void Start()
     {
-        // Deactivate all listed locomotion components
-        EventBus<OnChangePalmMenuActive>.Publish(new OnChangePalmMenuActive(false));
-        for (int i = 0; i < locomotionComponents.Length; i++)
-        {
-            for (int a = 0; a < locomotionComponents[i].components.Length; a++)
-            {
-                locomotionComponents[i].components[a].SetActive(false);
-            }
-        }
-
         if (successVolume != null) { successVolume.weight = 0.0f; }
     }
 
@@ -41,42 +31,42 @@ public class LocomotionTutorial : SimulationTask
     public override void StartTask()
     {
         base.StartTask();
-        AdvanceCurrentLocomotion();
+        SetupCurrentLocomotion();
+        EventBus<OnUpdateTask>.Publish(new OnUpdateTask());
+        vrConfig.controllerDrivenHandPosesType = OVRManager.ControllerDrivenHandPosesType.None;
+    }
+
+    public override void FinishTask()
+    {
+        base.FinishTask();
+        vrConfig.controllerDrivenHandPosesType = OVRManager.ControllerDrivenHandPosesType.Natural;
     }
 
     private void MovingPerformed(OnMoved evt)
     {
-        AdvanceCurrentLocomotion();
+        SetupCurrentLocomotion();
     }
 
     private void TurnPerformed(OnTurned evt)
     {
-        AdvanceCurrentLocomotion();
+        SetupCurrentLocomotion();
     }
 
-    private void AdvanceCurrentLocomotion()
+    private void SetupCurrentLocomotion()
     {
-        Debug.LogWarning(currentIndex);
-
-        if (currentIndex < locomotionComponents.Length)
-        {
-            for (int i = 0; i < locomotionComponents[currentIndex].components.Length; i++)
-            {
-                locomotionComponents[currentIndex].components[i].SetActive(true);
-            }
-        }
-
         switch (currentIndex)
         {
             case 0:
                 {
                     EventBus<OnTurned>.OnEvent += TurnPerformed;
+                    EventBus<OnShowTutorial>.Publish(new OnShowTutorial(true, TutorialHUDs.Turning));
                     break;
                 }
             case 1:
                 {
                     EventBus<OnMoved>.OnEvent += MovingPerformed;
                     EventBus<OnTurned>.OnEvent -= TurnPerformed;
+                    EventBus<OnShowTutorial>.Publish(new OnShowTutorial(true, TutorialHUDs.Moving));
                     break;
                 }
             case 2:
@@ -84,17 +74,11 @@ public class LocomotionTutorial : SimulationTask
                     EventBus<OnMoved>.OnEvent -= MovingPerformed;
                     EventBus<OnChangePalmMenuActive>.Publish(new OnChangePalmMenuActive(true));
                     EventBus<OnPalmMenuVisibilityChanged>.OnEvent += PalmMenuVisibilityChanged;
-                    break;
-                }
-            case 3:
-                {
-                    EventBus<OnPalmMenuVisibilityChanged>.OnEvent -= PalmMenuVisibilityChanged;
-                    FinishTask();
+                    EventBus<OnShowTutorial>.Publish(new OnShowTutorial(true, TutorialHUDs.MenuOpen));
                     break;
                 }
         }
 
-        if (currentIndex > 0) { TriggerSuccessFeedback(); }
         currentIndex++;
     }
 
@@ -102,7 +86,10 @@ public class LocomotionTutorial : SimulationTask
     {
         if (evt.isVisible)
         {
-            AdvanceCurrentLocomotion();
+            EventBus<OnPalmMenuVisibilityChanged>.OnEvent -= PalmMenuVisibilityChanged;
+            TriggerSuccessFeedback();
+            EventBus<OnShowTutorial>.Publish(new OnShowTutorial(false));
+            FinishTask();
         }
     }
 

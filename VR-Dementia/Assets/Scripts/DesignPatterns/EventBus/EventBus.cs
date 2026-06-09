@@ -59,6 +59,36 @@ public class OnTurned : Event
 
 #region JulietteTalk
 
+public class OnRequestTalk : Event
+{
+    // Used for triggering dialogue using gestures (free hands)
+    public OnRequestTalk() { }
+}
+
+public class OnUpdateTalkTimer : Event
+{
+    public OnUpdateTalkTimer(float currentProgress) 
+    {
+        this.currentProgress = currentProgress;
+    }
+    public float currentProgress;
+}
+
+public class OnShowMicrophonePickup : Event
+{
+    public OnShowMicrophonePickup() { }
+}
+
+public class OnShowProcessing : Event
+{
+    public OnShowProcessing() { }
+}
+
+public class OnFinishedRequest : Event
+{
+    public OnFinishedRequest() { }
+}
+
 public class OnJulietteTalk : Event
 {
     // Used to make Juliette talk
@@ -77,23 +107,13 @@ public class OnJulietteFinishedTalk : Event
 
 #endregion
 
-#region UI
-
-public class OnTransitionScreen : Event
-{
-    // Triggered to transition screen to black
-    public OnTransitionScreen(float targetPercent, float duration)
-    {
-        this.targetPercent = targetPercent;
-        this.duration = duration;
-    }
-    public float targetPercent;
-    public float duration;
-}
-
-#endregion
-
 #region Tasks
+
+public class OnStartSimulation : Event
+{
+    // When the Start button is pressed on the main menu
+    public OnStartSimulation() { }
+}
 
 public class OnUpdateTask : Event
 {
@@ -101,10 +121,10 @@ public class OnUpdateTask : Event
     public OnUpdateTask() { }
 }
 
-public class OnStartSimulation : Event
+public class OnPhoneSendPressed : Event
 {
     // Triggered when send button is pressed, in the play scene
-    public OnStartSimulation() { }
+    public OnPhoneSendPressed() { }
 }
 
 public class OnEnterBuilding : Event
@@ -134,6 +154,34 @@ public class OnPlayerSitDown : Event
     }
 
     public bool isSitting;
+}
+
+#endregion
+
+#region UI
+
+public class OnShowIndicator : Event
+{
+    // Trigger and set, to control whether palm menu should be visisble
+    public OnShowIndicator(bool isActive, IndicatorHUDs indicator = IndicatorHUDs.EnterHome)
+    {
+        this.isActive = isActive;
+        this.indicator = indicator;
+    }
+    public bool isActive;
+    public IndicatorHUDs indicator;
+}
+
+public class OnShowTutorial : Event
+{
+    // Trigger and set, to control whether palm menu should be visisble
+    public OnShowTutorial(bool isActive, TutorialHUDs tutorial = TutorialHUDs.Turning)
+    {
+        this.isActive = isActive;
+        this.tutorial = tutorial;
+    }
+    public bool isActive;
+    public TutorialHUDs tutorial;
 }
 
 #endregion

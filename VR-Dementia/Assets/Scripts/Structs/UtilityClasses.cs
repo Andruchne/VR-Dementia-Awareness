@@ -3,6 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum TutorialHUDs { Turning, Moving, MenuOpen, Grab }
+public enum IndicatorHUDs { PressSend, EnterHome, SugarPickup }
+
 // Was replaced by locomotion events, but perhaps might be useful still
 public enum JoystickDirection { Any, Up, Horizontal }
 
@@ -15,9 +18,22 @@ public struct InputStep
 }
 
 
-// Used to deactivate multiple components (e.g. during the locomotion tutorial)
+// Used to update tasks on menu
 [Serializable]
-public class Components
+public struct TaskLine
 {
-    public GameObject[] components;
+    public TextMeshProUGUI title;
+    public TextMeshProUGUI description;
+}
+
+public struct TutorialInstance
+{
+    public TutorialHUDs tutorialType;
+    public GameObject instance;
+}
+
+public struct IndicatorInstance
+{
+    public IndicatorHUDs indicatorType;
+    public GameObject instance;
 }

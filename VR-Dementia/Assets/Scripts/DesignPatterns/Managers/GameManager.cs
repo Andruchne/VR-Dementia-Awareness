@@ -123,6 +123,7 @@ public class GameManager : MonoBehaviour
 
 
     #region Load Scene Logic
+
     public void LoadScene(int sceneIndex)
     {
         if (sceneIndex < 0 || sceneIndex > SceneManager.sceneCountInBuildSettings)
@@ -142,6 +143,13 @@ public class GameManager : MonoBehaviour
         if (nextSceneIndex >= SceneManager.sceneCountInBuildSettings) { nextSceneIndex = 0; }
         SceneManager.LoadScene(nextSceneIndex);
     }
+
+    public void RestartCurrentScene()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
+    }
+
     #endregion
 
 

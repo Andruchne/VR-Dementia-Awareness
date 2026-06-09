@@ -1,3 +1,4 @@
+using Oculus.Interaction.Locomotion;
 using UnityEngine;
 
 /// <summary>
@@ -6,11 +7,18 @@ using UnityEngine;
 /// </summary>
 public class SettingsMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject settingsMenu;
+    [Header("Locomotion Components")]
+    [SerializeField] GameObject slideComponents;
+    [SerializeField] GameObject teleportComponents;
+    [SerializeField] TurnerEventBroadcaster turnComponent;
+
+    [Header("Main Menu")]
+    [SerializeField] GameObject mainMenu;
 
     public void OnGoBack()
     {
-        settingsMenu.SetActive(false);
+        gameObject.SetActive(false);
+        mainMenu.SetActive(true);
     }
 
     public void OnSetDutchLocal()
@@ -21,5 +29,24 @@ public class SettingsMenu : MonoBehaviour
     public void OnSetEnglishLocal()
     {
         GameManager.Instance.ChangeLocalization("en-GB");
+    }
+
+    public void OnSetTeleportMovement()
+    {
+        SetLocomotion(true);
+    }
+
+    public void OnSetSlideMovement()
+    {
+        SetLocomotion(false);
+    }
+
+    private void SetLocomotion(bool setTeleport)
+    {
+        slideComponents.SetActive(!setTeleport);
+        teleportComponents.SetActive(setTeleport);
+
+        if (setTeleport) { turnComponent.TurnMethod = TurnerEventBroadcaster.TurnMode.Snap; }
+        else { turnComponent.TurnMethod = TurnerEventBroadcaster.TurnMode.Smooth; }
     }
 }

@@ -25,7 +25,6 @@ public class AskGetSugar : SimulationTask
     [SerializeField] GrabSugarTrigger grabSugarTrigger;
     [SerializeField] EventReference enSmallCabinet;
     [SerializeField] EventReference nlSmallCabinet;
-    [SerializeField] GameObject indicatorHUD;
 
 
     private EventReference currentForgotSugar;
@@ -63,6 +62,7 @@ public class AskGetSugar : SimulationTask
         base.StartTask();
         timer.Setup(forgotSugarDelay, false, true);
         EventBus<OnJulietteFinishedTalk>.OnEvent += JulietteFinishedTalk;
+        EventBus<OnUpdateTask>.Publish(new OnUpdateTask());
     }
 
     private void JulietteFinishedTalk(OnJulietteFinishedTalk evt)
@@ -114,11 +114,7 @@ public class AskGetSugar : SimulationTask
                 }
             case 4:
                 {
-                    if (indicatorHUD != null)
-                    {
-                        indicatorHUD.SetActive(true);
-                        indicatorHUD.transform.parent.parent.gameObject.SetActive(true);
-                    }
+                    EventBus<OnShowIndicator>.Publish(new OnShowIndicator(true, IndicatorHUDs.SugarPickup));
                     timer.StopTimer();
                     break;
                 }
@@ -131,11 +127,7 @@ public class AskGetSugar : SimulationTask
     {
         EventBus<OnJulietteFinishedTalk>.OnEvent -= JulietteFinishedTalk;
 
-        if (indicatorHUD != null)
-        {
-            indicatorHUD.SetActive(false);
-            indicatorHUD.transform.parent.parent.gameObject.SetActive(false);
-        }
+        EventBus<OnShowIndicator>.Publish(new OnShowIndicator(false));
 
         timer.StopTimer();
 
