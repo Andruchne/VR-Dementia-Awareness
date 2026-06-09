@@ -31,6 +31,10 @@ MonoBehaviour:
     m_Key: 04. Pop-up
     m_Metadata:
       m_Items: []
+  - m_Id: 4732332776087552
+    m_Key: Pop-up - Press X
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

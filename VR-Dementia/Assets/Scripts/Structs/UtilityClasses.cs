@@ -26,12 +26,14 @@ public struct TaskLine
     public TextMeshProUGUI description;
 }
 
+[Serializable]
 public struct TutorialInstance
 {
     public TutorialHUDs tutorialType;
     public GameObject instance;
 }
 
+[Serializable]
 public struct IndicatorInstance
 {
     public IndicatorHUDs indicatorType;

@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     #region Variables and Instances
 
+    public bool conversationActive;
+
     private PostProcessingManager _ppManager;
     private LocalizationManager _localManager;
     private VoiceInteractionManager _voiceInterManager;

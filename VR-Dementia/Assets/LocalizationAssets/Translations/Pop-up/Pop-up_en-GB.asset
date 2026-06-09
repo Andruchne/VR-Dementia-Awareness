@@ -34,6 +34,10 @@ MonoBehaviour:
     m_Localized: Talk to Juliette about her day.
     m_Metadata:
       m_Items: []
+  - m_Id: 4732332776087552
+    m_Localized: Hold down X to talk
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -8,8 +8,9 @@ using UnityEngine;
 public class SettingsMenu : MonoBehaviour
 {
     [Header("Locomotion Components")]
-    [SerializeField] GameObject slideComponents;
-    [SerializeField] GameObject teleportComponents;
+    [SerializeField] GameObject slideComponent;
+    [SerializeField] GameObject teleportComponent;
+    [SerializeField] GameObject stepComponent;
     [SerializeField] TurnerEventBroadcaster turnComponent;
 
     [Header("Main Menu")]
@@ -43,8 +44,9 @@ public class SettingsMenu : MonoBehaviour
 
     private void SetLocomotion(bool setTeleport)
     {
-        slideComponents.SetActive(!setTeleport);
-        teleportComponents.SetActive(setTeleport);
+        slideComponent.SetActive(!setTeleport);
+        teleportComponent.SetActive(setTeleport);
+        stepComponent.SetActive(setTeleport);
 
         if (setTeleport) { turnComponent.TurnMethod = TurnerEventBroadcaster.TurnMode.Snap; }
         else { turnComponent.TurnMethod = TurnerEventBroadcaster.TurnMode.Smooth; }

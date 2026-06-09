@@ -9,6 +9,7 @@ public class JulietteConversation : SimulationTask
 
     [Header("How many questions can be asked")]
     [SerializeField] int maxQuestions = 5;
+
     private int questionsAsked;
     private bool isProcessing;
 
@@ -39,6 +40,7 @@ public class JulietteConversation : SimulationTask
         base.StartTask();
 
         EventBus<OnPlayerSitDown>.OnEvent += PlayerSatDown;
+        GameManager.Instance.conversationActive = true;
 
         // Setup the event. We only skip when this event fires with isSitting = true.
         PlayerSatDown(new OnPlayerSitDown(isSitting));
@@ -49,6 +51,7 @@ public class JulietteConversation : SimulationTask
     {
         base.FinishTask();
 
+        GameManager.Instance.conversationActive = false;
         EventBus<OnPlayerSitDown>.OnEvent -= PlayerSatDown;
         if (actionButton != null)
         {
@@ -74,6 +77,7 @@ public class JulietteConversation : SimulationTask
         if (!isRecording)
         {
             GameManager.Instance.StartRecordingVoice();
+            EventBus<OnShowMicrophonePickup>.Publish(new OnShowMicrophonePickup());
         }
     }
 
@@ -88,6 +92,7 @@ public class JulietteConversation : SimulationTask
         if (isRecording)
         {
             ProcessRecording();
+            EventBus<OnShowProcessing>.Publish(new OnShowProcessing());
         }
     }
 
@@ -95,12 +100,14 @@ public class JulietteConversation : SimulationTask
     {
         GameManager.Instance.StopRecordingVoice();
         questionsAsked++;
+        EventBus<OnShowAfterDiscard>.Publish(new OnShowAfterDiscard());
 
         if (questionsAsked >= maxQuestions) { EventBus<OnJulietteFinishedTalk>.OnEvent += SpeechFinished; }
     }
 
     private void SpeechFinished(OnJulietteFinishedTalk evt)
     {
+        EventBus<OnHideTalk>.Publish(new OnHideTalk());
         EventBus<OnJulietteFinishedTalk>.OnEvent -= SpeechFinished;
         FinishTask();
     }
@@ -117,7 +124,7 @@ public class JulietteConversation : SimulationTask
             actionButton.action.canceled += OnButtonCanceled;
 
             // Only skip when player is actually sitting
-            StartCoroutine(SkipTaskDelay());
+            //StartCoroutine(SkipTaskDelay());
         }
         else if (isActive)
         {

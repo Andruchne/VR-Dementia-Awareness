@@ -33,7 +33,7 @@ public class LocomotionTutorial : SimulationTask
         base.StartTask();
         SetupCurrentLocomotion();
         EventBus<OnUpdateTask>.Publish(new OnUpdateTask());
-        vrConfig.controllerDrivenHandPosesType = OVRManager.ControllerDrivenHandPosesType.None;
+        vrConfig.controllerDrivenHandPosesType = OVRManager.ControllerDrivenHandPosesType.ConformingToController;
     }
 
     public override void FinishTask()
@@ -67,6 +67,7 @@ public class LocomotionTutorial : SimulationTask
                     EventBus<OnMoved>.OnEvent += MovingPerformed;
                     EventBus<OnTurned>.OnEvent -= TurnPerformed;
                     EventBus<OnShowTutorial>.Publish(new OnShowTutorial(true, TutorialHUDs.Moving));
+                    TriggerSuccessFeedback();
                     break;
                 }
             case 2:
@@ -75,6 +76,7 @@ public class LocomotionTutorial : SimulationTask
                     EventBus<OnChangePalmMenuActive>.Publish(new OnChangePalmMenuActive(true));
                     EventBus<OnPalmMenuVisibilityChanged>.OnEvent += PalmMenuVisibilityChanged;
                     EventBus<OnShowTutorial>.Publish(new OnShowTutorial(true, TutorialHUDs.MenuOpen));
+                    TriggerSuccessFeedback();
                     break;
                 }
         }

@@ -65,25 +65,6 @@ public class OnRequestTalk : Event
     public OnRequestTalk() { }
 }
 
-public class OnUpdateTalkTimer : Event
-{
-    public OnUpdateTalkTimer(float currentProgress) 
-    {
-        this.currentProgress = currentProgress;
-    }
-    public float currentProgress;
-}
-
-public class OnShowMicrophonePickup : Event
-{
-    public OnShowMicrophonePickup() { }
-}
-
-public class OnShowProcessing : Event
-{
-    public OnShowProcessing() { }
-}
-
 public class OnFinishedRequest : Event
 {
     public OnFinishedRequest() { }
@@ -160,6 +141,18 @@ public class OnPlayerSitDown : Event
 
 #region UI
 
+public class OnTransitionScreen : Event
+{
+    // Triggered to transition screen to black
+    public OnTransitionScreen(float targetPercent, float duration)
+    {
+        this.targetPercent = targetPercent;
+        this.duration = duration;
+    }
+    public float targetPercent;
+    public float duration;
+}
+
 public class OnShowIndicator : Event
 {
     // Trigger and set, to control whether palm menu should be visisble
@@ -182,6 +175,35 @@ public class OnShowTutorial : Event
     }
     public bool isActive;
     public TutorialHUDs tutorial;
+}
+
+public class OnUpdateTalkTimer : Event
+{
+    public OnUpdateTalkTimer(float currentProgress)
+    {
+        this.currentProgress = currentProgress;
+    }
+    public float currentProgress;
+}
+
+public class OnShowMicrophonePickup : Event
+{
+    public OnShowMicrophonePickup() { }
+}
+
+public class OnShowProcessing : Event
+{
+    public OnShowProcessing() { }
+}
+
+public class OnShowAfterDiscard : Event
+{
+    public OnShowAfterDiscard() { }
+}
+
+public class OnHideTalk : Event
+{
+    public OnHideTalk() { }
 }
 
 #endregion

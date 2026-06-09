@@ -6,14 +6,17 @@ using UnityEngine;
 /// </summary>
 public class ExitConfirmMenu : MonoBehaviour
 {
+    [SerializeField] GameObject mainMenu;
+
     public void OnExitConfirm()
     {
-        Application.Quit();
         Debug.Log("Closing App...");
+        Application.Quit();
     }
 
     public void OnStayConfirm()
     {
         gameObject.SetActive(false);
+        mainMenu.SetActive(true);
     }
 }

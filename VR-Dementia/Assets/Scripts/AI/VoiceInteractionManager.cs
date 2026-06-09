@@ -44,7 +44,7 @@ public class VoiceInteractionManager : MonoBehaviour
     private int recordDeviceId = 0; // Default microphone
     private bool isRecording = false;
     private float recordingStartTime = 0f; // Tracks when the recording started
-
+    
     [Header("FMOD Playback Setup")]
     [SerializeField] private EventReference fmodDialogueEvent;
     private FMOD.Studio.EventInstance dialogueInstance;
@@ -113,10 +113,17 @@ public class VoiceInteractionManager : MonoBehaviour
     private void Update()
     {
         // Automatically stop and process if the maximum recording time is reached
-        if (isRecording && (Time.time - recordingStartTime >= MAX_RECORDING_SECONDS))
+        if (isRecording)
         {
-            Debug.Log($"Maximum recording duration of {MAX_RECORDING_SECONDS} seconds reached. Auto-stopping...");
-            StopRecordingAndProcess();
+            float currentTime = Time.time - recordingStartTime;
+            float currentProgress = Mathf.InverseLerp(0, MAX_RECORDING_SECONDS, currentTime);
+            EventBus<OnUpdateTalkTimer>.Publish(new OnUpdateTalkTimer(currentProgress));
+
+            if(currentTime >= MAX_RECORDING_SECONDS)
+            {
+                Debug.Log($"Maximum recording duration of {MAX_RECORDING_SECONDS} seconds reached. Auto-stopping...");
+                StopRecordingAndProcess();
+            }
         }
     }
 
@@ -193,6 +200,7 @@ public class VoiceInteractionManager : MonoBehaviour
         Debug.Log($"[MEASURE] TTS: {stopwatch.ElapsedMilliseconds} ms | TTS Finished.");
 
         OnProcessingFinished?.Invoke();
+        EventBus<OnHideTalk>.Publish(new OnHideTalk());
         StartCoroutine(WaitForSpeechToFinish());
 
     }

@@ -34,6 +34,10 @@ MonoBehaviour:
     m_Localized: Praat met Juliette over haar dag.
     m_Metadata:
       m_Items: []
+  - m_Id: 4732332776087552
+    m_Localized: Houd X ingedrukt om te spreken
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

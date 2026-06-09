@@ -7,6 +7,11 @@ public class HandleIndicationHUD : MonoBehaviour
 
     private void Start()
     {
+        for (int i = 0; i < indicatorInstances.Length; i++)
+        {
+            indicatorInstances[i].instance.SetActive(false);
+        }
+
         EventBus<OnShowIndicator>.OnEvent += HandleIndicator;
         HandleIndicator(new OnShowIndicator(false));
     }

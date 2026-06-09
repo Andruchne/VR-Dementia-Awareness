@@ -24,7 +24,6 @@ public class PressPhone : SimulationTask
         phone.gameObject.SetActive(false);
 
         timer = gameObject.AddComponent<Timer>();
-        timer.Setup(remindAfterSeconds, true, true);
         timer.OnTimerFinished += ShowReminder;
     }
 
@@ -41,6 +40,7 @@ public class PressPhone : SimulationTask
         {
             leftHandComponents[i].gameObject.SetActive(false);
         }
+        timer.Setup(remindAfterSeconds, true, true);
     }
 
     public void SendButtonPressed()

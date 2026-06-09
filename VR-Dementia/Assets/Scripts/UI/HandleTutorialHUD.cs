@@ -7,6 +7,11 @@ public class HandleTutorialHUD : MonoBehaviour
 
     private void Start()
     {
+        for (int i = 0; i < tutorialInstances.Length; i++)
+        {
+            tutorialInstances[i].instance.SetActive(false);
+        }
+
         EventBus<OnShowTutorial>.OnEvent += HandleTutorial;
         HandleTutorial(new OnShowTutorial(false));
     }

@@ -11,8 +11,6 @@ public class SimulationTask : MonoBehaviour
     public virtual void StartTask()
     {
         if (isActive) { return; }
-
-        EventBus<OnUpdateTask>.Publish(new OnUpdateTask());
         isActive = true;
     }
 
