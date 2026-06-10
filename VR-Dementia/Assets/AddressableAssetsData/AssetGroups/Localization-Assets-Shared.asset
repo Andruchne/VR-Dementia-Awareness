@@ -25,11 +25,6 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 41b11210da584984ebe84de586ab7d85
-    m_Address: Assets/LocalizationAssets/Placeholder Shared Data.asset
-    m_ReadOnly: 1
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 44a1000bdf6f78047ad51eb42991cb5c
     m_Address: Assets/LocalizationAssets/Translations/Pop-up/Pop-up Shared Data.asset
     m_ReadOnly: 1
@@ -42,12 +37,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6d1edcdf203e06244829dd4e0ad0df7c
     m_Address: Assets/LocalizationAssets/Translations/VideoTutorial/Video-tutorial
-      Shared Data.asset
-    m_ReadOnly: 1
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 854629128a034764280fcdb6d87e1b23
-    m_Address: Assets/LocalizationAssets/Translations/Questions-Tutorial/Questions-Tutorial
       Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []

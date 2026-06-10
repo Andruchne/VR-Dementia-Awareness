@@ -16,23 +16,23 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: 3b8f230b989279644914075bf811554a
   m_Entries:
   - m_Id: 3858288640
-    m_Key: 01 Mood
+    m_Key: 01.Moods/Happy
     m_Metadata:
       m_Items: []
   - m_Id: 17078734848
-    m_Key: 02 Mood
+    m_Key: 02.Moods/Sad
     m_Metadata:
       m_Items: []
   - m_Id: 26071322624
-    m_Key: 03 Mood
+    m_Key: 03.Moods/Angry
     m_Metadata:
       m_Items: []
   - m_Id: 131193163776
-    m_Key: 04 Mood
+    m_Key: 04.Moods/Anxious
     m_Metadata:
       m_Items: []
   - m_Id: 150239498240
-    m_Key: 05 Mood
+    m_Key: 05.Moods/Nostalgic
     m_Metadata:
       m_Items: []
   m_Metadata:
