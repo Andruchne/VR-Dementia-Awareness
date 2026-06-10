@@ -57,6 +57,35 @@ public class OnTurned : Event
 
 #endregion
 
+#region JulietteAnimations
+
+public class OnOpenDoorAnim : Event
+{
+    public OnOpenDoorAnim() { }
+}
+
+public class OnWalkAnim : Event
+{
+    public OnWalkAnim() { }
+}
+
+public class OnSitAnim : Event
+{
+    public OnSitAnim() { }
+}
+
+public class OnIdleAnim : Event
+{
+    public OnIdleAnim() { }
+}
+
+public class OnJulietteAnimFinished : Event
+{
+    public OnJulietteAnimFinished() { }
+}
+
+#endregion
+
 #region JulietteTalk
 
 public class OnRequestTalk : Event

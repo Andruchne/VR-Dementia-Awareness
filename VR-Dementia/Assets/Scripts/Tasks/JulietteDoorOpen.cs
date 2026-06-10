@@ -48,6 +48,7 @@ public class JulietteDoorOpen : SimulationTask
         // Set the delay time for the grandma to show up & greet
         timer.Setup(julietteGreetingDelay, false, true);
         EventBus<OnUpdateTask>.Publish(new OnUpdateTask());
+        EventBus<OnOpenDoorAnim>.Publish(new OnOpenDoorAnim());
     }
 
     private void GuestEntersBuilding(OnEnterBuilding evt)

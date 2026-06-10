@@ -32,6 +32,7 @@ public class HouseEntered : SimulationTask
     {
         LocalizationSettings.SelectedLocaleChanged -= HandleLocalizationChanged;
         EventBus<OnEnterBuilding>.OnEvent -= BuildingEntered;
+        EventBus<OnJulietteAnimFinished>.OnEvent -= JulietteSitDown;
         timer.OnTimerFinished -= PlayVoice;
     }
 
@@ -43,18 +44,27 @@ public class HouseEntered : SimulationTask
     private void PlayVoice()
     {
         EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentSitDown));
+        EventBus<OnWalkAnim>.Publish(new OnWalkAnim());
+
+        EventBus<OnJulietteAnimFinished>.OnEvent += JulietteSitDown;
+    }
+
+    private void JulietteSitDown(OnJulietteAnimFinished evt)
+    {
+        EventBus<OnSitAnim>.Publish(new OnSitAnim());
+        EventBus<OnJulietteAnimFinished>.OnEvent -= JulietteSitDown;
         FinishTask();
     }
 
     private void HandleLocalizationChanged(Locale newLocale)
-    {
-        if (newLocale.Identifier.Code.StartsWith("en"))
         {
-            currentSitDown = enComeSitDown;
-        }
-        else if (newLocale.Identifier.Code.StartsWith("nl"))
-        {
-            currentSitDown = nlComeSitDown;
+            if (newLocale.Identifier.Code.StartsWith("en"))
+            {
+                currentSitDown = enComeSitDown;
+            }
+            else if (newLocale.Identifier.Code.StartsWith("nl"))
+            {
+                currentSitDown = nlComeSitDown;
+            }
         }
     }
-}
