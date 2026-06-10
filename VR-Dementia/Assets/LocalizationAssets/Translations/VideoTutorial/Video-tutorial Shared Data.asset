@@ -31,6 +31,12 @@ MonoBehaviour:
     m_Key: Grabbing
     m_Metadata:
       m_Items: []
+  - m_Id: 667402244947968
+    m_Key: 'Speaking
+
+'
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

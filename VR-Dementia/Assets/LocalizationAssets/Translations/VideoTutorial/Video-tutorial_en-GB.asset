@@ -36,6 +36,11 @@ MonoBehaviour:
       objects.
     m_Metadata:
       m_Items: []
+  - m_Id: 667402244947968
+    m_Localized: Press and hold the A button on the right controller to speak. Release
+      it when you finish your message.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
