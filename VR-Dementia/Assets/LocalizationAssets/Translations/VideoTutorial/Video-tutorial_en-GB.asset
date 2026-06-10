@@ -19,12 +19,12 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 26280443904
-    m_Localized: Press and hold the right button, then release it where you want
-      to teleport.
+    m_Localized: Press and hold the left button, then release it where you want to
+      teleport.
     m_Metadata:
       m_Items: []
   - m_Id: 3893969797120
-    m_Localized: Push the left thumbstick left or right to rotate.
+    m_Localized: Push the right thumbstick left or right to rotate.
     m_Metadata:
       m_Items: []
   - m_Id: 4217510019072

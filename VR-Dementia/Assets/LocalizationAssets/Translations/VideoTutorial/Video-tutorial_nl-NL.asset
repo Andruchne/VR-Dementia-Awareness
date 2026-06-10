@@ -19,12 +19,12 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 26280443904
-    m_Localized: Houd de rechterknop ingedrukt en laat deze los op de plek waar je
+    m_Localized: Houd de linkerknop ingedrukt en laat deze los op de plek waar je
       naartoe wilt teleporteren.
     m_Metadata:
       m_Items: []
   - m_Id: 3893969797120
-    m_Localized: Duw de linker joystick naar links of rechts om te draaien.
+    m_Localized: Duw de rechterstick naar links of rechts om te draaien.
     m_Metadata:
       m_Items: []
   - m_Id: 4217510019072
