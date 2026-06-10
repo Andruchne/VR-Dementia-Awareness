@@ -36,6 +36,11 @@ MonoBehaviour:
       vast te pakken.
     m_Metadata:
       m_Items: []
+  - m_Id: 667402244947968
+    m_Localized: Houd de A-knop op de rechtercontroller ingedrukt om te spreken.
+      Laat de knop los wanneer je klaar bent met je bericht.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
