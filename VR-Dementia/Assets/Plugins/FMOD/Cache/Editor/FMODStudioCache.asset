@@ -15,10 +15,10 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639155760752559460
+  lastModified: 639160942205618219
   FileSizes:
   - Name: Desktop
-    Value: 2474
+    Value: 2524
   Exists: 1
 --- !u!114 &-8663448103879957142
 MonoBehaviour:
@@ -212,7 +212,7 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639155760752514005
+  lastModified: 639160942205568052
   FileSizes:
   - Name: Desktop
     Value: 1640
@@ -380,6 +380,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-1901042179434852079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/BG_Music/Transition_State
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Transition_State
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 2698224093
+    data2: 3192864468
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &-1364194543260975454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -504,6 +528,7 @@ MonoBehaviour:
   - {fileID: -4094897572088249565}
   - {fileID: -1255286663611699888}
   - {fileID: 4428023902470981222}
+  - {fileID: 2063232359039913695}
   EditorParameters:
   - {fileID: 7856198239711691406}
   - {fileID: -1330277757104103027}
@@ -512,7 +537,7 @@ MonoBehaviour:
   - {fileID: -6301496419575727263}
   StringsBanks:
   - {fileID: -8750722972122330615}
-  cacheTime: 639155760754130402
+  cacheTime: 639166930452581554
   cacheVersion: 131635
 --- !u!114 &868972411745571389
 MonoBehaviour:
@@ -580,10 +605,10 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639153894370410119
+  lastModified: 639166930452581554
   FileSizes:
   - Name: Desktop
-    Value: 8136160
+    Value: 8698368
   Exists: 1
 --- !u!114 &1718918759449741034
 MonoBehaviour:
@@ -632,6 +657,34 @@ MonoBehaviour:
   - Name: Desktop
     Value: 29280
   Exists: 1
+--- !u!114 &2063232359039913695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/BG_Music
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Music/BG_Music
+  Guid:
+    Data1: -1060587657
+    Data2: 1241576621
+    Data3: -218589766
+    Data4: -1694520962
+  Banks:
+  - {fileID: 1672466277785387677}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -1901042179434852079}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 47986
 --- !u!114 &2367142381313569685
 MonoBehaviour:
   m_ObjectHideFlags: 0
