@@ -51,20 +51,22 @@ public class HouseEntered : SimulationTask
 
     private void JulietteSitDown(OnJulietteAnimFinished evt)
     {
+        if (evt.animationType != JulietteAnimations.Walk) { return; }
+
         EventBus<OnSitAnim>.Publish(new OnSitAnim());
         EventBus<OnJulietteAnimFinished>.OnEvent -= JulietteSitDown;
         FinishTask();
     }
 
     private void HandleLocalizationChanged(Locale newLocale)
+    {
+        if (newLocale.Identifier.Code.StartsWith("en"))
         {
-            if (newLocale.Identifier.Code.StartsWith("en"))
-            {
-                currentSitDown = enComeSitDown;
-            }
-            else if (newLocale.Identifier.Code.StartsWith("nl"))
-            {
-                currentSitDown = nlComeSitDown;
-            }
+            currentSitDown = enComeSitDown;
+        }
+        else if (newLocale.Identifier.Code.StartsWith("nl"))
+        {
+            currentSitDown = nlComeSitDown;
         }
     }
+}

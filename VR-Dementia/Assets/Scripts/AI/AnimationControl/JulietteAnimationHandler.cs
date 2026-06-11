@@ -4,21 +4,43 @@ using UnityEngine;
 
 public class JulietteAnimationHandler : MonoBehaviour
 {
-    [SerializeField] JulietteAnimationInfo[] julietteAnimInfo;
+    [SerializeField] private JulietteAnimationInfo[] julietteAnimInfo;
 
-    Dictionary<JulietteAnimations, GameObject> animInfo;
-    Animator julietteAnim;
+    private Dictionary<JulietteAnimations, GameObject> animInfo = new Dictionary<JulietteAnimations, GameObject>();
+    private Animator julietteAnim;
+    private Queue<AnimationQueueItem> animationQueue = new Queue<AnimationQueueItem>();
+    private bool isPlayingQueue = false;
+
+    private struct AnimationQueueItem
+    {
+        public string triggerName;
+        public JulietteAnimations animType;
+
+        public AnimationQueueItem(string triggerName, JulietteAnimations animType)
+        {
+            this.triggerName = triggerName;
+            this.animType = animType;
+        }
+    }
 
     private void Start()
     {
+        julietteAnim = GetComponent<Animator>();
+
         EventBus<OnOpenDoorAnim>.OnEvent += OpenDoorAnim;
         EventBus<OnWalkAnim>.OnEvent += WalkAnim;
         EventBus<OnSitAnim>.OnEvent += SitAnim;
         EventBus<OnIdleAnim>.OnEvent += IdleAnim;
 
-        for (int i = 0; i < julietteAnimInfo.Length; i++)
+        if (julietteAnimInfo != null)
         {
-            animInfo.Add(julietteAnimInfo[i].animationType, julietteAnimInfo[i].startPosition);
+            for (int i = 0; i < julietteAnimInfo.Length; i++)
+            {
+                if (julietteAnimInfo[i].startPosition != null)
+                {
+                    animInfo.Add(julietteAnimInfo[i].animationType, julietteAnimInfo[i].startPosition);
+                }
+            }
         }
     }
 
@@ -32,59 +54,79 @@ public class JulietteAnimationHandler : MonoBehaviour
 
     private void OpenDoorAnim(OnOpenDoorAnim evt)
     {
-        julietteAnim.SetTrigger("OpenDoor");
-        StartCoroutine(WaitForCurrentAnimation());
-
-        if (animInfo[JulietteAnimations.OpenDoor] == null) { return; }
-
-        transform.position = animInfo[JulietteAnimations.OpenDoor].transform.position;
-        transform.rotation = animInfo[JulietteAnimations.OpenDoor].transform.rotation;
+        QueueAnimation("OpenDoor", JulietteAnimations.OpenDoor);
     }
 
     private void WalkAnim(OnWalkAnim evt)
     {
-        julietteAnim.SetTrigger("Walk");
-        StartCoroutine(WaitForCurrentAnimation());
-
-        if (animInfo[JulietteAnimations.Walk] == null) { return; }
-
-        transform.position = animInfo[JulietteAnimations.Walk].transform.position;
-        transform.rotation = animInfo[JulietteAnimations.Walk].transform.rotation;
+        QueueAnimation("Walk", JulietteAnimations.Walk);
     }
 
     private void SitAnim(OnSitAnim evt)
     {
-        julietteAnim.SetTrigger("SitDown");
-        StartCoroutine(WaitForCurrentAnimation());
-
-        if (animInfo[JulietteAnimations.Sit] == null) { return; }
-
-        transform.position = animInfo[JulietteAnimations.Sit].transform.position;
-        transform.rotation = animInfo[JulietteAnimations.Sit].transform.rotation;
+        QueueAnimation("SitDown", JulietteAnimations.Sit);
     }
 
     private void IdleAnim(OnIdleAnim evt)
     {
-        julietteAnim.SetTrigger("Idle");
-        StartCoroutine(WaitForCurrentAnimation());
-
-        if (animInfo[JulietteAnimations.IdleStand] == null) { return; }
-
-        transform.position = animInfo[JulietteAnimations.IdleStand].transform.position;
-        transform.rotation = animInfo[JulietteAnimations.IdleStand].transform.rotation;
+        QueueAnimation("Idle", JulietteAnimations.IdleStand);
     }
 
-    Animator animator;
-
-    private IEnumerator WaitForCurrentAnimation()
+    private void QueueAnimation(string triggerName, JulietteAnimations animType)
     {
-        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        animationQueue.Enqueue(new AnimationQueueItem(triggerName, animType));
 
-        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+        if (!isPlayingQueue)
+        {
+            StartCoroutine(ExecuteQueue());
+        }
+    }
+
+    private IEnumerator ExecuteQueue()
+    {
+        isPlayingQueue = true;
+
+        while (animationQueue.Count > 0)
+        {
+            AnimationQueueItem current = animationQueue.Dequeue();
+
+            if (animInfo.ContainsKey(current.animType) && animInfo[current.animType] != null)
+            {
+                transform.position = animInfo[current.animType].transform.position;
+                transform.rotation = animInfo[current.animType].transform.rotation;
+            }
+
+            if (julietteAnim != null)
+            {
+                yield return StartCoroutine(WaitForCurrentAnimation(current.animType, current.triggerName));
+            }
+        }
+
+        isPlayingQueue = false;
+    }
+
+    private IEnumerator WaitForCurrentAnimation(JulietteAnimations animType, string triggerName)
+    {
+        if (julietteAnim == null) yield break;
+
+        AnimatorStateInfo initialState = julietteAnim.GetCurrentAnimatorStateInfo(0);
+        julietteAnim.SetTrigger(triggerName);
+
+        while (julietteAnim.GetCurrentAnimatorStateInfo(0).fullPathHash == initialState.fullPathHash && !julietteAnim.IsInTransition(0))
         {
             yield return null;
         }
 
-        EventBus<OnJulietteAnimFinished>.Publish(new OnJulietteAnimFinished());
+        while (julietteAnim.IsInTransition(0))
+        {
+            yield return null;
+        }
+
+        while (julietteAnim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.95f)
+        {
+            yield return null;
+        }
+
+        EventBus<OnJulietteAnimFinished>.Publish(new OnJulietteAnimFinished(animType));
     }
 }

@@ -81,7 +81,12 @@ public class OnIdleAnim : Event
 
 public class OnJulietteAnimFinished : Event
 {
-    public OnJulietteAnimFinished() { }
+    public OnJulietteAnimFinished(JulietteAnimations animationType) 
+    {
+        this.animationType = animationType;
+    }
+
+    public JulietteAnimations animationType;
 }
 
 #endregion
