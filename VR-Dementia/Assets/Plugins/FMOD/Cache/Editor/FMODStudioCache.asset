@@ -380,6 +380,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-2685891254802977219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/BG_Music/Transition_State
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Transition_State
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 2698224093
+    data2: 3192864468
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &-1364194543260975454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -513,7 +537,7 @@ MonoBehaviour:
   - {fileID: -6301496419575727263}
   StringsBanks:
   - {fileID: -8750722972122330615}
-  cacheTime: 639167210878980775
+  cacheTime: 639167408135542416
   cacheVersion: 131635
 --- !u!114 &147955462460994217
 MonoBehaviour:
@@ -538,7 +562,8 @@ MonoBehaviour:
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
-  Parameters: []
+  Parameters:
+  - {fileID: -2685891254802977219}
   MinDistance: 1
   MaxDistance: 20
   Length: 47986
@@ -608,10 +633,10 @@ MonoBehaviour:
   Path: ../Sound_System/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639167210878980775
+  lastModified: 639167408135542416
   FileSizes:
   - Name: Desktop
-    Value: 8697888
+    Value: 8698368
   Exists: 1
 --- !u!114 &1718918759449741034
 MonoBehaviour:

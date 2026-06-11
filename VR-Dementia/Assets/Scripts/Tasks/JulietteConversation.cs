@@ -124,7 +124,7 @@ public class JulietteConversation : SimulationTask
             actionButton.action.canceled += OnButtonCanceled;
 
             // Only skip when player is actually sitting
-            StartCoroutine(SkipTaskDelay());
+            //StartCoroutine(SkipTaskDelay());
         }
         else if (isActive)
         {
