@@ -5,23 +5,12 @@ using UnityEngine;
 public class JulietteAnimationHandler : MonoBehaviour
 {
     [SerializeField] private JulietteAnimationInfo[] julietteAnimInfo;
+    [SerializeField] private Animator doorAnim;
 
     private Dictionary<JulietteAnimations, GameObject> animInfo = new Dictionary<JulietteAnimations, GameObject>();
     private Animator julietteAnim;
     private Queue<AnimationQueueItem> animationQueue = new Queue<AnimationQueueItem>();
     private bool isPlayingQueue = false;
-
-    private struct AnimationQueueItem
-    {
-        public string triggerName;
-        public JulietteAnimations animType;
-
-        public AnimationQueueItem(string triggerName, JulietteAnimations animType)
-        {
-            this.triggerName = triggerName;
-            this.animType = animType;
-        }
-    }
 
     private void Start()
     {
@@ -111,6 +100,9 @@ public class JulietteAnimationHandler : MonoBehaviour
 
         AnimatorStateInfo initialState = julietteAnim.GetCurrentAnimatorStateInfo(0);
         julietteAnim.SetTrigger(triggerName);
+
+        // Ugly, but will do for now ;)
+        if (triggerName == "OpenDoor") { doorAnim.SetTrigger(triggerName); }
 
         while (julietteAnim.GetCurrentAnimatorStateInfo(0).fullPathHash == initialState.fullPathHash && !julietteAnim.IsInTransition(0))
         {

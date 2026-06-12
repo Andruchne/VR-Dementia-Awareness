@@ -55,3 +55,16 @@ public struct JulietteAnimationInfo
     public JulietteAnimations animationType;
     public GameObject startPosition;
 }
+
+[Serializable]
+public struct AnimationQueueItem
+{
+    public string triggerName;
+    public JulietteAnimations animType;
+
+    public AnimationQueueItem(string triggerName, JulietteAnimations animType)
+    {
+        this.triggerName = triggerName;
+        this.animType = animType;
+    }
+}
