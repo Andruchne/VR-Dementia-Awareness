@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// Enums used in different scripts
 /// </summary>
-public enum TutorialHUDs { Turning, Moving, MenuOpen, Grab }
+public enum TutorialType { Turning, Moving, MenuOpen, Grab, None }
 public enum IndicatorHUDs { PressSend, EnterHome, SugarPickup }
 public enum JulietteAnimations { OpenDoor, Walk, Sit, IdleStand }
 
@@ -37,8 +37,9 @@ public struct TaskLine
 [Serializable]
 public struct TutorialInstance
 {
-    public TutorialHUDs tutorialType;
-    public GameObject instance;
+    public TutorialType tutorialType;
+    public GameObject hudInstance;
+    public GameObject[] movementComponent;
 }
 
 [Serializable]

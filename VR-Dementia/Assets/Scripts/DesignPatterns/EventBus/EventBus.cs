@@ -202,13 +202,13 @@ public class OnShowIndicator : Event
 public class OnShowTutorial : Event
 {
     // Trigger and set, to control whether palm menu should be visisble
-    public OnShowTutorial(bool isActive, TutorialHUDs tutorial = TutorialHUDs.Turning)
+    public OnShowTutorial(bool isActive, TutorialType tutorial = TutorialType.None)
     {
         this.isActive = isActive;
         this.tutorial = tutorial;
     }
     public bool isActive;
-    public TutorialHUDs tutorial;
+    public TutorialType tutorial;
 }
 
 public class OnUpdateTalkTimer : Event

@@ -59,14 +59,14 @@ public class LocomotionTutorial : SimulationTask
             case 0:
                 {
                     EventBus<OnTurned>.OnEvent += TurnPerformed;
-                    EventBus<OnShowTutorial>.Publish(new OnShowTutorial(true, TutorialHUDs.Turning));
+                    EventBus<OnShowTutorial>.Publish(new OnShowTutorial(true, TutorialType.Turning));
                     break;
                 }
             case 1:
                 {
                     EventBus<OnMoved>.OnEvent += MovingPerformed;
                     EventBus<OnTurned>.OnEvent -= TurnPerformed;
-                    EventBus<OnShowTutorial>.Publish(new OnShowTutorial(true, TutorialHUDs.Moving));
+                    EventBus<OnShowTutorial>.Publish(new OnShowTutorial(true, TutorialType.Moving));
                     TriggerSuccessFeedback();
                     break;
                 }
@@ -75,7 +75,7 @@ public class LocomotionTutorial : SimulationTask
                     EventBus<OnMoved>.OnEvent -= MovingPerformed;
                     EventBus<OnChangePalmMenuActive>.Publish(new OnChangePalmMenuActive(true));
                     EventBus<OnPalmMenuVisibilityChanged>.OnEvent += PalmMenuVisibilityChanged;
-                    EventBus<OnShowTutorial>.Publish(new OnShowTutorial(true, TutorialHUDs.MenuOpen));
+                    EventBus<OnShowTutorial>.Publish(new OnShowTutorial(true, TutorialType.MenuOpen));
                     TriggerSuccessFeedback();
                     break;
                 }

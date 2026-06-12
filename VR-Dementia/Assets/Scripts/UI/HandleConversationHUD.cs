@@ -9,6 +9,7 @@ public class HandleConversationHUD : MonoBehaviour
     [SerializeField] private GameObject processingUI;
 
     private bool playerSitting;
+    private bool isProcessing;
 
 
     private void Start()
@@ -50,6 +51,7 @@ public class HandleConversationHUD : MonoBehaviour
 
     private void ShowProcessing(OnShowProcessing evt)
     {
+        pressXUI.SetActive(false);
         microphoneUI.SetActive(false);
         processingUI.SetActive(true);
     }

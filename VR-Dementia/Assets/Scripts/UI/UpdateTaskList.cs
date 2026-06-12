@@ -22,12 +22,10 @@ public class UpdateTaskList : MonoBehaviour
     {
         if (currentIndex >= tasks.Length) { return; }
 
-        Debug.LogWarning(currentIndex);
         if (currentIndex - 1 >= 0)
         {
             tasks[currentIndex - 1].title.color = inactiveColor;
             tasks[currentIndex - 1].description.color = inactiveColor;
-            Debug.LogWarning("deactivatePrevious");
         }
 
         tasks[currentIndex].title.color = activeColor;

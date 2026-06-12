@@ -116,7 +116,7 @@ public class VoiceInteractionManager : MonoBehaviour
         if (isRecording)
         {
             float currentTime = Time.time - recordingStartTime;
-            float currentProgress = Mathf.InverseLerp(0, MAX_RECORDING_SECONDS, currentTime);
+            float currentProgress = Mathf.InverseLerp(MAX_RECORDING_SECONDS, 0, currentTime);
             EventBus<OnUpdateTalkTimer>.Publish(new OnUpdateTalkTimer(currentProgress));
 
             if(currentTime >= MAX_RECORDING_SECONDS)

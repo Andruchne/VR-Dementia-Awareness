@@ -15,11 +15,6 @@ public class JulietteConversation : SimulationTask
 
     private bool isSitting;
 
-    private void Start()
-    {
-        EventBus<OnRequestTalk>.OnEvent += TriggerDialogue;
-    }
-
     private void OnDestroy()
     {
         EventBus<OnRequestTalk>.OnEvent -= TriggerDialogue;
@@ -40,6 +35,7 @@ public class JulietteConversation : SimulationTask
         base.StartTask();
 
         EventBus<OnPlayerSitDown>.OnEvent += PlayerSatDown;
+        EventBus<OnRequestTalk>.OnEvent += TriggerDialogue;
         GameManager.Instance.conversationActive = true;
 
         // Setup the event. We only skip when this event fires with isSitting = true.
@@ -64,11 +60,13 @@ public class JulietteConversation : SimulationTask
 
     private void TriggerDialogue(OnRequestTalk evt)
     {
-        Debug.LogWarning("heheh");
+        bool isRecording = GameManager.Instance.VoiceInterManager.IsRecording;
+
+        if (!isRecording) { StartRecording(); }
+        else { FinishedRecording(); }
     }
 
-    // Triggered exactly when the button is pressed down
-    private void OnButtonStarted(InputAction.CallbackContext context)
+    private void StartRecording()
     {
         if (isProcessing || questionsAsked >= maxQuestions || GameManager.Instance == null) { return; }
 
@@ -81,8 +79,19 @@ public class JulietteConversation : SimulationTask
         }
     }
 
+    // Triggered exactly when the button is pressed down
+    private void OnButtonStarted(InputAction.CallbackContext context)
+    {
+        StartRecording();
+    }
+
     // Triggered exactly when the button is released
     private void OnButtonCanceled(InputAction.CallbackContext context)
+    {
+        FinishedRecording();
+    }
+
+    private void FinishedRecording()
     {
         if (isProcessing || questionsAsked >= maxQuestions || GameManager.Instance == null) { return; }
 

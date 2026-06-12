@@ -39,7 +39,6 @@ public class TaskManager : MonoBehaviour
             currentTaskIndex++;
             tasks[currentTaskIndex].StartTask();
             tasks[currentTaskIndex].onTaskFinished += TriggerNextTask;
-            Debug.LogWarning("bla " + currentTaskIndex + ": " + tasks[currentTaskIndex].name);
         }
     }
 }
