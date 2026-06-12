@@ -6,12 +6,11 @@ using UnityEngine.Localization.Settings;
 public class SugarBrought : SimulationTask
 {
     [Header("Go Ahead Voicelines")]
-    [SerializeField] float julietteGoAheadDelay = 0;
-    [SerializeField] EventReference enGoAhead;
-    [SerializeField] EventReference nlGoAhead;
+    [SerializeField] private float julietteGoAheadDelay = 0.0f;
+    [SerializeField] private EventReference enGoAhead;
+    [SerializeField] private EventReference nlGoAhead;
 
     private EventReference currentGoAhead;
-
     private Timer timer;
 
     private void Start()
@@ -53,13 +52,7 @@ public class SugarBrought : SimulationTask
 
     private void HandleLocalizationChanged(Locale newLocale)
     {
-        if (newLocale.Identifier.Code.StartsWith("en"))
-        {
-            currentGoAhead = enGoAhead;
-        }
-        else if (newLocale.Identifier.Code.StartsWith("nl"))
-        {
-            currentGoAhead = nlGoAhead;
-        }
+        if (newLocale.Identifier.Code.StartsWith("en")) { currentGoAhead = enGoAhead; }
+        else if (newLocale.Identifier.Code.StartsWith("nl")) { currentGoAhead = nlGoAhead; }
     }
 }

@@ -1,22 +1,11 @@
 using UnityEngine;
 
+/// <summary>
+/// Used to trigger capturing or sending off audio from microphone
+/// The function is assigned to one of the gesture events, found within the rotation locomotor of the VR character
+/// </summary>
 public class TriggerDialogueGesture : MonoBehaviour
 {
-    private void Start()
-    {
-        EventBus<OnRequestTalk>.OnEvent += TriggerDialogue;
-    }
-
-    private void OnDestroy()
-    {
-        EventBus<OnRequestTalk>.OnEvent -= TriggerDialogue;
-    }
-
-    public void TriggerDialogue(OnRequestTalk evt)
-    {
-
-    }
-
     public void RequestTalk()
     {
         EventBus<OnRequestTalk>.Publish(new OnRequestTalk());

@@ -6,7 +6,8 @@ using UnityEngine;
 /// </summary>
 public class ExitConfirmMenu : MonoBehaviour
 {
-    [SerializeField] GameObject mainMenu;
+    [Header("Main Menu Configuration")]
+    [SerializeField] private GameObject mainMenu;
 
     public void OnExitConfirm()
     {

@@ -1,16 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Makes the HUDs relevant during the Juliette conversation appear / disappear
+/// Animations are handled within their respective animators (except for the progress bar of course)
+/// </summary>
 public class HandleConversationHUD : MonoBehaviour
 {
+    [Header("UI Windows")]
     [SerializeField] private GameObject pressXUI;
     [SerializeField] private GameObject microphoneUI;
-    [SerializeField] private Image progressBar;
     [SerializeField] private GameObject processingUI;
 
-    private bool playerSitting;
-    private bool isProcessing;
+    [Header("Progress Bar Settings")]
+    [SerializeField] private Image progressBar;
 
+    private bool playerSitting;
 
     private void Start()
     {
@@ -60,10 +65,10 @@ public class HandleConversationHUD : MonoBehaviour
     {
         playerSitting = evt.isSitting;
 
-        if (!GameManager.Instance.conversationActive) 
-        { 
+        if (!GameManager.Instance.conversationActive)
+        {
             pressXUI.SetActive(false);
-            return; 
+            return;
         }
         pressXUI.SetActive(evt.isSitting);
     }

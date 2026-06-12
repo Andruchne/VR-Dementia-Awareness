@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 
+/// <summary>
+/// Manages runtime language switching
+/// </summary>
 public class LocalizationManager : MonoBehaviour
 {
     private bool isUpdating;
@@ -21,10 +23,7 @@ public class LocalizationManager : MonoBehaviour
         yield return LocalizationSettings.InitializationOperation;
 
         Locale targetLocale = LocalizationSettings.AvailableLocales.GetLocale(localeCode);
-        if (targetLocale != null)
-        {
-            LocalizationSettings.SelectedLocale = targetLocale;
-        }
+        if (targetLocale != null) { LocalizationSettings.SelectedLocale = targetLocale; }
 
         isUpdating = false;
     }

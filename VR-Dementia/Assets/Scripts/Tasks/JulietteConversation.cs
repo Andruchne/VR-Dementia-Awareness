@@ -4,15 +4,14 @@ using UnityEngine.InputSystem;
 
 public class JulietteConversation : SimulationTask
 {
-    [Header("Input to check")]
-    [SerializeField] InputActionReference actionButton;
+    [Header("Input Setup")]
+    [SerializeField] private InputActionReference actionButton;
 
-    [Header("How many questions can be asked")]
-    [SerializeField] int maxQuestions = 5;
+    [Header("Conversation Rules")]
+    [SerializeField] private int maxQuestions = 5;
 
     private int questionsAsked;
     private bool isProcessing;
-
     private bool isSitting;
 
     private void OnDestroy()
@@ -22,7 +21,6 @@ public class JulietteConversation : SimulationTask
 
         if (actionButton != null)
         {
-            // Unsubscribe from both press and release events
             actionButton.action.started -= OnButtonStarted;
             actionButton.action.canceled -= OnButtonCanceled;
             actionButton.action.Disable();
@@ -38,7 +36,6 @@ public class JulietteConversation : SimulationTask
         EventBus<OnRequestTalk>.OnEvent += TriggerDialogue;
         GameManager.Instance.conversationActive = true;
 
-        // Setup the event. We only skip when this event fires with isSitting = true.
         PlayerSatDown(new OnPlayerSitDown(isSitting));
         EventBus<OnUpdateTask>.Publish(new OnUpdateTask());
     }
@@ -49,10 +46,10 @@ public class JulietteConversation : SimulationTask
 
         GameManager.Instance.conversationActive = false;
         EventBus<OnPlayerSitDown>.OnEvent -= PlayerSatDown;
+
         if (actionButton != null)
         {
             actionButton.action.Disable();
-            // Unsubscribe from both press and release events
             actionButton.action.started -= OnButtonStarted;
             actionButton.action.canceled -= OnButtonCanceled;
         }
@@ -79,13 +76,11 @@ public class JulietteConversation : SimulationTask
         }
     }
 
-    // Triggered exactly when the button is pressed down
     private void OnButtonStarted(InputAction.CallbackContext context)
     {
         StartRecording();
     }
 
-    // Triggered exactly when the button is released
     private void OnButtonCanceled(InputAction.CallbackContext context)
     {
         FinishedRecording();
@@ -97,7 +92,6 @@ public class JulietteConversation : SimulationTask
 
         bool isRecording = GameManager.Instance.VoiceInterManager.IsRecording;
 
-        // Only process if we were actually recording
         if (isRecording)
         {
             ProcessRecording();
@@ -128,17 +122,14 @@ public class JulietteConversation : SimulationTask
         if (isActive && evt.isSitting)
         {
             actionButton.action.Enable();
-            // Subscribe to both press and release events for push-to-talk
             actionButton.action.started += OnButtonStarted;
             actionButton.action.canceled += OnButtonCanceled;
 
-            // Only skip when player is actually sitting
-            //StartCoroutine(SkipTaskDelay());
+            // StartCoroutine(SkipTaskDelay());
         }
         else if (isActive)
         {
             actionButton.action.Disable();
-            // Unsubscribe from both press and release events
             actionButton.action.started -= OnButtonStarted;
             actionButton.action.canceled -= OnButtonCanceled;
         }

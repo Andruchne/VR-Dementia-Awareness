@@ -6,6 +6,7 @@ using UnityEngine;
 /// </summary>
 public class MainMenu : MonoBehaviour
 {
+    [Header("Menu Windows")]
     [SerializeField] private GameObject exitConfirm;
     [SerializeField] private GameObject settingsWindow;
 

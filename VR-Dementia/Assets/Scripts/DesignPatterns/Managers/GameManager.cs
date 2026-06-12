@@ -1,46 +1,51 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Central manager handling game state, input initialization, localization, and scene transitions
+/// Coordinates sub-managers like post-processing and voice interaction
+/// </summary>
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
+
+    [Header("Configuration")]
     public VolumeConfiguration volumeconfig;
 
-    #region Variables and Instances
-
+    [Header("Controls")]
+    public GameControlls gameInput;
     public bool conversationActive;
 
-    private PostProcessingManager _ppManager;
-    private LocalizationManager _localManager;
-    private VoiceInteractionManager _voiceInterManager;
+    public event Action OnInputSetup;
+
+    private PostProcessingManager ppManager;
+    private LocalizationManager localManager;
+    private VoiceInteractionManager voiceInterManager;
 
     // To subscribe to processing events
-    public VoiceInteractionManager VoiceInterManager => _voiceInterManager;
+    public VoiceInteractionManager VoiceInterManager => voiceInterManager;
 
-    private void GetInstances()
+    #region Inbuilt Methods
+
+    private void Awake() { SetupSingleton(); }
+
+    private void Start()
     {
-        _ppManager = GetComponent<PostProcessingManager>();
-        if (_ppManager == null) { Debug.LogWarning("GameManager: Missing PostProcessingManager - Please attach the script to Transform of GameManager."); }
-        _localManager = GetComponent<LocalizationManager>();
-        if (_localManager == null) { Debug.LogWarning("GameManager: Missing LocalizationManager - Please attach the script to Transform of GameManager."); }
-        _voiceInterManager = GetComponentInChildren<VoiceInteractionManager>();
-        if (_voiceInterManager == null) { Debug.LogWarning("GameManager: Missing VoiceInteractionManager - Please attach AI Prefab as child of GameManager."); }
+        GetInstances();
+        SetupInput();
+        ChangeLocalization("en-GB");
     }
+
+    private void OnDestroy() { if (Instance == this && gameInput != null) { gameInput.Disable(); } }
 
     #endregion
 
-    #region Singleton Pattern
-
-    public static GameManager Instance { get; private set; }
+    #region Initialization
 
     private void SetupSingleton()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
+        if (Instance == null) { Instance = this; }
         else
         {
             Destroy(gameObject);
@@ -49,12 +54,15 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    #endregion
-
-    #region Input
-
-    public GameControlls gameInput;
-    public event Action OnInputSetup;
+    private void GetInstances()
+    {
+        ppManager = GetComponent<PostProcessingManager>();
+        if (ppManager == null) { Debug.LogWarning("GameManager: Missing PostProcessingManager - Please attach the script to Transform of GameManager."); }
+        localManager = GetComponent<LocalizationManager>();
+        if (localManager == null) { Debug.LogWarning("GameManager: Missing LocalizationManager - Please attach the script to Transform of GameManager."); }
+        voiceInterManager = GetComponentInChildren<VoiceInteractionManager>();
+        if (voiceInterManager == null) { Debug.LogWarning("GameManager: Missing VoiceInteractionManager - Please attach AI Prefab as child of GameManager."); }
+    }
 
     private void SetupInput()
     {
@@ -65,75 +73,44 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    private void Awake()
-    {
-        SetupSingleton();
-    }
-
-    private void Start()
-    {
-        GetInstances();
-
-        SetupInput();
-
-        ChangeLocalization("en-GB");
-    }
-
-    private void OnDestroy()
-    {
-        if (Instance == this && gameInput != null)
-        {
-            gameInput.Disable();
-        }
-    }
-
     #region Dialogue
 
     public void StartRecordingVoice()
     {
-        if (_voiceInterManager == null) { return; }
-
-        _voiceInterManager.StartRecording();
+        if (voiceInterManager == null) { return; }
+        voiceInterManager.StartRecording();
     }
 
     public void StopRecordingVoice()
     {
-        if (_voiceInterManager == null) { return; }
-
-        _voiceInterManager.StopRecordingAndProcess();
+        if (voiceInterManager == null) { return; }
+        voiceInterManager.StopRecordingAndProcess();
     }
 
     public void DiscardRecordingVoice()
     {
-        if (_voiceInterManager == null) { return; }
-        _voiceInterManager.DiscardRecording();
+        if (voiceInterManager == null) { return; }
+        voiceInterManager.DiscardRecording();
     }
 
     #endregion
-
 
     #region Localization Settings
 
     public void ChangeLocalization(string localIndex)
     {
-        if (_localManager == null) { return; }
-
-        _localManager.ChangeLanguage(localIndex);
+        if (localManager == null) { return; }
+        localManager.ChangeLanguage(localIndex);
     }
 
     #endregion
-
 
     #region Load Scene Logic
 
     public void LoadScene(int sceneIndex)
     {
-        if (sceneIndex < 0 || sceneIndex > SceneManager.sceneCountInBuildSettings)
-        {
-            // If given index is invalid, load default level
-            sceneIndex = 0;
-        }
-
+        // If given index is invalid, load default level
+        if (sceneIndex < 0 || sceneIndex > SceneManager.sceneCountInBuildSettings) { sceneIndex = 0; }
         SceneManager.LoadScene(sceneIndex);
     }
 
@@ -154,24 +131,17 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-
-    #region Mood Queue
+    #region Mood & Post Processing
 
     public void SetMoodPercentage(Mood mood, int percentage)
     {
-        if (_ppManager != null) { _ppManager.SetMoodPercentage(mood, percentage); }
+        if (ppManager != null) { ppManager.SetMoodPercentage(mood, percentage); }
     }
-
-    #endregion
-
-
-    #region Actions
 
     public void TransitionMood(VolumeConfiguration volumeConfiguration, float transitionTime)
     {
-        if (_ppManager != null) { _ppManager.SwitchMood(volumeConfiguration, transitionTime); }
+        if (ppManager != null) { ppManager.SwitchMood(volumeConfiguration, transitionTime); }
     }
 
     #endregion
-
 }

@@ -6,12 +6,11 @@ using UnityEngine.Localization.Settings;
 public class HouseEntered : SimulationTask
 {
     [Header("Come Sit Voicelines")]
-    [SerializeField] float julietteSitDownDelay = 2;
-    [SerializeField] EventReference enComeSitDown;
-    [SerializeField] EventReference nlComeSitDown;
+    [SerializeField] private float julietteSitDownDelay = 2.0f;
+    [SerializeField] private EventReference enComeSitDown;
+    [SerializeField] private EventReference nlComeSitDown;
 
     private EventReference currentSitDown;
-
     private Timer timer;
 
     private void Start()
@@ -60,13 +59,7 @@ public class HouseEntered : SimulationTask
 
     private void HandleLocalizationChanged(Locale newLocale)
     {
-        if (newLocale.Identifier.Code.StartsWith("en"))
-        {
-            currentSitDown = enComeSitDown;
-        }
-        else if (newLocale.Identifier.Code.StartsWith("nl"))
-        {
-            currentSitDown = nlComeSitDown;
-        }
+        if (newLocale.Identifier.Code.StartsWith("en")) { currentSitDown = enComeSitDown; }
+        else if (newLocale.Identifier.Code.StartsWith("nl")) { currentSitDown = nlComeSitDown; }
     }
 }

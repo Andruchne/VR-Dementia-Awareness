@@ -8,13 +8,13 @@ using UnityEngine;
 public class SettingsMenu : MonoBehaviour
 {
     [Header("Locomotion Components")]
-    [SerializeField] GameObject slideComponent;
-    [SerializeField] GameObject teleportComponent;
-    [SerializeField] GameObject stepComponent;
-    [SerializeField] TurnerEventBroadcaster turnComponent;
+    [SerializeField] private GameObject slideComponent;
+    [SerializeField] private GameObject teleportComponent;
+    [SerializeField] private GameObject stepComponent;
+    [SerializeField] private TurnerEventBroadcaster turnComponent;
 
     [Header("Main Menu")]
-    [SerializeField] GameObject mainMenu;
+    [SerializeField] private GameObject mainMenu;
 
     public void OnGoBack()
     {

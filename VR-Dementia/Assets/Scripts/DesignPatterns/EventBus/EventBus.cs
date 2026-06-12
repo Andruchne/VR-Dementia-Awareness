@@ -1,6 +1,5 @@
 using FMODUnity;
 using System;
-using UnityEngine;
 
 /// <summary>
 /// Key part of the project script architecture
@@ -59,6 +58,7 @@ public class OnTurned : Event
 
 #region JulietteAnimations
 
+// Juliette Animation. Look at names, they describe their purpose well ;)
 public class OnOpenDoorAnim : Event
 {
     public OnOpenDoorAnim() { }
@@ -81,6 +81,7 @@ public class OnIdleAnim : Event
 
 public class OnJulietteAnimFinished : Event
 {
+    // Important to know which animation finishes, to be able to queue them properly
     public OnJulietteAnimFinished(JulietteAnimations animationType) 
     {
         this.animationType = animationType;
@@ -99,11 +100,6 @@ public class OnRequestTalk : Event
     public OnRequestTalk() { }
 }
 
-public class OnFinishedRequest : Event
-{
-    public OnFinishedRequest() { }
-}
-
 public class OnJulietteTalk : Event
 {
     // Used to make Juliette talk
@@ -117,6 +113,7 @@ public class OnJulietteTalk : Event
 
 public class OnJulietteFinishedTalk : Event
 {
+    // Triggered when Juliette stops talking
     public OnJulietteFinishedTalk() { }
 }
 
@@ -177,7 +174,7 @@ public class OnPlayerSitDown : Event
 
 public class OnTransitionScreen : Event
 {
-    // Triggered to transition screen to black
+    // Triggered to transition screen to black or back to transparent
     public OnTransitionScreen(float targetPercent, float duration)
     {
         this.targetPercent = targetPercent;
@@ -213,6 +210,7 @@ public class OnShowTutorial : Event
 
 public class OnUpdateTalkTimer : Event
 {
+    // To update progress bar of microphone capture
     public OnUpdateTalkTimer(float currentProgress)
     {
         this.currentProgress = currentProgress;
@@ -222,21 +220,25 @@ public class OnUpdateTalkTimer : Event
 
 public class OnShowMicrophonePickup : Event
 {
+    // Show the microphone UI animation
     public OnShowMicrophonePickup() { }
 }
 
 public class OnShowProcessing : Event
 {
+    // Show the clock processing
     public OnShowProcessing() { }
 }
 
 public class OnShowAfterDiscard : Event
 {
+    // Reset, in case recording gets discarded
     public OnShowAfterDiscard() { }
 }
 
 public class OnHideTalk : Event
 {
+    // Hide everything, regarding Juliette Talk UI
     public OnHideTalk() { }
 }
 

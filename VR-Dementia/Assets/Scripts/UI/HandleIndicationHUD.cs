@@ -1,9 +1,13 @@
 using UnityEngine;
 
+/// <summary>
+/// Shows appropriate indicators, in case the User takes a lot of time for a specific task
+/// </summary>
 public class HandleIndicationHUD : MonoBehaviour
 {
-    [SerializeField] GameObject indicatorHUDs;
-    [SerializeField] IndicatorInstance[] indicatorInstances;
+    [Header("HUD Setup")]
+    [SerializeField] private GameObject indicatorHUDs;
+    [SerializeField] private IndicatorInstance[] indicatorInstances;
 
     private void Start()
     {

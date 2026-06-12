@@ -2,98 +2,84 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// Very handy timer class, to be able to use timer logic, without the need for recreate it in every script
+/// Reusable timer component providing events for active tracking and completion
 /// </summary>
-
 public class Timer : MonoBehaviour
 {
     public event Action OnTimerFinished;
     public event Action OnTimerRunning;
 
-    private float _waitTime;
-    private float _currentPassedTime;
+    private float waitTime;
+    private float currentPassedTime;
 
-    private bool _active;
-    private bool _loop;
-
-    private GameObject _instance;
-
-    // As MonoBehaviour is in use, using the class constructor is not an option
-    // To use this timer, instantiate a timer object and call Initialize() for setup
-    public void Setup(float waitTimeSeconds, bool loop = false, bool startTimer = false)
-    {
-        _waitTime = waitTimeSeconds;
-        _loop = loop;
-        if (startTimer) { StartTimer(); }
-    }
+    private bool active;
+    private bool loop;
 
     private void Update()
     {
         RunTimer();
     }
 
+    public void Setup(float waitTimeSeconds, bool loop = false, bool startTimer = false)
+    {
+        waitTime = waitTimeSeconds;
+        this.loop = loop;
+        if (startTimer) { StartTimer(); }
+    }
+
     private void RunTimer()
     {
-        if (!_active) { return; }
+        if (!active) { return; }
 
-        _currentPassedTime += Time.deltaTime;
+        currentPassedTime += Time.deltaTime;
         OnTimerRunning?.Invoke();
 
-        // Timer finished
-        if (_currentPassedTime >= _waitTime)
+        if (currentPassedTime >= waitTime)
         {
-            // Continue timer if set to loop
-            if (_loop) { ResetTimer(true); }
-            // Deactivate and reset timer otherwise
+            if (loop) { ResetTimer(true); }
             else { ResetTimer(); }
 
             OnTimerFinished?.Invoke();
         }
     }
 
-    // Methods to adjust timer
     public void SetWaitTime(float waitTime)
     {
-        _waitTime = waitTime;
+        this.waitTime = waitTime;
     }
 
     public void SetLoop(bool loop)
     {
-        _loop = loop;
+        this.loop = loop;
     }
 
-    // Methods for managing timer
     public void StartTimer()
     {
-        _active = true;
+        active = true;
     }
 
     public void StopTimer(bool resetTimer = false)
     {
-        _active = false;
-
+        active = false;
         if (resetTimer) { ResetTimer(); }
     }
 
     public void ResetTimer(bool startTimer = false)
     {
-        _currentPassedTime = 0;
-
+        currentPassedTime = 0;
         if (startTimer) { StartTimer(); }
         else { StopTimer(); }
     }
 
-    // Getters
     public bool GetActive()
     {
-        return _active;
+        return active;
     }
 
     public float GetTimeLeft()
     {
-        float timeLeft = _waitTime - _currentPassedTime;
+        float timeLeft = waitTime - currentPassedTime;
         if (timeLeft < 0) { timeLeft = 0; }
-
         return timeLeft;
     }
 }

@@ -6,6 +6,10 @@ using UnityEngine.Rendering;
 using FMODUnity;
 using FMOD.Studio;
 
+/// <summary>
+/// Dynamic post-processing volume and FMOD audio mixer based on mood settings
+/// Used to transition between moods
+/// </summary>
 public class PostProcessingManager : MonoBehaviour
 {
     [Header("FMOD Music Setup")]
@@ -19,10 +23,10 @@ public class PostProcessingManager : MonoBehaviour
     [HideInInspector]
     public List<VolumeConfig> activeConfigs = new List<VolumeConfig>();
 
-    private Dictionary<Mood, Volume> _volumeInstances = new Dictionary<Mood, Volume>();
-    private Coroutine _currentTransition;
+    private Dictionary<Mood, Volume> volumeInstances = new Dictionary<Mood, Volume>();
+    private Coroutine currentTransition;
 
-    private bool _requiresUpdate = true;
+    private bool requiresUpdate = true;
 
     private void Start()
     {
@@ -38,20 +42,19 @@ public class PostProcessingManager : MonoBehaviour
             return;
         }
 
+        // Instantiate and configure post-processing volumes from entries
         for (int i = 0; i < volumeCollection.entries.Count; i++)
         {
-            // Get and check whether volume entry holds a GameObject
             VolumeEntry entry = volumeCollection.entries[i];
             if (entry.volume == null) { continue; }
 
-            // Instantiate Volume as child from Manager Transform
             GameObject gameObject = Instantiate(entry.volume, Vector3.zero, Quaternion.identity, this.transform);
             gameObject.name = $"Volume_{entry.mood}";
 
             Volume volComponent = gameObject.GetComponent<Volume>();
             volComponent.priority = i;
 
-            _volumeInstances.Add(entry.mood, volComponent);
+            volumeInstances.Add(entry.mood, volComponent);
         }
 
         InitializeActiveConfigs();
@@ -66,40 +69,29 @@ public class PostProcessingManager : MonoBehaviour
         }
     }
 
-    // Gets called when inspector values change inside the editor
-    // The bool is used to update the weights of the volumes only upon change
-    private void OnValidate()
-    {
-        SetDirty();
-    }
+    private void OnValidate() { SetDirty(); }
 
     private void Update()
     {
-        // Change volumes if inspector changes were made
-        if (_requiresUpdate)
+        if (requiresUpdate)
         {
             EvaluateWeights();
-            _requiresUpdate = false;
+            requiresUpdate = false;
         }
     }
 
-    public void SetDirty()
-    {
-        _requiresUpdate = true;
-    }
+    public void SetDirty() { requiresUpdate = true; }
 
     public void InitializeActiveConfigs()
     {
-        foreach (KeyValuePair<Mood, Volume> kvp in _volumeInstances)
+        foreach (KeyValuePair<Mood, Volume> kvp in volumeInstances)
         {
-            // Add missing mood entries to the list, to prevent null reference issues
             Mood m = kvp.Key;
             if (!activeConfigs.Any(x => x.mood == m))
             {
                 activeConfigs.Add(new VolumeConfig { mood = m, volumePercentage = 0 });
             }
         }
-        // Sort volumes inside the list, to also fit the enum order of definition (to stay consistent)
         activeConfigs.Sort((a, b) => a.mood.CompareTo(b.mood));
 
         SetDirty();
@@ -107,10 +99,10 @@ public class PostProcessingManager : MonoBehaviour
 
     public void SetMoodPercentage(Mood mood, int percentage)
     {
-        if (_currentTransition != null)
+        if (currentTransition != null)
         {
-            StopCoroutine(_currentTransition);
-            _currentTransition = null;
+            StopCoroutine(currentTransition);
+            currentTransition = null;
         }
 
         VolumeConfig config = activeConfigs.Find(x => x.mood == mood);
@@ -123,79 +115,65 @@ public class PostProcessingManager : MonoBehaviour
 
     private void EvaluateWeights()
     {
-        // Calculate the total sum of all weight percentages
         float totalUserPercent = 0;
-        foreach (VolumeConfig cfg in activeConfigs)
-        {
-            totalUserPercent += cfg.volumePercentage;
-        }
+        foreach (VolumeConfig cfg in activeConfigs) { totalUserPercent += cfg.volumePercentage; }
 
-        // Determine the scale factor
+        // Calculate normalization factor if sum exceeds 100 percent
         float normalizationFactor = 1;
-        if (totalUserPercent > 100)
-        {
-            normalizationFactor = 100 / totalUserPercent;
-        }
+        if (totalUserPercent > 100) { normalizationFactor = 100 / totalUserPercent; }
 
-        // To keep track of how much of the available space is already covered
         float currentCoverage = 0;
 
-        // Start with the entry with the highest priority setting, up to the one with the lowest
+        // Process from highest priority to lowest
         for (int i = volumeCollection.entries.Count - 1; i >= 0; i--)
         {
             VolumeEntry entry = volumeCollection.entries[i];
             Mood mood = entry.mood;
 
-            // Check whether the mood holds a volume instance - skip if not available
-            if (!_volumeInstances.TryGetValue(mood, out Volume vol)) { continue; }
+            if (!volumeInstances.TryGetValue(mood, out Volume vol)) { continue; }
 
-            // Get related config reference and obtain percentage (set to 0 if not available)
             VolumeConfig config = activeConfigs.Find(x => x.mood == mood);
-            float userPercent = config != null ? config.volumePercentage : 0;
+            float userPercent = 0;
+            if (config != null) { userPercent = config.volumePercentage; }
 
-            // Set FMOD sound parameter
+            // Update associated FMOD parameter
             if (musicInstance.isValid() && !string.IsNullOrEmpty(entry.paramFMOD))
             {
                 musicInstance.setParameterByName(entry.paramFMOD, userPercent / 100.0f);
             }
 
-            // Safety Check: If Volume not high enough to notice in the first place - turn it off
             if (userPercent <= 0.01f)
             {
                 vol.weight = 0;
                 continue;
             }
 
-            // Calculate the percent to cover the space (value from 0 to 1), and the remaining space for the next iteration
             float targetShare = (userPercent * normalizationFactor) / 100;
             float remainingSpace = 1 - currentCoverage;
 
-            // Turn it off, if no space is practically left for it anyways
             if (remainingSpace <= 0.001f)
             {
                 vol.weight = 0;
                 continue;
             }
 
-            // Calculate the actual weight to use for the volume
+            // Calculate relative weight based on leftover blend space
             float calculatedWeight = targetShare / remainingSpace;
             vol.weight = Mathf.Clamp01(calculatedWeight);
 
-            // Update current coverage for next iteration
             currentCoverage += targetShare;
         }
     }
 
     public void SwitchMood(VolumeConfiguration targetConfig, float transitionTime)
     {
-        // Stop transition, if one is already playing
-        if (_currentTransition != null) StopCoroutine(_currentTransition);
-        _currentTransition = StartCoroutine(TransitionMoodRoutine(targetConfig, transitionTime));
+        if (currentTransition != null) { StopCoroutine(currentTransition); }
+        currentTransition = StartCoroutine(TransitionMoodRoutine(targetConfig, transitionTime));
     }
 
     private IEnumerator TransitionMoodRoutine(VolumeConfiguration targetConfig, float duration)
     {
-        // Make a copy of the current values as point of reference
+        // Cache initial values before starting transition
         List<VolumeConfig> startValues = new List<VolumeConfig>();
         foreach (VolumeConfig current in activeConfigs)
         {
@@ -211,15 +189,14 @@ public class PostProcessingManager : MonoBehaviour
 
             foreach (VolumeConfig activeCfg in activeConfigs)
             {
-                // Get start value for the mood
                 VolumeConfig startItem = startValues.Find(x => x.mood == activeCfg.mood);
-                int startVal = startItem != null ? startItem.volumePercentage : 0;
+                int startVal = 0;
+                if (startItem != null) { startVal = startItem.volumePercentage; }
 
-                // Get target value for mood
                 VolumeConfig targetItem = targetConfig.configs.Find(x => x.mood == activeCfg.mood);
-                int targetVal = targetItem != null ? targetItem.volumePercentage : 0;
+                int targetVal = 0;
+                if (targetItem != null) { targetVal = targetItem.volumePercentage; }
 
-                // Set the resulting percent, based on the time passed
                 activeCfg.volumePercentage = (int)Mathf.Lerp(startVal, targetVal, t);
             }
 
@@ -227,14 +204,18 @@ public class PostProcessingManager : MonoBehaviour
             yield return null;
         }
 
-        // Make sure the value are exactly the ones they should be
+        // Ensure final target configurations are perfectly set
         foreach (VolumeConfig activeCfg in activeConfigs)
         {
             VolumeConfig targetItem = targetConfig.configs.Find(x => x.mood == activeCfg.mood);
-            activeCfg.volumePercentage = targetItem != null ? targetItem.volumePercentage : 0;
+
+            int finalTargetVal = 0;
+            if (targetItem != null) { finalTargetVal = targetItem.volumePercentage; }
+
+            activeCfg.volumePercentage = finalTargetVal;
         }
 
         EvaluateWeights();
-        _currentTransition = null;
+        currentTransition = null;
     }
 }

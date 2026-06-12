@@ -1,12 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Attached to the FadeCamera GameObject
+/// Handles the fading from black to transparent, and the other way around
+/// </summary>
 public class FadeBlackScreen : MonoBehaviour
 {
-    [SerializeField] Image screenImage;
+    [Header("Fader Elements")]
+    [SerializeField] private Image screenImage;
 
     private Timer timer;
-
     private Color fadeStartColor;
     private Color fadeTargetColor;
     private float currentFadeDuration;
@@ -54,7 +58,7 @@ public class FadeBlackScreen : MonoBehaviour
 
     private void UpdateFade()
     {
-        if (screenImage == null || currentFadeDuration <= 0) { return; }
+        if (screenImage == null || currentFadeDuration <= 0.0f) { return; }
 
         float elapsedTime = currentFadeDuration - timer.GetTimeLeft();
         screenImage.color = Color.Lerp(fadeStartColor, fadeTargetColor, elapsedTime / currentFadeDuration);

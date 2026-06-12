@@ -11,14 +11,14 @@ public class PressPhone : SimulationTask
     [SerializeField] private Transform[] leftHandComponents;
 
     [Header("Hint Setup")]
-    [SerializeField] float remindAfterSeconds = 60;
-    [SerializeField] Image sendButtonImage;
+    [SerializeField] private float remindAfterSeconds = 60.0f;
+    [SerializeField] private Image sendButtonImage;
+
     private Timer timer;
     private int reminderIndex;
 
     private IEnumerator Start()
     {
-        // Safety delay, to make sure the hand components are not reactivated by another script
         yield return new WaitForSeconds(0.5f);
 
         phone.gameObject.SetActive(false);
@@ -36,10 +36,12 @@ public class PressPhone : SimulationTask
     {
         base.StartTask();
         phone.gameObject.SetActive(true);
+
         for (int i = 0; i < leftHandComponents.Length; i++)
         {
             leftHandComponents[i].gameObject.SetActive(false);
         }
+
         timer.Setup(remindAfterSeconds, true, true);
     }
 
@@ -55,10 +57,12 @@ public class PressPhone : SimulationTask
         timer.StopTimer();
         EventBus<OnShowIndicator>.Publish(new OnShowIndicator(false));
         phone.gameObject.SetActive(false);
+
         for (int i = 0; i < leftHandComponents.Length; i++)
         {
             leftHandComponents[i].gameObject.SetActive(true);
         }
+
         FinishTask();
     }
 
@@ -85,7 +89,7 @@ public class PressPhone : SimulationTask
     private IEnumerator AnimateSendButtonImage()
     {
         Color baseColor = sendButtonImage.color;
-        float pulseSpeed = 5f;
+        float pulseSpeed = 5.0f;
 
         while (true)
         {

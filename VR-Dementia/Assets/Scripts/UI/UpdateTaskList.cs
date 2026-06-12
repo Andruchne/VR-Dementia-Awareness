@@ -1,10 +1,15 @@
 using UnityEngine;
 
+/// <summary>
+/// Updates the task list in the handheld menu
+/// </summary>
+
 public class UpdateTaskList : MonoBehaviour
 {
-    [SerializeField] TaskLine[] tasks;
-    [SerializeField] Color inactiveColor;
-    [SerializeField] Color activeColor;
+    [Header("Task References")]
+    [SerializeField] private TaskLine[] tasks;
+    [SerializeField] private Color inactiveColor;
+    [SerializeField] private Color activeColor;
 
     private int currentIndex;
 

@@ -2,10 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Shows and hides tutorial components, based on what is currently needed
+/// All locomotion components attached, will be deactivated from start, to prevent unintended movement before tutorial starts
+/// Once activated, the locomotion components will stay active
+/// </summary>
 public class HandleTutorialComponents : MonoBehaviour
 {
-    [SerializeField] GameObject tutorialHUDs;
-    [SerializeField] TutorialInstance[] tutorialInstances;
+    [Header("Tutorial Canvas References")]
+    [SerializeField] private GameObject tutorialHUDs;
+    [SerializeField] private TutorialInstance[] tutorialInstances;
 
     private Dictionary<TutorialType, TutorialInstance> tutorials;
 
@@ -46,7 +52,7 @@ public class HandleTutorialComponents : MonoBehaviour
             bool active = tutorialInstances[i].tutorialType == evt.tutorial;
             tutorialInstances[i].hudInstance.SetActive(active);
         }
-        
+
         for (int i = 0; i < tutorials[evt.tutorial].movementComponent.Length; i++)
         {
             tutorials[evt.tutorial].movementComponent[i].SetActive(true);

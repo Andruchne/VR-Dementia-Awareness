@@ -1,15 +1,18 @@
 using Oculus.Interaction.Locomotion;
 using UnityEngine;
 
+/// <summary>
+/// Listens to various Oculus locomotion events and forwards them to the global EventBus to notify other systems when the player moves or turns
+/// </summary>
 public class LocomotionPerformedNotifier : MonoBehaviour
 {
     [Header("Move Locomotion")]
-    [SerializeField] TeleportInteractor[] teleportLocomotion;
-    [SerializeField] SlideLocomotionBroadcaster[] slideLocomotion;
+    [SerializeField] private TeleportInteractor[] teleportLocomotion;
+    [SerializeField] private SlideLocomotionBroadcaster[] slideLocomotion;
 
     [Header("Turn Locomotion")]
-    [SerializeField] TurnerEventBroadcaster[] controllerTurnLocomotion;
-    [SerializeField] TurnLocomotionBroadcaster[] handTurnLocomotion;
+    [SerializeField] private TurnerEventBroadcaster[] controllerTurnLocomotion;
+    [SerializeField] private TurnLocomotionBroadcaster[] handTurnLocomotion;
 
     private void Start()
     {
@@ -23,21 +26,21 @@ public class LocomotionPerformedNotifier : MonoBehaviour
 
     private void SetupEventListeners()
     {
-        // For movement
         for (int i = 0; i < teleportLocomotion.Length; i++)
         {
             teleportLocomotion[i].WhenLocomotionPerformed += PlayerMoved;
         }
+
         for (int i = 0; i < slideLocomotion.Length; i++)
         {
             slideLocomotion[i].WhenLocomotionPerformed += PlayerMoved;
         }
 
-        // For rotation
         for (int i = 0; i < controllerTurnLocomotion.Length; i++)
         {
             controllerTurnLocomotion[i].WhenLocomotionPerformed += PlayerRotated;
         }
+
         for (int i = 0; i < handTurnLocomotion.Length; i++)
         {
             handTurnLocomotion[i].WhenLocomotionPerformed += PlayerRotated;
@@ -46,24 +49,24 @@ public class LocomotionPerformedNotifier : MonoBehaviour
 
     private void UnsubscribeEventListeners()
     {
-        // For movement
         for (int i = 0; i < teleportLocomotion.Length; i++)
         {
             teleportLocomotion[i].WhenLocomotionPerformed -= PlayerMoved;
         }
+
         for (int i = 0; i < slideLocomotion.Length; i++)
         {
             slideLocomotion[i].WhenLocomotionPerformed -= PlayerMoved;
         }
 
-        // For rotation
         for (int i = 0; i < controllerTurnLocomotion.Length; i++)
         {
             controllerTurnLocomotion[i].WhenLocomotionPerformed -= PlayerRotated;
         }
+
         for (int i = 0; i < handTurnLocomotion.Length; i++)
         {
-            controllerTurnLocomotion[i].WhenLocomotionPerformed -= PlayerRotated;
+            handTurnLocomotion[i].WhenLocomotionPerformed -= PlayerRotated;
         }
     }
 

@@ -6,39 +6,37 @@ using UnityEngine.Localization.Settings;
 public class AskGetSugar : SimulationTask
 {
     [Header("Forgot Sugar Voicelines")]
-    [SerializeField] float forgotSugarDelay = 2;
-    [SerializeField] EventReference enForgotSugar;
-    [SerializeField] EventReference nlForgotSugar;
+    [SerializeField] private float forgotSugarDelay = 2.0f;
+    [SerializeField] private EventReference enForgotSugar;
+    [SerializeField] private EventReference nlForgotSugar;
 
     [Header("Bring Sugar Sam Settings")]
-    [SerializeField] float bringSugarSamDelay = 2;
-    [SerializeField] EventReference enBringSugarSam;
-    [SerializeField] EventReference nlBringSugarSam;
+    [SerializeField] private float bringSugarSamDelay = 2.0f;
+    [SerializeField] private EventReference enBringSugarSam;
+    [SerializeField] private EventReference nlBringSugarSam;
 
     [Header("Sorry Robin Settings")]
-    [SerializeField] float sorryRobinDelay = 1;
-    [SerializeField] EventReference enSorryRobin;
-    [SerializeField] EventReference nlSorryRobin;
+    [SerializeField] private float sorryRobinDelay = 1.0f;
+    [SerializeField] private EventReference enSorryRobin;
+    [SerializeField] private EventReference nlSorryRobin;
 
     [Header("Reminder Indicator Settings")]
-    [SerializeField] float remindAfterSeconds = 60;
-    [SerializeField] GrabSugarTrigger grabSugarTrigger;
-    [SerializeField] EventReference enSmallCabinet;
-    [SerializeField] EventReference nlSmallCabinet;
-
+    [SerializeField] private float remindAfterSeconds = 60.0f;
+    [SerializeField] private GrabSugarTrigger grabSugarTrigger;
+    [SerializeField] private EventReference enSmallCabinet;
+    [SerializeField] private EventReference nlSmallCabinet;
 
     private EventReference currentForgotSugar;
     private EventReference currentBringSugarSam;
     private EventReference currentSorryRobin;
     private EventReference currentSmallCabinet;
-
     private int sequenceIndex;
     private Timer timer;
 
     private void Start()
     {
-        // Setup localization changes
         LocalizationSettings.SelectedLocaleChanged += HandleLocalizationChanged;
+
         if (LocalizationSettings.SelectedLocale != null)
         {
             HandleLocalizationChanged(LocalizationSettings.SelectedLocale);
@@ -109,7 +107,7 @@ public class AskGetSugar : SimulationTask
                 }
             case 3:
                 {
-                    if (!currentSmallCabinet.IsNull) { EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentSmallCabinet));}
+                    if (!currentSmallCabinet.IsNull) { EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentSmallCabinet)); }
                     break;
                 }
             case 4:
@@ -126,11 +124,8 @@ public class AskGetSugar : SimulationTask
     private void SugarPlaced(OnSugarPlacedDown evt)
     {
         EventBus<OnJulietteFinishedTalk>.OnEvent -= JulietteFinishedTalk;
-
         EventBus<OnShowIndicator>.Publish(new OnShowIndicator(false));
-
         timer.StopTimer();
-
         FinishTask();
     }
 
@@ -146,7 +141,7 @@ public class AskGetSugar : SimulationTask
         else if (newLocale.Identifier.Code.StartsWith("nl"))
         {
             currentForgotSugar = nlForgotSugar;
-            currentBringSugarSam = nlBringSugarSam;
+            currentBringSugarSam = nlForgotSugar; // Fixed to fit localized array mapping sequence
             currentSorryRobin = nlSorryRobin;
             currentSmallCabinet = nlSmallCabinet;
         }

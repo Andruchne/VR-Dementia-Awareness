@@ -10,7 +10,7 @@ public class LocomotionTutorial : SimulationTask
     [SerializeField] private Volume successVolume;
     [SerializeField] private float volumeTransitionTime = 1.0f;
 
-    [Header("VR Character for Controller visibility")]
+    [Header("VR Character Setup")]
     [SerializeField] private OVRManager vrConfig;
 
     private int currentIndex;

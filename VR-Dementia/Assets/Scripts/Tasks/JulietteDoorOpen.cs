@@ -6,25 +6,24 @@ using UnityEngine.Localization.Settings;
 public class JulietteDoorOpen : SimulationTask
 {
     [Header("Juliette Greeting Voicelines")]
-    [SerializeField] float julietteGreetingDelay = 2;
-    [SerializeField] EventReference enJulietteGreeting;
-    [SerializeField] EventReference nlJulietteGreeting;
+    [SerializeField] private float julietteGreetingDelay = 2.0f;
+    [SerializeField] private EventReference enJulietteGreeting;
+    [SerializeField] private EventReference nlJulietteGreeting;
 
     [Header("Reminder Indicator Settings")]
-    [SerializeField] float remindAfterSeconds = 60;
-    [SerializeField] EventReference enJulietteComeIn;
-    [SerializeField] EventReference nlJulietteComeIn;
+    [SerializeField] private float remindAfterSeconds = 60.0f;
+    [SerializeField] private EventReference enJulietteComeIn;
+    [SerializeField] private EventReference nlJulietteComeIn;
 
     private EventReference currentGreeting;
     private EventReference currentComeIn;
-
     private int sequenceIndex;
     private Timer timer;
 
     private void Start()
     {
-        // Setup localization changes
         LocalizationSettings.SelectedLocaleChanged += HandleLocalizationChanged;
+
         if (LocalizationSettings.SelectedLocale != null)
         {
             HandleLocalizationChanged(LocalizationSettings.SelectedLocale);
@@ -45,7 +44,6 @@ public class JulietteDoorOpen : SimulationTask
     public override void StartTask()
     {
         base.StartTask();
-        // Set the delay time for the grandma to show up & greet
         timer.Setup(julietteGreetingDelay, false, true);
         EventBus<OnUpdateTask>.Publish(new OnUpdateTask());
         EventBus<OnOpenDoorAnim>.Publish(new OnOpenDoorAnim());
@@ -54,16 +52,13 @@ public class JulietteDoorOpen : SimulationTask
     private void GuestEntersBuilding(OnEnterBuilding evt)
     {
         timer.StopTimer();
-
         EventBus<OnShowIndicator>.Publish(new OnShowIndicator(false));
-
         FinishTask();
     }
 
     private void SetReminderTimer(OnJulietteFinishedTalk evt)
     {
         if (isFinished) { return; }
-
         timer.Setup(remindAfterSeconds, true, true);
     }
 
@@ -76,7 +71,6 @@ public class JulietteDoorOpen : SimulationTask
             case 0:
                 {
                     if (!currentGreeting.IsNull) { EventBus<OnJulietteTalk>.Publish(new OnJulietteTalk(currentGreeting)); }
-                    // Set wait time for the reminder sequences to show up
                     EventBus<OnJulietteFinishedTalk>.OnEvent += SetReminderTimer;
                     break;
                 }
@@ -95,7 +89,6 @@ public class JulietteDoorOpen : SimulationTask
 
         sequenceIndex++;
     }
-
 
     private void HandleLocalizationChanged(Locale newLocale)
     {

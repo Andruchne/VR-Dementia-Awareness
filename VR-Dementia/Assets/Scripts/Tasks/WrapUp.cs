@@ -1,30 +1,26 @@
-using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
-using UnityEngine.UI;
 
 public class WrapUp : SimulationTask
 {
     [Header("Record Voicelines")]
-    [SerializeField] float recordDelay = 2.0f;
-    [SerializeField] EventReference enRecord;
-    [SerializeField] EventReference nlRecord;
+    [SerializeField] private float recordDelay = 2.0f;
+    [SerializeField] private EventReference enRecord;
+    [SerializeField] private EventReference nlRecord;
 
     [Header("Humming Voiceline")]
-    [SerializeField] float hummingDelay = 1.0f;
-    [SerializeField] EventReference humming;
+    [SerializeField] private float hummingDelay = 1.0f;
+    [SerializeField] private EventReference humming;
 
     [Header("Fade Settings")]
-    [SerializeField] Image blackScreenImage;
-    [SerializeField] float fadeDuration = 8.0f;
+    [SerializeField] private float fadeDuration = 8.0f;
 
     [Header("Restart after Hum Timer")]
-    [SerializeField] float restartDelay = 1.0f;
+    [SerializeField] private float restartDelay = 1.0f;
 
     private EventReference currentRecord;
-
     private int sequenceIndex;
     private Timer timer;
 
@@ -104,13 +100,7 @@ public class WrapUp : SimulationTask
 
     private void HandleLocalizationChanged(Locale newLocale)
     {
-        if (newLocale.Identifier.Code.StartsWith("en"))
-        {
-            currentRecord = enRecord;
-        }
-        else if (newLocale.Identifier.Code.StartsWith("nl"))
-        {
-            currentRecord = nlRecord;
-        }
+        if (newLocale.Identifier.Code.StartsWith("en")) { currentRecord = enRecord; }
+        else if (newLocale.Identifier.Code.StartsWith("nl")) { currentRecord = nlRecord; }
     }
 }
