@@ -14,6 +14,11 @@ public class JulietteConversation : SimulationTask
     private bool isProcessing;
     private bool isSitting;
 
+    private void Start()
+    {
+        EventBus<OnPlayerSitDown>.OnEvent += PlayerSatDown;
+    }
+
     private void OnDestroy()
     {
         EventBus<OnRequestTalk>.OnEvent -= TriggerDialogue;
@@ -32,11 +37,10 @@ public class JulietteConversation : SimulationTask
     {
         base.StartTask();
 
-        EventBus<OnPlayerSitDown>.OnEvent += PlayerSatDown;
         EventBus<OnRequestTalk>.OnEvent += TriggerDialogue;
         GameManager.Instance.conversationActive = true;
 
-        PlayerSatDown(new OnPlayerSitDown(isSitting));
+        EventBus<OnPlayerSitDown>.Publish(new OnPlayerSitDown(isSitting));
         EventBus<OnUpdateTask>.Publish(new OnUpdateTask());
     }
 
@@ -46,6 +50,7 @@ public class JulietteConversation : SimulationTask
 
         GameManager.Instance.conversationActive = false;
         EventBus<OnPlayerSitDown>.OnEvent -= PlayerSatDown;
+        EventBus<OnHideTalk>.Publish(new OnHideTalk());
 
         if (actionButton != null)
         {
@@ -103,16 +108,23 @@ public class JulietteConversation : SimulationTask
     {
         GameManager.Instance.StopRecordingVoice();
         questionsAsked++;
-        EventBus<OnShowAfterDiscard>.Publish(new OnShowAfterDiscard());
-
-        if (questionsAsked >= maxQuestions) { EventBus<OnJulietteFinishedTalk>.OnEvent += SpeechFinished; }
+        EventBus<OnHideTalk>.Publish(new OnHideTalk());
+        EventBus<OnJulietteFinishedTalk>.OnEvent += SpeechFinished;
     }
 
     private void SpeechFinished(OnJulietteFinishedTalk evt)
     {
-        EventBus<OnHideTalk>.Publish(new OnHideTalk());
         EventBus<OnJulietteFinishedTalk>.OnEvent -= SpeechFinished;
-        FinishTask();
+
+        if (questionsAsked >= maxQuestions)
+        {
+            EventBus<OnHideTalk>.Publish(new OnHideTalk());
+            FinishTask();
+        }
+        else
+        {
+            EventBus<OnShowAfterDiscard>.Publish(new OnShowAfterDiscard());
+        }
     }
 
     private void PlayerSatDown(OnPlayerSitDown evt)
