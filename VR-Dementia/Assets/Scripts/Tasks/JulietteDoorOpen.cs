@@ -47,6 +47,7 @@ public class JulietteDoorOpen : SimulationTask
         timer.Setup(julietteGreetingDelay, false, true);
         EventBus<OnUpdateTask>.Publish(new OnUpdateTask());
         EventBus<OnOpenDoorAnim>.Publish(new OnOpenDoorAnim());
+        Debug.LogWarning("hehe");
     }
 
     private void GuestEntersBuilding(OnEnterBuilding evt)

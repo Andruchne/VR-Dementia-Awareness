@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Oculus.Interaction;
+using System.Collections;
 
 /// <summary>
 /// First-person character controller handling keyboard movement, mouse looking, physics-based object interaction, and Meta UI integration
@@ -36,7 +37,7 @@ public class FPSCharacter : MonoBehaviour, IActiveState
     private float originalLinearDamping;
     private float originalAngularDamping;
 
-    private void Start()
+    private IEnumerator Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -47,12 +48,17 @@ public class FPSCharacter : MonoBehaviour, IActiveState
         Vector3 currentRot = playerCamera.transform.rotation.eulerAngles;
         xRot = currentRot.x;
         yRot = transform.rotation.eulerAngles.y;
+
+        yield return new WaitForSeconds(1);
+
+        EventBus<OnStartSimulation>.Publish(new OnStartSimulation());
     }
 
     private void Update()
     {
         HandleLook();
         HandleInteractionInput();
+        HandleSpaceAction();
     }
 
     private void FixedUpdate()
@@ -109,6 +115,19 @@ public class FPSCharacter : MonoBehaviour, IActiveState
                 if (!isHoveringUI) { TryGrab(); }
             }
         }
+    }
+
+    private void HandleSpaceAction()
+    {
+        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            DoSpaceAction();
+        }
+    }
+
+    private void DoSpaceAction()
+    {
+        EventBus<OnRequestTalk>.Publish(new OnRequestTalk());
     }
 
     private void TryGrab()

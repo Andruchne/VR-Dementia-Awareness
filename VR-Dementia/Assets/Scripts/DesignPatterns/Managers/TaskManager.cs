@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ public class TaskManager : MonoBehaviour
     private List<SimulationTask> tasks = new List<SimulationTask>();
     private int currentTaskIndex;
 
-    private void Start()
+    private IEnumerator Start()
     {
         // Extract SimulationTask components from serialized GameObjects
         for (int i = 0; i < taskInstances.Length; i++)
@@ -21,6 +22,8 @@ public class TaskManager : MonoBehaviour
             if (taskInstances[i].TryGetComponent<SimulationTask>(out SimulationTask task)) { tasks.Add(task); }
             else { Debug.LogWarning("TaskManager: GameObject is missing a SimulationTask component"); }
         }
+
+        yield return new WaitForSeconds(1);
 
         // Safely initialize and start the first task if available
         if (tasks.Count > 0)
